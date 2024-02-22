@@ -173,6 +173,7 @@ class MyHomePage extends StatelessWidget {
                         Icon(Icons.kitchen, color: Colors.green[500]),
                         const Text('PREP:'),
                         const Text('25 min'),
+                        const Text('35 min'),
                       ],
                     ),
                     Column(
