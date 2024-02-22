@@ -124,6 +124,18 @@ class MyHomePage extends StatelessWidget {
                     width: 120,
                     margin: EdgeInsets.all(5),
                     //color: const Color.fromARGB(255, 59, 89, 141),
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverList(delegate: SliverChildBuilderDelegate((context, index) {
+                          return ListTile(
+                            title: Text("Advert $index"),
+                            hoverColor: const Color.fromARGB(255, 88, 180, 226),
+                          );
+                        },
+                        childCount: 50,
+                        ))
+                      ],
+                    ),
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -139,7 +151,7 @@ class MyHomePage extends StatelessWidget {
                       slivers: [
                         SliverList(delegate: SliverChildBuilderDelegate((context, index) {
                           return ListTile(
-                            title: Text("Advert $index"),
+                            title: Text("Dialog $index"),
                             hoverColor: const Color.fromARGB(255, 88, 180, 226),
                           );
                         },
@@ -181,6 +193,7 @@ class MyHomePage extends StatelessWidget {
                         Icon(Icons.timer, color: Colors.green[500]),
                         const Text('COOK:'),
                         const Text('1 hr'),
+                         const Text('35 min'),
                       ],
                     ),
                     Column(
