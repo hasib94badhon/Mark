@@ -128,6 +128,7 @@ class MyHomePage extends StatelessWidget {
                       slivers: [
                         SliverList(delegate: SliverChildBuilderDelegate((context, index) {
                           return ListTile(
+                            
                             title: Text("Dialog $index"),
                             hoverColor: const Color.fromARGB(255, 88, 180, 226),
                           );
@@ -185,7 +186,6 @@ class MyHomePage extends StatelessWidget {
                         Icon(Icons.kitchen, color: Colors.green[500]),
                         const Text('PREP:'),
                         const Text('25 min'),
-                        const Text('35 min'),
                       ],
                     ),
                     Column(
@@ -193,7 +193,6 @@ class MyHomePage extends StatelessWidget {
                         Icon(Icons.timer, color: Colors.green[500]),
                         const Text('COOK:'),
                         const Text('1 hr'),
-                         const Text('35 min'),
                       ],
                     ),
                     Column(
