@@ -42,24 +42,23 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: ListView(
       padding: const EdgeInsets.only(top: 25,left: 0,right: 0,bottom: 0),
-      
 
       children: <Widget>[
+        //Header
         Container(
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 0, 0, 0),
+            color: Color.fromARGB(226, 173, 89, 33),
             border: Border.all(width: 1,),
             borderRadius: BorderRadius.circular(7),
           ),
           height: 100,
-          //color: const Color.fromARGB(255, 90, 181, 255),
-          //color: Color.fromARGB(255, 248, 245, 237),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 88, 69, 17),
                   border: Border.all(width: 1,),
                   borderRadius: BorderRadius.circular(7),),
                 padding: EdgeInsets.all(2),
@@ -114,40 +113,36 @@ class MyHomePage extends StatelessWidget {
             ],
           ),
         ),
+
+        //Body
         Container(
           padding: EdgeInsets.all(0),
           margin: EdgeInsets.all(2),
           height: 550,
-          //color: const Color.fromARGB(255, 229, 229, 226),
           decoration: BoxDecoration(
-              border: Border.all(
-                width: 4,
-              ),
+              color: Color.fromARGB(255, 13, 231, 24),
+              border: Border.all(width: 3, color: Color.fromARGB(255, 255, 222, 113)),
               borderRadius: BorderRadius.circular(12)),
-          child: (Row(
-            children: <Widget>[
+          child: (Row(children: <Widget>[
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(width: 3),
-                  borderRadius: BorderRadius.circular(
-                    10,
-                  ),
-                ),
-                height: 546,
+                  color: const Color.fromARGB(255, 170, 145, 68),
+                  border: Border.all(width: 3, color: Colors.white),
+                  borderRadius: BorderRadius.circular(10,),),
+                height: 550,
                 width: 120,
                 margin: EdgeInsets.all(5),
-                //color: const Color.fromARGB(255, 59, 89, 141),
                 child: CustomScrollView(
                   slivers: [
                     SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                      (context, index) {
+                        delegate: SliverChildBuilderDelegate((context, index) {
                         return Container(
                             height: 100,
                             width: 80,
                             margin: EdgeInsets.all(6),
                             decoration: BoxDecoration(
-                                border: Border.all(width: 1),
+                                color: const Color.fromARGB(255, 238, 216, 152),
+                                border: Border.all(width: 5,color: Colors.white),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -157,7 +152,7 @@ class MyHomePage extends StatelessWidget {
                                     style: ButtonStyle(
                                         foregroundColor:
                                             MaterialStateProperty.all<Color>(
-                                                Colors.blue)),
+                                                const Color.fromARGB(255, 0, 0, 0))),
                                     onPressed: () {},
                                     child: Column(
                                       children: <Widget>[
@@ -185,16 +180,12 @@ class MyHomePage extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 170, 145, 68),
                   border: Border.all(width: 3),
-                  borderRadius: BorderRadius.circular(
-                    10,
-                  ),
-                ),
+                  borderRadius: BorderRadius.circular(10,),),
                 height: 546,
                 width: 225,
                 margin: EdgeInsets.only(left: 3, right: 3, top: 3, bottom: 3),
-
-                //color: const Color.fromARGB(255, 59, 89, 141),
                 child: CustomScrollView(
                   slivers: [
                     SliverList(
@@ -240,23 +231,21 @@ class MyHomePage extends StatelessWidget {
             ],
           )),
         ),
+        
+        //Footer
         Container(
           padding: EdgeInsets.all(0),
           height: 100,
-          //color: Colors.amber[100],
           margin: EdgeInsets.only(bottom: 7),
-          //color: const Color.fromARGB(255, 229, 229, 226),
           decoration: BoxDecoration(
-              border: Border.all(
-                width: 3,
-              ),
+              border: Border.all(width: 3,),
               borderRadius: BorderRadius.circular(12)),
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
+          child: 
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Column(
                   children: [
                     Container(
                         height: 70,
