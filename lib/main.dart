@@ -128,7 +128,7 @@ class MyHomePage extends StatelessWidget {
                       slivers: [
                         SliverList(delegate: SliverChildBuilderDelegate((context, index) {
                           return ListTile(
-                            title: Text("Advert $index"),
+                            title: Text("Dialog $index"),
                             hoverColor: const Color.fromARGB(255, 88, 180, 226),
                           );
                         },
@@ -151,7 +151,7 @@ class MyHomePage extends StatelessWidget {
                       slivers: [
                         SliverList(delegate: SliverChildBuilderDelegate((context, index) {
                           return ListTile(
-                            title: Text("Dialog $index"),
+                            title: Text("Advert $index"),
                             hoverColor: const Color.fromARGB(255, 88, 180, 226),
                           );
                         },
