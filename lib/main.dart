@@ -1,5 +1,9 @@
+// import 'dart:html';
+import 'dart:math';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -30,43 +34,36 @@ class MyAppState extends ChangeNotifier {
 }
 
 class MyHomePage extends StatelessWidget {
+  final int rand = Random().nextInt(10);
   @override
   Widget build(BuildContext context) {
     context.watch<MyAppState>();
 
     return Scaffold(
-        body: ListView(
-      padding: const EdgeInsets.only(
-        top: 25,
-        left: 6,
-        right: 6,
-      ),
+      body: ListView(
+      padding: const EdgeInsets.only(top: 25,left: 0,right: 0,bottom: 0),
+      
+
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 255, 255, 255),
-            border: Border.all(
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(12),
+            color: Color.fromARGB(255, 0, 0, 0),
+            border: Border.all(width: 1,),
+            borderRadius: BorderRadius.circular(7),
           ),
           height: 100,
+          //color: const Color.fromARGB(255, 90, 181, 255),
           //color: Color.fromARGB(255, 248, 245, 237),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                height: 80,
-                width: 90,
-                padding: EdgeInsets.all(8),
-                margin: EdgeInsets.all(6),
+                  border: Border.all(width: 1,),
+                  borderRadius: BorderRadius.circular(7),),
+                padding: EdgeInsets.all(2),
+                margin: EdgeInsets.all(2),
                 child: Row(
                   children: [
                     Expanded(
@@ -146,16 +143,30 @@ class MyHomePage extends StatelessWidget {
                         delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         return Container(
-                            height: 70,
+                            height: 100,
                             width: 80,
                             margin: EdgeInsets.all(6),
                             decoration: BoxDecoration(
                                 border: Border.all(width: 1),
                                 borderRadius: BorderRadius.circular(10)),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text('Dialog $index'),
-                              
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                TextButton(
+                                    style: ButtonStyle(
+                                        foregroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.blue)),
+                                    onPressed: () {},
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text('Dialog:$rand'),
+                                        Text('Adverts: $rand'),
+                                        Text('User: $rand'),
+                                      ],
+                                    )),
+                              ],
                             ));
                         // TextButton(onPressed:(){
 
@@ -167,7 +178,7 @@ class MyHomePage extends StatelessWidget {
                         //   hoverColor: const Color.fromARGB(255, 88, 180, 226),
                         // );
                       },
-                      childCount: 50,
+                      childCount: 10,
                     ))
                   ],
                 ),
@@ -190,17 +201,32 @@ class MyHomePage extends StatelessWidget {
                         delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         return Container(
-                            height: 70,
+                            height: 150,
                             width: 80,
                             margin: EdgeInsets.all(6),
                             decoration: BoxDecoration(
                                 border: Border.all(width: 1),
                                 borderRadius: BorderRadius.circular(10)),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text('Advert $index'),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                TextButton(
+                                    style: ButtonStyle(
+                                        foregroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.blue)),
+                                    onPressed: () {},
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text('Location:$rand'),
+                                        Text('$rand min ago'),
+                                        Text('review'),
+                                      ],
+                                    )),
+                              ],
                             ));
-                        
+
                         // return ListTile(
                         //   title: Text("Advert $index"),
                         //   hoverColor: const Color.fromARGB(255, 88, 180, 226),
