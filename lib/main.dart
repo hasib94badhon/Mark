@@ -9,8 +9,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -34,180 +32,265 @@ class MyAppState extends ChangeNotifier {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    context.watch<MyAppState>();
 
     return Scaffold(
-      body: ListView(
-        padding: const EdgeInsets.only(top: 25,left: 6,right: 6,),
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 255, 255, 255),
-              border: Border.all(width: 2,),
-              borderRadius: BorderRadius.circular(12),
-             ),
-            height: 100,
-            //color: Color.fromARGB(255, 248, 245, 237),
-            child: Row(
+        body: ListView(
+      padding: const EdgeInsets.only(
+        top: 25,
+        left: 6,
+        right: 6,
+      ),
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 255, 255, 255),
+            border: Border.all(
+              width: 2,
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          height: 100,
+          //color: Color.fromARGB(255, 248, 245, 237),
+          child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(width:2,),
-                  borderRadius: BorderRadius.circular(12),),
-                  height: 80,
-                  width: 90,
-                  padding: EdgeInsets.all(8),
-                  margin: EdgeInsets.all(6),
-                  child: Row(children: [
-                    Expanded(child: Container(
-                      margin: EdgeInsets.all(0),
-                      padding: EdgeInsets.all(0),
-                      //color: Colors.amber,
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 2,),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    )
-                    ),
-                    Expanded(child: Container(
-                      margin: EdgeInsets.all(0),
-                      padding: EdgeInsets.all(0),
-                      //color: Colors.amber,
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 2,),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    )
-                    ),
-                    Expanded(child: Container(
-                    margin: EdgeInsets.all(0),
-                    padding: EdgeInsets.all(0),
-                    //color: Colors.amber,
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 2,),
-                      borderRadius: BorderRadius.circular(12),),
-                    )) 
-                  ],
+                  border: Border.all(
+                    width: 2,
                   ),
-              ) 
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                height: 80,
+                width: 90,
+                padding: EdgeInsets.all(8),
+                margin: EdgeInsets.all(6),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
+                      //color: Colors.amber,
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    )),
+                    Expanded(
+                        child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
+                      //color: Colors.amber,
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    )),
+                    Expanded(
+                        child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.all(0),
+                      //color: Colors.amber,
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ))
+                  ],
+                ),
+              )
             ],
           ),
-          ),
-          
-          
-          
-          Container(
-            
-            padding: EdgeInsets.all(0),
-            margin: EdgeInsets.all(2),
-            height: 550,
-            //color: const Color.fromARGB(255, 229, 229, 226),
-            decoration: BoxDecoration(
-              border:Border.all(width: 4,) ,
+        ),
+        Container(
+          padding: EdgeInsets.all(0),
+          margin: EdgeInsets.all(2),
+          height: 550,
+          //color: const Color.fromARGB(255, 229, 229, 226),
+          decoration: BoxDecoration(
+              border: Border.all(
+                width: 4,
+              ),
               borderRadius: BorderRadius.circular(12)),
-              child: (Row(
-                children: <Widget>[
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 3),
-                      borderRadius: BorderRadius.circular(10,),
-                    ),
-                    height: 546,
-                    width: 120,
-                    margin: EdgeInsets.all(5),
-                    //color: const Color.fromARGB(255, 59, 89, 141),
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverList(delegate: SliverChildBuilderDelegate((context, index) {
-                          return ListTile(
-                            
-                            title: Text("Dialog $index"),
-                            hoverColor: const Color.fromARGB(255, 88, 180, 226),
-                          );
-                        },
-                        childCount: 50,
-                        ))
-                      ],
-                    ),
+          child: (Row(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 3),
+                  borderRadius: BorderRadius.circular(
+                    10,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 3),
-                      borderRadius: BorderRadius.circular(10,),
-                    ),
-                    height: 546,
-                    width: 225,
-                    margin: EdgeInsets.only(left: 3,right: 3, top: 3, bottom: 3),
+                ),
+                height: 546,
+                width: 120,
+                margin: EdgeInsets.all(5),
+                //color: const Color.fromARGB(255, 59, 89, 141),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return Container(
+                            height: 70,
+                            width: 80,
+                            margin: EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                                border: Border.all(width: 1),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text('Dialog $index'),
+                              
+                            ));
+                        // TextButton(onPressed:(){
 
-                    //color: const Color.fromARGB(255, 59, 89, 141),
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverList(delegate: SliverChildBuilderDelegate((context, index) {
-                          return ListTile(
-                            title: Text("Advert $index"),
-                            hoverColor: const Color.fromARGB(255, 88, 180, 226),
-                          );
-                        },
-                        childCount: 50,
-                        ))
-                      ],
-                    ),
-                  )
-                ],
-              )),
-          ),
+                        // },
+                        // child: Text('Dialog $index'));
 
-
-
-          Container(
-            padding: EdgeInsets.all(0),
-            height: 100,
-            //color: Colors.amber[100],
-            margin: EdgeInsets.only(bottom: 7),
-            //color: const Color.fromARGB(255, 229, 229, 226),
-            decoration: BoxDecoration(
-              border:Border.all(width: 3,) ,
-              borderRadius: BorderRadius.circular(12)),
-            child: Container(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        Icon(Icons.kitchen, color: Colors.green[500]),
-                        const Text('PREP:'),
-                        const Text('25 min'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Icon(Icons.timer, color: Colors.green[500]),
-                        const Text('COOK:'),
-                        const Text('1 hr'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Icon(Icons.restaurant, color: Colors.green[500]),
-                        const Text('FEEDS:'),
-                        const Text('4-6'),
-                      ],
-                    ),
+                        // return ListTile(
+                        //   title: Text("Dialog $index"),
+                        //   hoverColor: const Color.fromARGB(255, 88, 180, 226),
+                        // );
+                      },
+                      childCount: 50,
+                    ))
                   ],
                 ),
               ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 3),
+                  borderRadius: BorderRadius.circular(
+                    10,
+                  ),
+                ),
+                height: 546,
+                width: 225,
+                margin: EdgeInsets.only(left: 3, right: 3, top: 3, bottom: 3),
+
+                //color: const Color.fromARGB(255, 59, 89, 141),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return Container(
+                            height: 70,
+                            width: 80,
+                            margin: EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                                border: Border.all(width: 1),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text('Advert $index'),
+                            ));
+                        
+                        // return ListTile(
+                        //   title: Text("Advert $index"),
+                        //   hoverColor: const Color.fromARGB(255, 88, 180, 226),
+                        // );
+                      },
+                      childCount: 50,
+                    ))
+                  ],
+                ),
+              )
+            ],
+          )),
+        ),
+        Container(
+          padding: EdgeInsets.all(0),
+          height: 100,
+          //color: Colors.amber[100],
+          margin: EdgeInsets.only(bottom: 7),
+          //color: const Color.fromARGB(255, 229, 229, 226),
+          decoration: BoxDecoration(
+              border: Border.all(
+                width: 3,
+              ),
+              borderRadius: BorderRadius.circular(12)),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                        height: 70,
+                        width: 80,
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text('Button'),
+                        ))
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(
+                        height: 70,
+                        width: 80,
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text('Button'),
+                        ))
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(
+                        height: 70,
+                        width: 80,
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text('Button'),
+                        ))
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(
+                        height: 70,
+                        width: 80,
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text('Button'),
+                        ))
+                  ],
+                ),
+              ],
+            ),
           ),
-        ],
-      )
-    );
+        ),
+      ],
+    ));
   }
 }
