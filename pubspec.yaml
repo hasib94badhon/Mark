@@ -19,6 +19,7 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   cupertino_icons: ^1.0.6
   introduction_screen: ^3.1.12
+  http: ^1.2.1
   
 
 dev_dependencies:

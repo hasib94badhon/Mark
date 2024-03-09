@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/pages/Homepage.dart';
 import 'package:namer_app/screens/SignUp_screen.dart';
+import 'package:namer_app/screens/forgot_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -43,7 +44,14 @@ class LoginScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomRight,
                   child:TextButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context)=>ForgotScreen(),
+                          )
+                      );
+                    },
                     child: Text(
                       "Forgot Password",
                       style: TextStyle(
