@@ -2,7 +2,9 @@ import 'dart:js_interop';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:namer_app/screens/otp_screen.dart';
 import 'package:namer_app/screens/recovery_screen.dart';
+import 'package:namer_app/screens/signup_screen.dart';
 
 class ForgotScreen extends StatefulWidget {
   const ForgotScreen({super.key});
@@ -93,6 +95,29 @@ TextEditingController emailController = TextEditingController();
                       backgroundColor: Color.fromARGB(255, 30, 224, 208),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8))),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 20),
+                    Text("OR"),
+                    TextButton(onPressed: (){
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(
+                          builder: (context)=>OTPScreen(),
+                          ));
+                    },
+                     child: Text(
+                      "Verify Using Number",
+                      style: TextStyle(
+                        color: Color(0xFFDB3022),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                     ),
+                    )
+                  ],
                 ),
             ],
           ),
