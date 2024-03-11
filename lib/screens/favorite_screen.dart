@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FavoriteScreen extends StatelessWidget {
-  // Non-const constructor
+
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,9 @@ class FavoriteScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  //Abid Solve this Error please
+                  //E-Commerce Shopping App UI Design in Flutter
+                  //01:04:50sec
                   Container(
                     padding: EdgeInsets.all(5),
                     height: 50,
@@ -28,10 +31,10 @@ class FavoriteScreen extends StatelessWidget {
                           color: Colors.black12,
                           blurRadius: 4,
                           spreadRadius: 2,
-                        )
+                        ), v
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ], // Added this closing bracket
