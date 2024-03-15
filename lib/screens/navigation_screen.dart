@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:namer_app/pages/Centerpage.dart';
 import 'package:namer_app/pages/Homepage.dart';
 import 'package:namer_app/pages/cartPage.dart';
 import 'package:namer_app/screens/favorite_screen.dart';
@@ -14,14 +15,14 @@ class NavigationScreen extends StatefulWidget {
 }
 
 class _NavigationScreenState extends State<NavigationScreen> {
-
-int pageIndex=0;
+  int pageIndex = 0;
 
   List<Widget> pages = [
-    HomePage(),
-    cartPage(),
     FavoriteScreen(),
+    cartPage(),
+    HomePage(),
     AdvertScreen(),
+    CenterPage(),
   ];
 
   @override
@@ -31,19 +32,24 @@ int pageIndex=0;
         index: pageIndex,
         children: pages,
       ),
-      
       floatingActionButton: SafeArea(
         child: FloatingActionButton(
-          onPressed: (){},
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CenterPage()),
+            );
+          },
           child: Icon(
             Icons.qr_code,
             size: 20,
-            ),
-            backgroundColor: Color(0xFFDB3022),
           ),
+          backgroundColor: Color(0xFFDB3022),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         icons: [
           CupertinoIcons.home,
@@ -59,9 +65,9 @@ int pageIndex=0;
         notchSmoothness: NotchSmoothness.softEdge,
         leftCornerRadius: 10,
         elevation: 0,
-        onTap: (index){
+        onTap: (index) {
           setState(() {
-            pageIndex=index;
+            pageIndex = index;
           });
         },
       ),

@@ -60,7 +60,6 @@ class cartPage extends StatelessWidget {
           )
         ],
       ),
-      bottomNavigationBar: CartBottomNavbar(),
     );
   }
 }
