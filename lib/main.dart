@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:namer_app/pages/Homepage.dart';
 import 'package:namer_app/pages/cartPage.dart';
+import 'package:namer_app/screens/favorite_screen.dart';
 import 'package:namer_app/screens/forgot_screen.dart';
 import 'package:namer_app/screens/login_screen.dart';
 import 'package:namer_app/screens/otp_screen.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget{
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
-        "/":(context)=> OTPScreen(),
+        "/":(context)=> (FavoriteScreen()),
         "cartPage":(context) => cartPage(),
 
       },
