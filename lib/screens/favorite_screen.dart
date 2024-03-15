@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:namer_app/screens/advert_screen.dart';
 
 class FavoriteScreen extends StatelessWidget {
   List<String> tabs = ["All", "Category", "Top", "Recommended"];
@@ -298,7 +299,10 @@ class FavoriteScreen extends StatelessWidget {
                                 child: Stack(
                                   children: [
                                     InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>AdvertScreen(),
+                                        ));
+                                      },
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
                                         child: Image.asset(

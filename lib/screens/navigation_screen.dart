@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:namer_app/pages/Homepage.dart';
 import 'package:namer_app/pages/cartPage.dart';
 import 'package:namer_app/screens/favorite_screen.dart';
-import 'package:namer_app/screens/profile_screen.dart';
+import 'package:namer_app/screens/advert_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -21,7 +21,7 @@ int pageIndex=0;
     HomePage(),
     cartPage(),
     FavoriteScreen(),
-    ProfileScreen(),
+    AdvertScreen(),
   ];
 
   @override
