@@ -8,12 +8,12 @@ class CartItemsSamples extends StatelessWidget {
       children:[
         for (int i=1; i <5;i++)
         Container(
-          height: 110,
-          margin:EdgeInsets.symmetric(vertical: 15,horizontal: 10),
-          padding: EdgeInsets.all(10),
+          height: 80,
+          margin:EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+          padding: EdgeInsets.all(0),
           decoration: BoxDecoration(
             color:Colors.white,
-            borderRadius: BorderRadius.circular(10)
+            borderRadius: BorderRadius.circular(35)
           ),
           child: Row(
             children: [
@@ -38,7 +38,7 @@ class CartItemsSamples extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF4C53A5),
+                          color: Color.fromARGB(255, 192, 50, 145),
 
                         ),
                         ),
@@ -55,32 +55,22 @@ class CartItemsSamples extends StatelessWidget {
                   Padding(padding: EdgeInsets.symmetric(vertical: 5),
                   child: Column(
                     crossAxisAlignment:CrossAxisAlignment.end,
-                    mainAxisAlignment:MainAxisAlignment.spaceBetween ,
                     children: [
-                      Icon(Icons.delete,
-                      color: Colors.red,
-                      ),
                       Row(children: [
                         Container(
                           padding: EdgeInsets.all(4),
                           decoration:BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(35),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
+                                spreadRadius: 2,
                                 blurRadius: 10,
                               )
 
                             ]
                           ),
-                          child: Icon(
-                            CupertinoIcons.minus,
-                            size: 18,
-                            ),
-                         
-                          
 
                         )
                       ],)

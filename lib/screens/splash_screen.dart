@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:namer_app/pages/Homepage.dart';
 import 'package:namer_app/screens/onboarding.dart';
@@ -29,29 +28,34 @@ class _SplashScreenState extends State<SplashScreen> {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Colors.white,
             image: DecorationImage(
-              image: AssetImage("images/splash.jpg"),
+              image: AssetImage("images/banner1.jpg"),
               fit: BoxFit.cover,
-              opacity: 0.4,
+              opacity: 0.9,
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Icon(
-                Icons.call,
-                size: 200,
-                color: Color.fromARGB(235, 238, 80, 80),
-              ),
-              Text('Call Your Personal Assistant',
+              Text('In search for everything you need',
                   style: TextStyle(
-                    color: Colors.amber,
-                    fontSize: 30,
+                    color: Colors.white,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                  ))
+                    fontStyle: FontStyle.normal,
+                  ),
+              ),
+              Text('PoweredBy @ AaramBD',
+                  style: TextStyle(
+                    color: Color(0xFF5866E6),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.normal,
+                  ),
+              ),
             ],
+            
           )),
     );
   }

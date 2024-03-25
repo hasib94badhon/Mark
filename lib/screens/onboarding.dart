@@ -24,9 +24,10 @@ class Onboarding extends StatelessWidget {
       globalBackgroundColor: Colors.white,
       pages: [
         PageViewModel(
-          title: 'Call 1 ',
+          title: 'Welcome To \n AaramBD ',
+          
           body:
-              "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+              "Alone we can do so little; together we can do so much.",
           image: Image.asset(
             'images/call1.png',
             width: 200,
@@ -34,9 +35,9 @@ class Onboarding extends StatelessWidget {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: 'Call 2 ',
+          title: 'Connect to your nearest one',
           body:
-              "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+              "Coming together is a beginning, staying together is progress, and working together is success.",
           image: Image.asset(
             'images/call2.png',
             width: 200,
@@ -44,9 +45,9 @@ class Onboarding extends StatelessWidget {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: 'Call 3 ',
+          title: 'Create Your own shop',
           body:
-              "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+              "Entrepreneurship is living a few years of your life like most people won't, so that you can spend the rest of your life like most people can't.",
           image: Image.asset(
             'images/call3.png',
             width: 200,
@@ -54,9 +55,9 @@ class Onboarding extends StatelessWidget {
           decoration: pageDecoration,
         ),
         PageViewModel(
-            title: 'Call 4 ',
+            title: 'Create your own comfort',
             body:
-                "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+                "The greatest gift you can give someone is your time because when you give your time, you are giving a portion of your life that you will never get back.",
             image: Image.asset(
               'images/call4.png',
               width: 200,
@@ -74,15 +75,15 @@ class Onboarding extends StatelessWidget {
                   
                 },
                 child: Text(
-                  "Let's Call",
+                  "Let's Start ",
                   style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
                 ),
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size.fromHeight(60),
-                    backgroundColor: Color.fromARGB(255, 30, 224, 208),
+                    backgroundColor: Color(0xFF5866E6),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8))),
               ),
@@ -93,17 +94,17 @@ class Onboarding extends StatelessWidget {
       showBackButton: true,
       back: Text("back",
           style:
-              TextStyle(fontWeight: FontWeight.w600, color: Color(0XFFEF6969))),
+              TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF5866E6))),
       next: Text(
         "Next",
-        style: TextStyle(fontWeight: FontWeight.w600, color: Color(0XFFEF6969)),
+        style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF5866E6)),
       ),
       onDone: () {},
       onSkip: () {},
       dotsDecorator: DotsDecorator(
           size: Size.square(10),
           activeSize: Size(20, 10),
-          activeColor: Color(0XFFEF6969),
+          activeColor: Color(0xFF5866E6),
           color: Colors.black26,
           spacing: EdgeInsets.symmetric(horizontal: 3),
           activeShape: RoundedRectangleBorder(

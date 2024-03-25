@@ -8,7 +8,9 @@ import 'package:namer_app/screens/login_screen.dart';
 import 'package:namer_app/screens/navigation_screen.dart';
 import 'package:namer_app/screens/otp_screen.dart';
 import 'package:namer_app/screens/recovery_screen.dart';
+import 'package:namer_app/screens/signup_screen.dart';
 import 'package:namer_app/screens/splash_screen.dart';
+import 'package:namer_app/screens/favorite_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,8 +22,7 @@ class MyApp extends StatelessWidget{
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
-        "/":(context)=> (SplashScreen()),
-        //"cartPage":(context) => cartPage(),
+        "/":(context)=> (SignUpScreen()),
 
       },
     );

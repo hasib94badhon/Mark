@@ -17,7 +17,7 @@ class cartPage extends StatelessWidget {
           Container(
             //temporary height
             height: 1000,
-            padding: EdgeInsets.only(top: 25),
+            padding: EdgeInsets.only(top: 0),
             decoration: BoxDecoration(
               color: Color(0xFFEDECF2),
               borderRadius: BorderRadius.only(

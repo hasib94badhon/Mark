@@ -1,9 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:namer_app/screens/advert_screen.dart';
+import 'package:http/http.dart' as http;
+class FavoriteScreen extends StatefulWidget {
+  
+  
+  @override
+  State<FavoriteScreen> createState() => _FavoriteScreenState();
+}
 
-class FavoriteScreen extends StatelessWidget {
+class _FavoriteScreenState extends State<FavoriteScreen> {
+  
   List<String> tabs = ["All", "Category", "Top", "Recommended"];
 
   List imageList = [
@@ -29,6 +35,7 @@ class FavoriteScreen extends StatelessWidget {
     "\$300",
     "\$300",
   ];
+
   List reviews = [
     "54",
     "504",
@@ -69,7 +76,7 @@ class FavoriteScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           prefixIcon: Icon(
                             Icons.search,
-                            color: Colors.amber,
+                            color: Colors.blue.shade800,
                           ),
                           border: InputBorder.none,
                           label: Text(
@@ -89,31 +96,31 @@ class FavoriteScreen extends StatelessWidget {
                       child: Center(
                         child: Icon(
                           Icons.notifications,
-                          color: Colors.amber,
+                          color: Colors.blue.shade800,
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 10),
                 Container(
-                  height: 200,
+                  height: 150,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Color(0xFFFFF0DD),
                     borderRadius: BorderRadius.circular(20),
-                    // boxShadow: [
-                    //       BoxShadow(
-                    //         color: Colors.black12,
-                    //         blurRadius: 1,
-                    //         spreadRadius: 2,
-                    //       ),
-                    //     ],
+                    boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 1,
+                            spreadRadius: 2,
+                          ),
+                        ],
                   ),
-                  child: Image.asset("images/banner2.jpg",
+                  child: Image.asset("images/AaramBD_logo.jpg",
                   fit: BoxFit.cover,),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 SizedBox(
                   height: 50,
                   child: ListView.builder(
@@ -123,12 +130,12 @@ class FavoriteScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return FittedBox(
                         child: Container(
-                          height: 40,
-                          margin: EdgeInsets.all(8),
-                          padding: EdgeInsets.only(left: 15, right: 15),
+                          height: 50,
+                          margin: EdgeInsets.all(5),
+                          padding: EdgeInsets.only(left: 05, right: 05),
                           decoration: BoxDecoration(
                             color: Colors.black12.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
                             child: FittedBox(

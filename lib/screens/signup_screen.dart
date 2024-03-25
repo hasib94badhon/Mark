@@ -1,8 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/screens/SignUp_screen.dart';
 import 'package:namer_app/screens/login_screen.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter POST Request Example',
+      home: SignUpScreen(),
+    );
+  }
+}
+
+class SignUpScreen extends StatefulWidget {
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUpScreen> {
+  final apiUrl = "http://127.0.0.1:5000/add";
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> sendPostRequest() async {
+    var response = await http.post(Uri.parse(apiUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "phone": phoneController.text,
+          "password": passwordController.text,
+          "userId": 1,
+        }));
+
+    if (response.statusCode == 201) {
+      print("Data Added");
+      // ignore: use_build_context_synchronously
+      // Scaffold.of(context).showSnackBar(SnackBar(
+      //   content: Text("Post created successfully!"),
+      // ));
+    } else {
+      // Scaffold.of(context).showSnackBar(SnackBar(
+      //   content: Text("Failed to create post!"),
+      // ));
+      print("Failed to add data");
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      // TODO: implement build
+      throw UnimplementedError();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,30 +80,32 @@ class SignUpScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
-                    prefixIcon: Icon(Icons.person),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Enter Email',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
-                    prefixIcon: Icon(Icons.email),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
+                // TextFormField(
+                //   decoration: InputDecoration(
+                //     labelText: 'Name',
+                //     border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
+                //     prefixIcon: Icon(Icons.person),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // TextFormField(
+                //   decoration: InputDecoration(
+                //     labelText: 'Enter Email',
+                //     border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
+                //     prefixIcon: Icon(Icons.email),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                TextField(
+                  controller: phoneController,
                   decoration: InputDecoration(
                     labelText: 'Enter Number',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(14))),
                     prefixIcon: Icon(Icons.numbers),
                   ),
                 ),
@@ -54,10 +113,12 @@ class SignUpScreen extends StatelessWidget {
                   height: 10,
                 ),
                 TextFormField(
+                  controller: passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Enter Password',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(14))),
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: Icon(Icons.remove_red_eye),
                   ),
@@ -65,18 +126,16 @@ class SignUpScreen extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Confirm Password',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
-                    prefixIcon: Icon(Icons.lock),
-                    suffixIcon: Icon(Icons.remove_red_eye),
-                  ),
-                ),
-                SizedBox(
-                  height: 28,
-                ),
+                // TextFormField(
+                //   controller: _passwordController,
+                //   obscureText: true,
+                //   decoration: InputDecoration(
+                //     labelText: 'Confirm Password',
+                //     border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
+                //     prefixIcon: Icon(Icons.lock),
+                //     suffixIcon: Icon(Icons.remove_red_eye),
+                //   ),
+                // ),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(context,
@@ -99,6 +158,7 @@ class SignUpScreen extends StatelessWidget {
                 SizedBox(
                   height: 28,
                 ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -109,6 +169,7 @@ class SignUpScreen extends StatelessWidget {
                             fontSize: 18)),
                     TextButton(
                         onPressed: () {
+                          sendPostRequest();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -132,3 +193,13 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 }
+
+void main() {
+  runApp(SignUpScreen());
+}
+  // @override
+  // State<StatefulWidget> createState() {
+  //   // TODO: implement createState
+  //   throw UnimplementedError();
+  // }
+

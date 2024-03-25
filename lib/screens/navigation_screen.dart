@@ -20,9 +20,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
   List<Widget> pages = [
     FavoriteScreen(),
     cartPage(),
-    HomePage(),
+    Homepage(),
     AdvertScreen(),
-    CenterPage(),
   ];
 
   @override
@@ -46,7 +45,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
             Icons.qr_code,
             size: 20,
           ),
-          backgroundColor: Color(0xFFDB3022),
+          backgroundColor: Colors.blue.shade800,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -59,7 +58,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         ],
         //splashColor: ,
         inactiveColor: Colors.black.withOpacity(0.5),
-        activeColor: Colors.red,
+        activeColor: Colors.blue.shade800,
         gapLocation: GapLocation.center,
         activeIndex: pageIndex,
         notchSmoothness: NotchSmoothness.softEdge,
