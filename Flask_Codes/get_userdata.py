@@ -55,13 +55,11 @@ def get_data():
 
 
 
-connection = db_connector.connect()
-
 @app.route('/add', methods=['POST'])
 def add_data_to_db():
     if request.method == 'POST':
-        if request.content_type != 'application/json':
-            return jsonify({"error": "Request Content-Type must be 'application/json'"}), 400
+        # if request.content_type != 'application/json':
+        #     return jsonify({"error": "Request Content-Type must be 'application/json'"}), 400
         
         try:
             data = request.get_json()
@@ -72,6 +70,7 @@ def add_data_to_db():
             return jsonify({"error": f"Failed to parse JSON data: {str(e)}"}), 400
 
         # Insert data into the database
+        connection = db_connector.connect()
         cursor = connection.cursor()
         try:
             cursor.execute("INSERT INTO reg (phone, password) VALUES (%s, %s)", (phone, password))
@@ -83,5 +82,6 @@ def add_data_to_db():
             return jsonify({"error": str(e)}), 500
         finally:
             cursor.close()
+            connection.close()
 if __name__ == '__main__':
     app.run(debug=True)

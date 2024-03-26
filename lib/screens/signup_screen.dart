@@ -5,15 +5,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter POST Request Example',
-      home: SignUpScreen(),
-    );
-  }
-}
+
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -21,45 +13,39 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUpScreen> {
-  final apiUrl = "http://127.0.0.1:5000/add";
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  @override
-  void dispose() {
-    phoneController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
+  Future<void> addDataToDB() async {
+    final String apiUrl = 'http://127.0.0.1:5000/add';
 
-  Future<void> sendPostRequest() async {
-    var response = await http.post(Uri.parse(apiUrl),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "phone": phoneController.text,
-          "password": passwordController.text,
-          "userId": 1,
-        }));
+    final Map<String, dynamic> requestData = {
+      'phone': _phoneController.text,
+      'password': _passwordController.text,
+    };
+     
+     // Convert the data to raw JSON format
+    String jsonData = jsonEncode(requestData);
+    print('Raw JSON Data: $jsonData');
 
-    if (response.statusCode == 201) {
-      print("Data Added");
-      // ignore: use_build_context_synchronously
-      // Scaffold.of(context).showSnackBar(SnackBar(
-      //   content: Text("Post created successfully!"),
-      // ));
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json;charset=UTF-8' ,// Set the Content-Type to 'application/json'
+        
+      },
+      body: jsonData,
+    );
+
+    if (response.statusCode == 200) {
+      print('Data added successfully');
     } else {
-      // Scaffold.of(context).showSnackBar(SnackBar(
-      //   content: Text("Failed to create post!"),
-      // ));
-      print("Failed to add data");
-    }
-
-    @override
-    Widget build(BuildContext context) {
-      // TODO: implement build
-      throw UnimplementedError();
+      print('Failed to add data: ${response.body}');
     }
   }
+
+   
+  
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +87,7 @@ class _SignUpState extends State<SignUpScreen> {
                 //   height: 10,
                 // ),
                 TextField(
-                  controller: phoneController,
+                  controller: _phoneController,
                   decoration: InputDecoration(
                     labelText: 'Enter Number',
                     border: OutlineInputBorder(
@@ -113,7 +99,7 @@ class _SignUpState extends State<SignUpScreen> {
                   height: 10,
                 ),
                 TextFormField(
-                  controller: passwordController,
+                  controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Enter Password',
@@ -138,6 +124,7 @@ class _SignUpState extends State<SignUpScreen> {
                 // ),
                 ElevatedButton(
                   onPressed: () {
+                    addDataToDB();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
@@ -169,7 +156,7 @@ class _SignUpState extends State<SignUpScreen> {
                             fontSize: 18)),
                     TextButton(
                         onPressed: () {
-                          sendPostRequest();
+                          
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -193,6 +180,7 @@ class _SignUpState extends State<SignUpScreen> {
     );
   }
 }
+
 
 void main() {
   runApp(SignUpScreen());
