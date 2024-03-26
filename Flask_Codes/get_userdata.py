@@ -24,7 +24,7 @@ class DataRetriever:
     def get_data_from_db(self):
         connection = self.db_connector.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
-        cursor.execute("SELECT * FROM users")
+        cursor.execute("SELECT * FROM reg")
         data = cursor.fetchall()
         connection.close()
         return data
@@ -112,5 +112,44 @@ def login_user():
         finally:
             cursor.close()
             connection.close()
+
+@app.route('/get_users_data', methods=['GET'])
+def get_user_data():
+    if request.method == 'GET':
+        # Fetch user data from the users table
+        connection = db_connector.connect()
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        try:
+            cursor.execute("SELECT * FROM users")
+            users_data = cursor.fetchall()
+            print(users_data)
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
+        # Fetch data from the reg table based on the foreign key relationship
+        users_with_phone_data = []
+        for user in users_data:
+            reg_id = user['reg_id']
+            connection = db_connector.connect()
+            cursor = connection.cursor()
+            try:
+                cursor.execute("SELECT phone FROM reg WHERE reg_id = %s", (reg_id,))
+                reg_data = cursor.fetchone()
+                if reg_data:
+                   phone = reg_data[0]  # Extract phone number from the tuple
+                   user['phone'] = phone
+                users_with_phone_data.append(user)
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500
+            finally:
+                cursor.close()
+                connection.close()
+
+        return jsonify({"users_data": users_with_phone_data})
+
+
 if __name__ == '__main__':
     app.run(debug=True)

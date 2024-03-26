@@ -66,26 +66,7 @@ class _SignUpState extends State<SignUpScreen> {
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: [
-                // TextFormField(
-                //   decoration: InputDecoration(
-                //     labelText: 'Name',
-                //     border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
-                //     prefixIcon: Icon(Icons.person),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // TextFormField(
-                //   decoration: InputDecoration(
-                //     labelText: 'Enter Email',
-                //     border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
-                //     prefixIcon: Icon(Icons.email),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 10,
-                // ),
+                
                 TextField(
                   controller: _phoneController,
                   decoration: InputDecoration(
@@ -112,16 +93,7 @@ class _SignUpState extends State<SignUpScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                // TextFormField(
-                //   controller: _passwordController,
-                //   obscureText: true,
-                //   decoration: InputDecoration(
-                //     labelText: 'Confirm Password',
-                //     border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
-                //     prefixIcon: Icon(Icons.lock),
-                //     suffixIcon: Icon(Icons.remove_red_eye),
-                //   ),
-                // ),
+              
                 ElevatedButton(
                   onPressed: () {
                     addDataToDB();

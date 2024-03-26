@@ -27,7 +27,7 @@ class cartPage extends StatelessWidget {
             ),
             child: Column(
               children: [
-              CartItemsSamples(),
+              // CartItemsSamples(),
               // Container(
               //   //
               //   //
