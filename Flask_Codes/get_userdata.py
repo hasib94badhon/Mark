@@ -83,5 +83,34 @@ def add_data_to_db():
         finally:
             cursor.close()
             connection.close()
+
+@app.route('/login', methods=['POST'])
+def login_user():
+    if request.method == 'POST':
+        try:
+            data = request.get_json()
+            print("Received Data:", data)  # Print the received data for debugging
+            phone = data['phone']
+            password = data['password']
+        except Exception as e:
+            return jsonify({"error": f"Failed to parse JSON data: {str(e)}"}), 400
+
+        # Check if the user exists in the database
+        connection = db_connector.connect()
+        cursor = connection.cursor()
+        try:
+            cursor.execute("SELECT * FROM reg WHERE phone = %s AND password = %s", (phone, password))
+            user = cursor.fetchone()
+            if user:
+                # User found, return success message
+                return jsonify({"message": "Login successful", "user": user})
+            else:
+                # User not found, return error message
+                return jsonify({"error": "Invalid phone number or password"}), 401
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            connection.close()
 if __name__ == '__main__':
     app.run(debug=True)

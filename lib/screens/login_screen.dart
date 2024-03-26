@@ -1,12 +1,99 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:namer_app/pages/Centerpage.dart';
 import 'package:namer_app/pages/Homepage.dart';
 import 'package:namer_app/screens/SignUp_screen.dart';
 import 'package:namer_app/screens/forgot_screen.dart';
 import 'package:namer_app/screens/navigation_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+import 'package:http/http.dart' as http;
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> loginUser() async {
+    final String apiUrl =
+        'http://127.0.0.1:5000/login'; // Replace with your API URL
+
+    final Map<String, dynamic> requestData = {
+      'phone': _phoneController.text,
+      'password': _passwordController.text,
+    };
+    print(requestData);
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(requestData),
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login Successfull')),
+      );
+      // Login successful
+      print('Login successful');
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NavigationScreen(),
+          ));
+      // Navigate to the homepage screen
+      // Navigator.pushReplacementNamed(context, '/navigationscrenn');
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          alignment: Alignment.center,
+          backgroundColor: Colors.transparent,
+          content: 
+          
+          Container(
+            //color: Colors.amber,
+            width: 350,
+            height: 80,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: Colors.transparent,
+              borderRadius: BorderRadius.all(Radius.circular(32.0)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 60),
+                    //color: Colors.green,
+                    height: 30,
+                    width: 350,
+                    child: Text("You have insert wrong phone or password",
+                    style: TextStyle(color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold))),
+              ],
+            ),
+          ),
+        ),
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //       content: Text('Failed to login. Please check your credentials.')),
+      // );
+      // Login failed
+      print('Login failed: ${response.body}');
+      // Show an error message
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +111,25 @@ class LoginScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: [
-                TextFormField(
+                TextField(
+                  controller: _phoneController,
                   decoration: InputDecoration(
-                    labelText: 'Enter Email',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.person),
+                    labelText: 'Enter Number',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(14))),
+                    prefixIcon: Icon(Icons.numbers),
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 TextFormField(
+                  controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Enter Password',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(14))),
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: Icon(Icons.remove_red_eye),
                   ),
@@ -70,11 +161,12 @@ class LoginScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NavigationScreen(),
-                        ));
+                    loginUser();
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) => NavigationScreen(),
+                    //     ));
                   },
                   child: Text(
                     "Log In",
