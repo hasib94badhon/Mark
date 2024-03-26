@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget{
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
-        "/":(context)=> (SignUpScreen()),
+        "/":(context)=> (NavigationScreen()),
 
       },
     );
