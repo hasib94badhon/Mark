@@ -24,6 +24,7 @@ class AdvertScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                //sliding bar
                 SizedBox(
                   height: 220,
                   width: MediaQuery.of(context).size.width,
@@ -33,9 +34,12 @@ class AdvertScreen extends StatelessWidget {
                       imagesLink: images,
                       isAssets: true),
                 ),
+
+                //Basic Info
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    //Name,Category,rating star
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -56,10 +60,29 @@ class AdvertScreen extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
+
+                        //This a rating star
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: RatingBar.builder(
+                            initialRating: 3,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemSize: 18,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) {},
+                          ),
+                        ),
                       ],
                     ),
 
-                    //This is a button to edit profile and show phone
+                    //Edit profile and show phone
                     Container(
                       //color: Colors.amber,
                       margin: EdgeInsets.only(top: 30, right: 10),
@@ -96,24 +119,6 @@ class AdvertScreen extends StatelessWidget {
                   ],
                 ),
 
-                //This a rating star
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: RatingBar.builder(
-                    initialRating: 3,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: 18,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {},
-                  ),
-                ),
                 SizedBox(height: 10),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
@@ -123,6 +128,8 @@ class AdvertScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 5),
+
+                //Description
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -136,6 +143,7 @@ class AdvertScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 SizedBox(height: 5),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
@@ -145,6 +153,8 @@ class AdvertScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 5),
+
+                //Album Bar
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -162,7 +172,7 @@ class AdvertScreen extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        border: Border.all(width: 2,color: Colors.grey),
+                        border: Border.all(width: 2, color: Colors.grey),
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.transparent,
                       ),
@@ -199,6 +209,104 @@ class AdvertScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 5),
+
+                GridView.count(
+                  childAspectRatio: 0.68,
+                  physics: NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  children: [
+                    for (int i = 1; i < 6; i++)
+                      Container(
+                        padding: EdgeInsets.only(left: 15, right: 15, top: 10),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF4C53A5),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text('views',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ),
+                                Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.red,
+                                )
+                              ],
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: Container(
+                                margin: EdgeInsets.all(10),
+                                child: Image.asset(
+                                  'images/image$i.png',
+                                  height: 80,
+                                  width: 150,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(bottom: 8),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Title",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Color(0xFF4C53A5),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Write Description of the category",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color(0xFF4C53A5),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Call Me",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF4C53A5)),
+                                  ),
+                                  Icon(
+                                    Icons.call,
+                                    color: Color(0xFF4C53A5),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                  ],
+                )
               ],
             ),
           ),
