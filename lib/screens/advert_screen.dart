@@ -132,14 +132,17 @@ class AdvertScreen extends StatelessWidget {
                 //Description
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    "As an electrician, I excel in fixing electrical problems and ensuring safety. I'm skilled in wiring buildings and troubleshooting issues efficiently. My expertise extends to various settings, from homes to commercial spaces. I pride myself on my attention to detail and ability to deliver reliable solutions. Clients trust me to keep their electrical systems running smoothly.",
-                    maxLines: 3,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                  child: Container(
+                    color: Colors.grey[100],
+                    child: Text(
+                      "As an electrician, I excel in fixing electrical problems and ensuring safety. I'm skilled in wiring buildings and troubleshooting issues efficiently. My expertise extends to various settings, from homes to commercial spaces. I pride myself on my attention to detail and ability to deliver reliable solutions. Clients trust me to keep their electrical systems running smoothly.",
+                      maxLines: 3,
+                      overflow: TextOverflow.fade,
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
@@ -155,45 +158,233 @@ class AdvertScreen extends StatelessWidget {
                 SizedBox(height: 5),
 
                 //Album Bar
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 150),
-                      child: Text(
-                        "Albumn",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                Container(
+                  color: Colors.grey[100],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        color: Colors.white,
+                        margin: EdgeInsets.only(left: 150),
+                        child: Text(
+                          "Albumn",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.transparent,
-                      ),
-                      width: 100,
-                      height: 40,
-                      child: Row(
-                        children: [
-                          Text(
-                            "Upload",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w200,
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 2, color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.transparent,
+                        ),
+                        width: 100,
+                        height: 40,
+                        child: Row(
+                          children: [
+                            Text(
+                              "Upload",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w200,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 10),
-                          Icon(
-                            Icons.upload,
-                            size: 20,
-                            color: Colors.green,
-                          ),
+                            SizedBox(width: 10),
+                            Icon(
+                              Icons.upload,
+                              size: 20,
+                              color: Colors.green,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 5),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 2,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.grey),
+                  ),
+                ),
+                SizedBox(height: 5),
+
+                //each cell
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      height: 470,
+                      width: MediaQuery.of(context).size.width,
+                      child: GridView.count(
+                        childAspectRatio: 0.68,
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        shrinkWrap: true,
+                        children: [
+                          for (int i = 1; i < 10; i++)
+                            Container(
+                              width: 100,
+                              height: 100,
+                              padding: EdgeInsets.only(left: 5, right: 5),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 3, horizontal: 3),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: Colors.black, width: 1)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                              top: 1,
+                                              bottom: 1,
+                                              right: 5,
+                                              left: 5),
+                                          decoration: BoxDecoration(
+                                              //color: Color(0xFF4C53A5),
+                                              //border: Border.all(
+                                              //width: 1, color: Colors.black),
+                                              //borderRadius: BorderRadius.circular(20),
+                                              ),
+                                          child: Text('Views',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                        ),
+                                        Text('00:00',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                        Icon(
+                                          Icons.favorite_border,
+                                          color: Colors.black,
+                                        ),
+                                      ],
+                                    ),
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        margin: EdgeInsets.all(0),
+                                        padding: EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          border: Border.all(
+                                              width: 1, color: Colors.black),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: Image.asset(
+                                          'images/image$i.png',
+                                          height: 70,
+                                          width: 120,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 18,
+                                      color: Colors.grey[200],
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Title",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Color(0xFF4C53A5),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 30,
+                                      color: Colors.grey[200],
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "Write Description of the category",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          // color: Colors.grey[200],
+                                          // border: Border.all(width: 1, color: Colors.black),
+                                          // borderRadius: BorderRadius.circular(15),
+                                          ),
+                                      alignment: Alignment.center,
+                                      height: 27,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(6),
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              border: Border.all(
+                                                  width: 0.5,
+                                                  color: Colors.black),
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                            ),
+                                            child: Text(
+                                              "Comments",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.all(6),
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              border: Border.all(
+                                                  width: 0.5,
+                                                  color: Colors.black),
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                            ),
+                                            child: Text(
+                                              "Share",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
                         ],
                       ),
                     ),
@@ -210,103 +401,235 @@ class AdvertScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 5),
 
-                GridView.count(
-                  childAspectRatio: 0.68,
-                  physics: NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  children: [
-                    for (int i = 1; i < 6; i++)
+                //related items Bar
+                Container(
+                  color: Colors.grey[100],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
                       Container(
-                        padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-                        margin:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                        margin: EdgeInsets.only(left: 150),
+                        child: Text(
+                          "Related Items",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        child: Column(
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 2, color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.transparent,
+                        ),
+                        width: 100,
+                        height: 40,
+                        child: Row(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF4C53A5),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text('views',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                ),
-                                Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.red,
-                                )
-                              ],
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                margin: EdgeInsets.all(10),
-                                child: Image.asset(
-                                  'images/image$i.png',
-                                  height: 80,
-                                  width: 150,
-                                ),
+                            Text(
+                              "Upload",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w200,
                               ),
                             ),
-                            Container(
-                              padding: EdgeInsets.only(bottom: 8),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Title",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Color(0xFF4C53A5),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                            SizedBox(width: 10),
+                            Icon(
+                              Icons.upload,
+                              size: 20,
+                              color: Colors.green,
                             ),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Write Description of the category",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Color(0xFF4C53A5),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Call Me",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF4C53A5)),
-                                  ),
-                                  Icon(
-                                    Icons.call,
-                                    color: Color(0xFF4C53A5),
-                                  )
-                                ],
-                              ),
-                            )
                           ],
                         ),
-                      )
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 5),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 2,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.grey),
+                  ),
+                ),
+                SizedBox(height: 5),
+
+                // Related items
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      height: 470,
+                      width: MediaQuery.of(context).size.width,
+                      child: GridView.count(
+                        childAspectRatio: 0.68,
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        shrinkWrap: true,
+                        children: [
+                          for (int i = 1; i < 10; i++)
+                            Container(
+                              width: 100,
+                              height: 100,
+                              padding: EdgeInsets.only(left: 5, right: 5),
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 3, horizontal: 3),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: Colors.black, width: 1)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                              top: 1,
+                                              bottom: 1,
+                                              right: 5,
+                                              left: 5),
+                                          decoration: BoxDecoration(
+                                              //color: Color(0xFF4C53A5),
+                                              //border: Border.all(
+                                              //width: 1, color: Colors.black),
+                                              //borderRadius: BorderRadius.circular(20),
+                                              ),
+                                          child: Text('Views',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                        ),
+                                        Text('00:00',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                        Icon(
+                                          Icons.favorite_border,
+                                          color: Colors.black,
+                                        ),
+                                      ],
+                                    ),
+                                    InkWell(
+                                      onTap: () {},
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.all(0),
+                                            padding: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                              color: Colors.transparent,
+                                              border: Border.all(
+                                                  width: 1,
+                                                  color: Colors.black),
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Ink.image(
+                                                  image: AssetImage(
+                                                  'asset/images/image$i.png'),
+                                                  height: 120,
+                                                  width: 120,
+                                                ),
+                                                Text(
+                                                  'Title',
+                                                  style: TextStyle(
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                  ),
+                                              ],
+                                            ),
+                                            ),
+
+                                          
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          // color: Colors.grey[200],
+                                          // border: Border.all(width: 1, color: Colors.black),
+                                          // borderRadius: BorderRadius.circular(15),
+                                          ),
+                                      alignment: Alignment.center,
+                                      height: 27,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(6),
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              border: Border.all(
+                                                  width: 0.5,
+                                                  color: Colors.black),
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                            ),
+                                            child: Text(
+                                              "Comments",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.all(6),
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[200],
+                                              border: Border.all(
+                                                  width: 0.5,
+                                                  color: Colors.black),
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                            ),
+                                            child: Text(
+                                              "Share",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                        ],
+                      ),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
