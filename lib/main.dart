@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget{
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
-        "/":(context)=> (NavigationScreen()),
+        "/":(context)=> (AdvertScreen()),
 
       },
     );
