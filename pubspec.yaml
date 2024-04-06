@@ -24,7 +24,6 @@ dependencies:
   fan_carousel_image_slider: ^0.1.2
   flutter_rating_bar: ^4.0.1
   http: ^1.2.1
-  dependencies:
   floating_text: ^0.2.0
   
 
