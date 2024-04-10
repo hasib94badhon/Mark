@@ -1,9 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:namer_app/widgets/DashBoardWidget.dart';
-import 'package:namer_app/widgets/HomeAppBar.dart';
-import 'package:namer_app/widgets/ItemsWidget.dart';
+import 'package:aaram_bd/widgets/DashBoardWidget.dart';
+import 'package:aaram_bd/widgets/HomeAppBar.dart';
+import 'package:aaram_bd/widgets/ItemsWidget.dart';
 
 class CenterPage extends StatelessWidget {
 

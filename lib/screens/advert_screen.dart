@@ -2,7 +2,7 @@ import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:namer_app/widgets/advert_details_popup.dart';
+import 'package:aaram_bd/widgets/advert_details_popup.dart';
 
 class AdvertScreen extends StatelessWidget {
   List<String> images = [
@@ -233,7 +233,7 @@ class AdvertScreen extends StatelessWidget {
                         crossAxisCount: 3,
                         shrinkWrap: true,
                         children: [
-                          for (int i = 1; i < 10; i++)
+                          for (int i = 1; i < 6; i++)
                             Container(
                               width: 100,
                               height: 100,

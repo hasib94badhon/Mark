@@ -40,7 +40,7 @@ class Album {
 
 Future<List<Album>> fetchAlbum() async {
   final response =
-      await http.get(Uri.parse('http://127.0.0.1:5000/get_users_data'));
+      await http.get(Uri.parse('http://192.168.0.101:5000/get_users_data'));
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = jsonDecode(response.body);
@@ -82,7 +82,7 @@ class _MyAppState extends State<Homepage> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Fetch Data Example'),
+          title: const Text('Vcards'),
         ),
         body: Center(
           child: FutureBuilder<List<Album>>(
@@ -129,50 +129,134 @@ class _MyAppState extends State<Homepage> {
                           ),
                         ],
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //photo+Name+Category+phone
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      //picture
+                                      Container(
+                                        margin: EdgeInsets.all(10),
+                                        height: 80,
+                                        width: 80,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(80),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black12,
+                                              blurRadius: 2,
+                                              spreadRadius: 3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 10,
+                                                  right: 10,
+                                                  top: 10,
+                                                  bottom: 3),
+                                              height: 25,
+                                              //width: 220,
+                                              child: Center(
+                                                  child: Text(
+                                                album.name,
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ))),
+                                          Container(
+                                              margin: EdgeInsets.only(left: 10),
+                                              height: 20,
+                                              //width: 160,
+                                              child: Center(
+                                                  child: Text(album.category))),
+                                          Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 10, top: 00),
+                                              height: 30,
+                                              //width: 200,
+                                              child:
+                                                  Center(child: Text(album.phone))),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+
+                              //share+view+sharecount
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.all(10),
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(80),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black12,
+                                                blurRadius: 2,
+                                                spreadRadius: 3,
+                                              ),
+                                            ],
+                                          ),
+                                          child:
+                                              Center(child: Icon(Icons.share))),
+                                      Text("Shared:"),
+                                      Container(
+                                          margin: EdgeInsets.all(10),
+                                          height: 50,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(80),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black12,
+                                                blurRadius: 2,
+                                                spreadRadius: 3,
+                                              ),
+                                            ],
+                                          ),
+                                          child: Center(
+                                              child: Icon(Icons
+                                                  .remove_red_eye_outlined))),
+                                      Text("Views:"),
+                                      SizedBox(width: 10,),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
-                                  margin: EdgeInsets.all(2),
-                                  height: 20,
-                                  width: 220,
-                                  // decoration: BoxDecoration(
-                                  //   color: Colors.white,
-                                  //   borderRadius: BorderRadius.circular(20),
-                                  //   boxShadow: [
-                                  //     BoxShadow(
-                                  //       color: Colors.black12,
-                                  //       blurRadius: 2,
-                                  //       spreadRadius: 3,
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  child: 
-                                  Center(child: Text(album.name,style: TextStyle(fontSize: 18,),))),
-
-                                  Container(
-                                      height: 20,
-                                      width: 160,
-                                  //     decoration: BoxDecoration(
-                                  //   color: Colors.white,
-                                  //   borderRadius: BorderRadius.circular(20),
-                                  //   boxShadow: [
-                                  //     BoxShadow(
-                                  //       color: Colors.black12,
-                                  //       blurRadius: 2,
-                                  //       spreadRadius: 3,
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  child: Center(child: Text(album.category))),
-                              Container(
-                                  //
-                                  height: 30,
-                                  width: 200,
+                                  margin: EdgeInsets.all(10),
+                                  height: 60,
+                                  width: 300,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20),
@@ -184,78 +268,27 @@ class _MyAppState extends State<Homepage> {
                                       ),
                                     ],
                                   ),
-                                  child: Center(child: Text(album.phone))),
+                                  child: Center(child: Text(album.location))),
+                              Container(
+                                  margin: EdgeInsets.all(10),
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(80),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 2,
+                                        spreadRadius: 3,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Center(child: Icon(Icons.call))),
                             ],
-                          ),
-                          //SizedBox(height: 20),
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                      //margin: EdgeInsets.all(5),
-                                      height: 40,
-                                      width: 160,
-                                  //     decoration: BoxDecoration(
-                                  //   color: Colors.white,
-                                  //   borderRadius: BorderRadius.circular(20),
-                                  //   boxShadow: [
-                                  //     BoxShadow(
-                                  //       color: Colors.black12,
-                                  //       blurRadius: 2,
-                                  //       spreadRadius: 3,
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  child: Center(child: Text(album.category))),
-                                  SizedBox(width: 5),
-                                  Container(
-                                      //
-                                      height: 30,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black38,
-                                        border: Border.all(width: 1),
-                                        borderRadius: BorderRadius.circular(80),
-                                      ),
-                                      child: Text(album.location)),
-                                ],
-                              ),
-                              SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  Container(
-                                      //
-                                      height: 20,
-                                      width: 120,
-                                      decoration: BoxDecoration(
-                                        color: Colors.pink,
-                                        border: Border.all(width: 1),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Text(album.category)),
-                                  SizedBox(width: 5),
-                                  Container(
-                                      height: 20,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(width: 1),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Text(album.location)),
-                                ],
-                              ),
-                            ],
-                          ),
-
-                          // Text(album.date)
+                          )
                         ],
-
-                        
                       ),
-
                     );
                   },
                 );

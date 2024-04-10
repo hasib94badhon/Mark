@@ -1,10 +1,9 @@
-import 'dart:js_interop';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:namer_app/screens/otp_screen.dart';
-import 'package:namer_app/screens/recovery_screen.dart';
-import 'package:namer_app/screens/signup_screen.dart';
+import 'package:aaram_bd/screens/otp_screen.dart';
+import 'package:aaram_bd/screens/recovery_screen.dart';
+import 'package:aaram_bd/screens/signup_screen.dart';
 
 class ForgotScreen extends StatefulWidget {
   const ForgotScreen({super.key});

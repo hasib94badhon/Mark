@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/screens/advert_screen.dart';
+import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:http/http.dart' as http;
 class FavoriteScreen extends StatefulWidget {
   
@@ -64,13 +64,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       decoration: BoxDecoration(
                         color: Colors.black12.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(10),
-                        // boxShadow: [
-                        //   BoxShadow(
-                        //     color: Colors.black12,
-                        //     blurRadius: 4,
-                        //     spreadRadius: 2,
-                        //   ),
-                        // ],
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            spreadRadius: 2,
+                          ),
+                        ],
                       ),
                       child: TextFormField(
                         decoration: InputDecoration(
@@ -156,232 +156,233 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 ),
                 SizedBox(height: 20),
                 Container(
-                  height: 180,
+                  height: 1000,
                   child: ListView.builder(
                     itemCount: imageList.length,
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return Container(
-                        //color: Colors.amber,
-                        width: 300,
-                        margin: EdgeInsets.only(right: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 150,
-                              width: 150,
-                              child: Stack(
-                                children: [
-                                  InkWell(
-                                    onTap: () {},
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Image.asset(
-                                        imageList[index],
-                                        fit: BoxFit.cover,
-                                        height: 150,
-                                        width: 150,
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: 10,
-                                    top: 10,
-                                    child: Container(
-                                      height: 30,
-                                      width: 30,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.favorite,
-                                          color: Colors.amber,
+                      return Column(
+                        children: [
+                          Container(
+                            //color: Colors.amber,
+                            width: 300,
+                            margin: EdgeInsets.only(right: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 150,
+                                  width: 150,
+                                  child: Stack(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {},
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: Image.asset(
+                                            imageList[index],
+                                            fit: BoxFit.cover,
+                                            height: 150,
+                                            width: 150,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    productTitles[index],
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  SizedBox(
-                                    width: 120,
-                                    child: Text(
-                                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-                                      maxLines: 4,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                        size: 22,
-                                      ),
-                                      Text(
-                                        '(' + reviews[index] + ')',
-                                      ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        prices[index],
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.amber,
+                                      Positioned(
+                                        right: 10,
+                                        top: 10,
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.favorite,
+                                              color: Colors.amber,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        productTitles[index],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      SizedBox(
+                                        width: 120,
+                                        child: Text(
+                                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                            size: 22,
+                                          ),
+                                          Text(
+                                            '(' + reviews[index] + ')',
+                                          ),
+                                          SizedBox(width: 10),
+                                          Text(
+                                            prices[index],
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.amber,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Container(
+                          height: 50,
+                          margin: EdgeInsets.all(5),
+                          padding: EdgeInsets.only(left: 05, right: 05),
+                          decoration: BoxDecoration(
+                            color: Colors.black12.withOpacity(0.05),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: FittedBox(
+                              child: Text(
+                                tabs[index],
+                                style: TextStyle(
+                                  color: Colors.black38,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
+                          SizedBox(height: 20),
+
+                          Container(
+                            //color: Colors.amber,
+                            width: 300,
+                            margin: EdgeInsets.only(right: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 150,
+                                  width: 150,
+                                  child: Stack(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {},
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: Image.asset(
+                                            imageList[index],
+                                            fit: BoxFit.cover,
+                                            height: 150,
+                                            width: 150,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 10,
+                                        top: 10,
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.favorite,
+                                              color: Colors.amber,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        productTitles[index],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      SizedBox(
+                                        width: 120,
+                                        child: Text(
+                                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                            size: 22,
+                                          ),
+                                          Text(
+                                            '(' + reviews[index] + ')',
+                                          ),
+                                          SizedBox(width: 10),
+                                          Text(
+                                            prices[index],
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.amber,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),
                 ),
-                SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Your Products",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
-                GridView.builder(
-                    itemCount: productTitles.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      childAspectRatio: 0.60,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                      //mainAxisExtent: BorderSide.strokeAlignCenter,
-
-                      //crossAxisSpacing: 30,
-                    ),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 7,color: Colors.black12),
-                          borderRadius: BorderRadius.circular(10), 
-                          ),
-                        child: Container(
-                          
-                          height: 120,
-                          width: 190,
-                          color: Colors.grey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: Stack(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>AdvertScreen(),
-                                        ));
-                                      },
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.asset(
-                                          imageList[index],
-                                          width: 80,
-                                          fit: BoxFit.cover,
-                                          height: 80,
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 10,
-                                      top: 10,
-                                      child: Container(
-                                        height: 30,
-                                        width: 30,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.favorite,
-                                            color: Colors.amber,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.green,
-                                    size: 22,
-                                  ),
-                                  Text(
-                                    '(' + reviews[index] + ')',
-                                  ),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    prices[index],
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              TextButton(
-                                child: Text(
-                                  "See more",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                onPressed: () {},
-                                style: TextButton.styleFrom(
-                                    foregroundColor: Colors.black,
-                                    elevation: 2,
-                                    backgroundColor: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                      ;
-                    }),
               ],
             ),
           ),

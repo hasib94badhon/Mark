@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/screens/otp_verify_screen.dart';
+import 'package:aaram_bd/screens/otp_verify_screen.dart';
 
 class OTPScreen extends StatelessWidget {
 

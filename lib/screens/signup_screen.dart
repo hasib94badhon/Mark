@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/screens/SignUp_screen.dart';
-import 'package:namer_app/screens/login_screen.dart';
+import 'package:aaram_bd/screens/SignUp_screen.dart';
+import 'package:aaram_bd/screens/login_screen.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -17,7 +17,7 @@ class _SignUpState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> addDataToDB() async {
-    final String apiUrl = 'http://127.0.0.1:5000/add';
+    final String apiUrl = 'http://192.168.0.101:5000/add';
 
     final Map<String, dynamic> requestData = {
       'phone': _phoneController.text,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/widgets/Container_button_model.dart';
+import 'package:aaram_bd/widgets/Container_button_model.dart';
 
 class AdvertDetailsPopup extends StatelessWidget {
 

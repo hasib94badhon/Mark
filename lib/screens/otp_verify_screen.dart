@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:namer_app/screens/navigation_screen.dart';
-import 'package:namer_app/screens/recovery_screen.dart';
+import 'package:aaram_bd/screens/navigation_screen.dart';
+import 'package:aaram_bd/screens/recovery_screen.dart';
 import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 class OTPVerifyScreen extends StatefulWidget {

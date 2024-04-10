@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:namer_app/pages/Homepage.dart';
-import 'package:namer_app/screens/login_screen.dart';
+import 'package:aaram_bd/pages/Homepage.dart';
+import 'package:aaram_bd/screens/login_screen.dart';
 
 class Onboarding extends StatelessWidget {
   final introKey = GlobalKey<IntroductionScreenState>();

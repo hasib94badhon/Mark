@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:namer_app/pages/Centerpage.dart';
-import 'package:namer_app/pages/Homepage.dart';
-import 'package:namer_app/screens/SignUp_screen.dart';
-import 'package:namer_app/screens/forgot_screen.dart';
-import 'package:namer_app/screens/navigation_screen.dart';
+import 'package:aaram_bd/pages/Centerpage.dart';
+import 'package:aaram_bd/pages/Homepage.dart';
+import 'package:aaram_bd/screens/SignUp_screen.dart';
+import 'package:aaram_bd/screens/forgot_screen.dart';
+import 'package:aaram_bd/screens/navigation_screen.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> loginUser() async {
     final String apiUrl =
-        'http://127.0.0.1:5000/login'; // Replace with your API URL
+        'http://192.168.0.101:5000/login'; // Replace with your API URL
 
     final Map<String, dynamic> requestData = {
       'phone': _phoneController.text,
