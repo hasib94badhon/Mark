@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:aaram_bd/pages/Centerpage.dart';
 import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/screens/SignUp_screen.dart';
 import 'package:aaram_bd/screens/forgot_screen.dart';

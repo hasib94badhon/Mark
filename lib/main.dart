@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/pages/cartPage.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget{
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
-        "/":(context)=> (AdvertScreen()),
+        "/":(context)=> (NavigationScreen()),
       },
     );
   }
