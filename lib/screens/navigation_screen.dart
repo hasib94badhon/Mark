@@ -6,6 +6,7 @@ import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -31,24 +32,19 @@ class _NavigationScreenState extends State<NavigationScreen> {
         index: pageIndex,
         children: pages,
       ),
-      floatingActionButton: SafeArea(
-        child: FloatingActionButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CenterPage()),
-            );
-          },
-          child: Icon(
-            Icons.qr_code,
-            size: 20,
+      floatingActionButton:SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        children: [
+          SpeedDialChild(
+            child: Container(
+              height: 600,
+              width: 600,
+              color: Colors.pink,
+            )
           ),
-          backgroundColor: Colors.white,
-        ),
+        ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         icons: [
           CupertinoIcons.home,

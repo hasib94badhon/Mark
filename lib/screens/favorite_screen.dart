@@ -55,8 +55,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+
+                    //Search button
                     Container(
                       padding: EdgeInsets.all(5),
                       height: 50,
@@ -65,11 +67,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         color: Colors.black12.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 4,
-                            spreadRadius: 2,
-                          ),
+                          // BoxShadow(
+                          //   color: Colors.black12,
+                          //   blurRadius: 4,
+                          //   spreadRadius: 2,
+                          // ),
                         ],
                       ),
                       child: TextFormField(
@@ -86,6 +88,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         ),
                       ),
                     ),
+                    //NotificationICOn
                     Container(
                       height: 50,
                       width: MediaQuery.of(context).size.width / 6,
@@ -103,6 +106,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   ],
                 ),
                 SizedBox(height: 10),
+                //aaramBD logo + Banner
                 Container(
                   height: 150,
                   width: MediaQuery.of(context).size.width,
@@ -121,8 +125,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   fit: BoxFit.cover,),
                 ),
                 SizedBox(height: 10),
+
+                //Title Category
                 SizedBox(
-                  height: 50,
+                  height: 60,
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
@@ -130,7 +136,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     itemBuilder: (context, index) {
                       return FittedBox(
                         child: Container(
-                          height: 50,
+                          height: 40,
                           margin: EdgeInsets.all(5),
                           padding: EdgeInsets.only(left: 05, right: 05),
                           decoration: BoxDecoration(
@@ -155,6 +161,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
+
+                //sliding show
                 Container(
                   height: 1000,
                   child: ListView.builder(
@@ -163,9 +171,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return Column(
-                        children: [
+                        children: [   
+                          
                           Container(
-                            //color: Colors.amber,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(width: 2,color: Colors.black),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
                             width: 300,
                             margin: EdgeInsets.only(right: 15),
                             child: Row(
@@ -181,28 +194,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                         onTap: () {},
                                         child: ClipRRect(
                                           borderRadius: BorderRadius.circular(20),
-                                          child: Image.asset(
-                                            imageList[index],
-                                            fit: BoxFit.cover,
-                                            height: 150,
-                                            width: 150,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 10,
-                                        top: 10,
-                                        child: Container(
-                                          height: 30,
-                                          width: 30,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(20),
-                                          ),
                                           child: Center(
-                                            child: Icon(
-                                              Icons.favorite,
-                                              color: Colors.amber,
+                                            child: Image.asset(
+                                              imageList[index],
+                                              fit: BoxFit.cover,
+                                              height: 130,
+                                              width: 130,
                                             ),
                                           ),
                                         ),
@@ -260,124 +257,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             ),
                           ),
                           SizedBox(height: 20),
-                          Container(
-                          height: 50,
-                          margin: EdgeInsets.all(5),
-                          padding: EdgeInsets.only(left: 05, right: 05),
-                          decoration: BoxDecoration(
-                            color: Colors.black12.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: FittedBox(
-                              child: Text(
-                                tabs[index],
-                                style: TextStyle(
-                                  color: Colors.black38,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                          SizedBox(height: 20),
-
-                          Container(
-                            //color: Colors.amber,
-                            width: 300,
-                            margin: EdgeInsets.only(right: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 150,
-                                  width: 150,
-                                  child: Stack(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {},
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(20),
-                                          child: Image.asset(
-                                            imageList[index],
-                                            fit: BoxFit.cover,
-                                            height: 150,
-                                            width: 150,
-                                          ),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 10,
-                                        top: 10,
-                                        child: Container(
-                                          height: 30,
-                                          width: 30,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(20),
-                                          ),
-                                          child: Center(
-                                            child: Icon(
-                                              Icons.favorite,
-                                              color: Colors.amber,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        productTitles[index],
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      SizedBox(
-                                        width: 120,
-                                        child: Text(
-                                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-                                          maxLines: 4,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.star,
-                                            color: Colors.amber,
-                                            size: 22,
-                                          ),
-                                          Text(
-                                            '(' + reviews[index] + ')',
-                                          ),
-                                          SizedBox(width: 10),
-                                          Text(
-                                            prices[index],
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.amber,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                         ],
                       );
                     },
