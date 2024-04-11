@@ -1,8 +1,6 @@
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:aaram_bd/widgets/advert_details_popup.dart';
 
 class AdvertScreen extends StatelessWidget {
   List<String> images = [
@@ -17,178 +15,231 @@ class AdvertScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                //sliding bar
-                SizedBox(
-                  height: 220,
-                  width: MediaQuery.of(context).size.width,
-                  child: FanCarouselImageSlider(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Sliding Picture Show
+            Container(
+              color: Colors.black87,
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 200,
+                    child: FanCarouselImageSlider(
                       sliderHeight: 200,
                       autoPlay: true,
                       imagesLink: images,
-                      isAssets: true),
-                ),
-
-                //Basic Info
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    //Name,Category,rating star
-                    Column(
+                      isAssets: true,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 10),
                         Text(
                           "Rafiq Ahmed",
                           style: TextStyle(
-                            color: Colors.black87,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 23,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
                           ),
                         ),
-                        Text(
-                          "Electrician",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-
-                        //This a rating star
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: RatingBar.builder(
-                            initialRating: 3,
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemSize: 18,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: Colors.grey,
+                              size: 16,
                             ),
-                            onRatingUpdate: (rating) {},
-                          ),
+                            SizedBox(width: 5),
+                            Text(
+                              "123 Main St, City",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
+                  ),
+                ],
+              ),
+            ),
 
-                    //Edit profile and show phone
-                    Container(
-                      //color: Colors.amber,
-                      margin: EdgeInsets.only(top: 30, right: 10),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                "Edit Profile",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.amber,
-                                ),
-                              ),
-                            ],
+            // Profile Details
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Electrician",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  RatingBar.builder(
+                    initialRating: 3,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize: 24,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {},
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          // Handle Edit Profile button pressed
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.amber),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                "+01*******33",
+                        ),
+                        child: Text(
+                          "Edit Profile",
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "+01*******33",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // Gallery
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Gallery",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                    ),
+                    itemCount: images.length,
+                    itemBuilder: (context, index) {
+                      return Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.asset(
+                                images[index],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                "100 views",
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.grey,
+                                  color: Colors.white,
+                                  fontSize: 12,
                                 ),
                               ),
-                            ],
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 10,
+                            left: 10,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  "Location",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
-                      ),
-                    )
-                  ],
-                ),
-
-                SizedBox(height: 10),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 2,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.grey),
+                      );
+                    },
                   ),
-                ),
-                SizedBox(height: 5),
-
-                //Description
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    color: Colors.grey[100],
-                    child: Text(
-                      "As an electrician, I excel in fixing electrical problems and ensuring safety. I'm skilled in wiring buildings and troubleshooting issues efficiently. My expertise extends to various settings, from homes to commercial spaces. I pride myself on my attention to detail and ability to deliver reliable solutions. Clients trust me to keep their electrical systems running smoothly.",
-                      maxLines: 3,
-                      overflow: TextOverflow.fade,
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 5),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 2,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: Colors.grey),
-                  ),
-                ),
-                SizedBox(height: 5),
-
-                SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return Container(
-                    //margin: EdgeInsets.only(left: 10,right: 10),
-                    decoration: BoxDecoration(
-                      //color: Colors.green,
-                      border: Border.all(width: 1, color: Colors.black),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    alignment: Alignment.center,
-                  );
-                },
-                childCount: 9,
+                ],
               ),
-              gridDelegate:
-                  // SliverGridDelegateWithMaxCrossAxisExtent(
-                  //   maxCrossAxisExtent: 200,
-                  //   mainAxisSpacing: 10,
-                  //   crossAxisSpacing: 10,
-                  //   childAspectRatio: 4,
-                  //   ),
-                  SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5,
-                childAspectRatio: 1.25,
-
-              )),
-              ],
             ),
-          ),
+          ],
         ),
       ),
     );

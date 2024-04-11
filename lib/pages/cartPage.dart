@@ -12,8 +12,6 @@ class cartPage extends StatelessWidget {
       child: CustomScrollView(
         slivers: <Widget>[
 
-
-
           SliverAppBar(
             //pinned: true,
             floating: false,
