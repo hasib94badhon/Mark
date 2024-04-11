@@ -89,7 +89,7 @@ class _HomepageState extends State<Homepage> {
                     final album = snapshot.data![index];
                     return Card(
                       elevation: 4,
-                      margin: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(5),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -99,31 +99,61 @@ class _HomepageState extends State<Homepage> {
                           ListTile(
                             leading: CircleAvatar(
                               radius: 30,
-                              backgroundColor: Colors.grey[200],
-                              child: Icon(Icons.person),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 236, 102, 102),
+                              child: Icon(Icons.person, color: Colors.white),
                             ),
-                            title: Text(album.name),
-                            subtitle: Text(album.category),
+                            title: Text(
+                              album.name,
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(
+                              album.category,
+                              style: TextStyle(color: Colors.grey),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              'Location: ${album.location}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey[600],
-                              ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.location_on,
+                                    color:
+                                        const Color.fromARGB(255, 83, 83, 83)),
+                                SizedBox(width: 5),
+                                Text(
+                                  album.location,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        const Color.fromARGB(255, 83, 83, 83),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(album.phone),
+                                Row(
+                                  children: [
+                                    Icon(Icons.phone,
+                                        color: const Color.fromARGB(
+                                            255, 83, 83, 83)),
+                                    SizedBox(width: 5),
+                                    Text(album.phone),
+                                  ],
+                                ),
                                 ElevatedButton(
                                   onPressed: () {},
-                                  child: Text('Call'),
+                                  style: ElevatedButton.styleFrom(
+                                      // primary: const Color.fromARGB(255, 236, 102, 102),
+                                      ),
+                                  child: Text('Call',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                               ],
                             ),
