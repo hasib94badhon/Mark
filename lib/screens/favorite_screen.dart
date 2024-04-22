@@ -7,7 +7,6 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  List<String> tabs = ["All", "Category", "Top", "Recommended"];
 
   List imageList = [
     "images/image1.png",
@@ -75,20 +74,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   ),
                 ),
 
-                // // Fixed Banner
-                // Container(
-                //   margin: EdgeInsets.symmetric(vertical: 10),
-                //   height: 150,
-                //   decoration: BoxDecoration(
-                //     color: Colors.grey.shade300,
-                //     borderRadius: BorderRadius.circular(20),
-                //   ),
-                //   child: Image.asset(
-                //     "images/AaramBD_logo.jpg",
-                //     //fit: BoxFit.cover,
-                //   ),
-                // ),
-
                 // Sliding Show
                 SizedBox(
                   height: 150,
@@ -115,34 +100,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   ),
                 ),
 
-                // Tabs
-                SizedBox(
-                  height: 70,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: tabs.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: EdgeInsets.only(right: 10, top: 10, left: 10, bottom: 10),
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Text(
-                            tabs[index],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
 
                 // Product List
                 SizedBox(

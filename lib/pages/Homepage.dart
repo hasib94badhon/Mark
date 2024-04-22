@@ -89,76 +89,103 @@ class _HomepageState extends State<Homepage> {
                     final album = snapshot.data![index];
                     return Card(
                       elevation: 4,
-                      margin: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(10),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ListTile(
-                            leading: CircleAvatar(
-                              radius: 30,
-                              backgroundColor:
-                                  const Color.fromARGB(255, 236, 102, 102),
-                              child: Icon(Icons.person, color: Colors.white),
-                            ),
-                            title: Text(
-                              album.name,
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(
-                              album.category,
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Row(
-                              children: [
-                                Icon(Icons.location_on,
-                                    color:
-                                        const Color.fromARGB(255, 83, 83, 83)),
-                                SizedBox(width: 5),
-                                Text(
-                                  album.location,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        const Color.fromARGB(255, 83, 83, 83),
-                                  ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.person,
+                                  size: 50,
+                                  color: Colors.grey[600],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    album.name,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    ' ${album.category}',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    ' ${album.location}',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Response: ${index + 1}',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Icon(Icons.phone,
                                         color: const Color.fromARGB(
                                             255, 83, 83, 83)),
                                     SizedBox(width: 5),
-                                    Text(album.phone),
+                                    Text(album.phone,
+                                        style: TextStyle(color: Colors.black)),
                                   ],
                                 ),
+                                SizedBox(height: 16),
                                 ElevatedButton(
                                   onPressed: () {},
                                   style: ElevatedButton.styleFrom(
-                                      // primary: const Color.fromARGB(255, 236, 102, 102),
-                                      ),
-                                  child: Text('Call',
-                                      style: TextStyle(color: Colors.white)),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 12,
+                                      horizontal: 16,
+                                    ),
+                                    backgroundColor: Colors.greenAccent,
+                                  ),
+                                  child: Text(
+                                    'Call',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },
