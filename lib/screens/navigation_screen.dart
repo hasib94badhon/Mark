@@ -19,7 +19,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   int pageIndex = 0;
 
   List<Widget> pages = [
-    FavoriteScreen(),
+    CartPage(),
     CartPage(),
     Homepage(),
     AdvertScreen(),
@@ -80,8 +80,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
         iconSize: 30,
         icons: [
           CupertinoIcons.home,
+          CupertinoIcons.chart_bar_circle,
           CupertinoIcons.phone,
-          CupertinoIcons.chart_bar,
           CupertinoIcons.profile_circled,
         ],
         activeIndex: pageIndex,
