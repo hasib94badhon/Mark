@@ -18,7 +18,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     CartPage(),
     CartPage(),
     CartPage(),
-    AdvertScreen(),
+   AdvertScreen()
   ];
 
   List<String> imageList = [

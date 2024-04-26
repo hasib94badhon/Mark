@@ -22,7 +22,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     CartPage(),
     CartPage(),
     Homepage(),
-    AdvertScreen(),
+    AdvertScreen ()
   ];
 
   @override

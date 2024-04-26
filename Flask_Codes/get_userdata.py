@@ -76,6 +76,8 @@ def add_data_to_db():
             cursor.execute("INSERT INTO reg (phone, password) VALUES (%s, %s)", (phone, password))
             connection.commit()
             reg_id = cursor.lastrowid  # Get the auto-generated reg_id
+            cursor.execute("INSERT INTO users (reg_id, phone) VALUES (%s, %s)", (reg_id, phone))
+            connection.commit()
             return jsonify({"reg_id": reg_id, "message": "Data added successfully"})
         except Exception as e:
             connection.rollback()
@@ -110,8 +112,10 @@ def login_user():
         except Exception as e:
             return jsonify({"error": str(e)}), 500
         finally:
+            
             cursor.close()
             connection.close()
+        
 
 @app.route('/get_users_data', methods=['GET'])
 def get_user_data():
@@ -149,6 +153,44 @@ def get_user_data():
                 connection.close()
 
         return jsonify({"users_data": users_with_phone_data})
+
+@app.route('/get_category_and_counts_all_info', methods=['GET'])
+def get_category_and_counts_all_info():
+    if request.method == 'GET':
+        # Fetch unique categories and their counts from the users table
+        connection = db_connector.connect()
+        cursor = connection.cursor()
+        try:
+            cursor.execute("SELECT category, COUNT(*) AS count FROM users GROUP BY category")
+            category_counts = cursor.fetchall()
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
+        # Separate category name and count
+        separated_category_counts = []
+        for category, count in category_counts:
+            separated_category_counts.append({"category_name": category, "category_count": count})
+            
+
+
+        # Fetch all user information
+        connection = db_connector.connect()
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        try:
+            cursor.execute("SELECT * FROM users")
+            all_users_data = cursor.fetchall()
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
+        return jsonify({"category_counts": separated_category_counts, "all_users_data": all_users_data})
+    
+  
 
 
 if __name__ == '__main__':
