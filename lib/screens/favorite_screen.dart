@@ -14,12 +14,7 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   int pageIndex = 0;
 
-  List<Widget> pages = [
-    CartPage(),
-    CartPage(),
-    CartPage(),
-   AdvertScreen()
-  ];
+
 
   List<String> imageList = [
     "images/image1.png",
@@ -127,75 +122,72 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             child: ListView.builder(
               itemCount: productTitles.length,
               itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      // InkWell(
-                      //   onTap: () {
-                      //     Navigator.push(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //           builder: (contex) => Homepage(),
-                      //         ),
-                      //       );
-                      //   },
-                      // ),
-                      Container(
-                        width: 100,
-                        height: 100,
-                        margin: EdgeInsets.only(right: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                        child: Image.asset(
-                          imageList[index],
-                          fit: BoxFit.cover,
-                        ),
+                return Center(
+                  child: InkWell(
+                    onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Homepage()),);
+                            },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        border: Border.all(width: 1, color: Colors.black),
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              productTitles[index],
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            margin: EdgeInsets.only(right: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.grey),
                             ),
-                            SizedBox(height: 5),
-                            Text(
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            child: Image.asset(
+                              imageList[index],
+                              fit: BoxFit.cover,
                             ),
-                            SizedBox(height: 5),
-                            Row(
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(Icons.star, color: Colors.amber),
-                                Text(reviews[index]),
-                                SizedBox(width: 10),
                                 Text(
-                                  prices[index],
+                                  productTitles[index],
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
+                                    fontSize: 18,
                                   ),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Icon(Icons.star, color: Colors.amber),
+                                    Text(reviews[index]),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      prices[index],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 );
               },

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:aaram_bd/pages/cartPage.dart';
 class Album {
   final int user_id;
   final int reg_id;
@@ -66,13 +66,14 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Vcards',
+      title: 'All Adverts',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Vcards'),
+
+          title: const Text('Adverts'),
         ),
         body: Center(
           child: FutureBuilder<List<Album>>(

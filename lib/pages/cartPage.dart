@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:aaram_bd/pages/Homepage.dart';
+import 'package:aaram_bd/screens/advert_screen.dart';
+import 'package:aaram_bd/screens/favorite_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 // Data model for category counts
@@ -20,21 +24,68 @@ class CategoryCount {
     );
   }
 }
+// Data model for user details
+class UserDetail {
+  final String category;
+  final String location;
+  final String name;
+  final int phone;
+  final int regId;
+  final int userId;
+  final int viewsCount;
+  final int shares;
 
-// Fetch data from the API
-Future<List<CategoryCount>> fetchData() async {
-  final response = await http.get(Uri.parse('http://192.168.0.101:5000/get_category_and_counts_all_info'));
+  UserDetail({
+    required this.category,
+    required this.location,
+    required this.name,
+    required this.phone,
+    required this.regId,
+    required this.userId,
+    required this.viewsCount,
+    required this.shares,
+  });
+
+  factory UserDetail.fromJson(Map<String, dynamic> json) {
+    return UserDetail(
+      category: json['category'],
+      location: json['location'],
+      name: json['name'],
+      phone: json['phone'],
+      regId: json['reg_id'],
+      userId: json['user_id'],
+      viewsCount: json['viewsCount'],
+      shares: json['shares'],
+
+    );
+  }
+}
+
+// Modified fetchData function to return both categories and user details
+Future<Map<String, List<dynamic>>> fetchData() async {
+  final url = 'http://192.168.0.101:5000/get_category_and_counts_all_info';
+  final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
-    List jsonResponse = json.decode(response.body)['category_counts'];
-    return jsonResponse.map((data) => CategoryCount.fromJson(data)).toList();
+    final jsonResponse = json.decode(response.body);
+    final categoryCounts = (jsonResponse['category_counts'] as List)
+        .map((data) => CategoryCount.fromJson(data))
+        .toList();
+    final userDetails = (jsonResponse['all_users_data'] as List)
+        .map((data) => UserDetail.fromJson(data))
+        .toList();
+
+    return {
+      'categoryCounts': categoryCounts,
+      'userDetails': userDetails,
+    };
   } else {
     throw Exception('Failed to load data from API');
   }
 }
 
 class CartPage extends StatelessWidget {
-  final Future<List<CategoryCount>> data;
+  final Future<Map<String, List<dynamic>>>data;
 
   CartPage({Key? key})
       : data = fetchData(),
@@ -44,40 +95,135 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AaramBD Categories'),
-        backgroundColor: Colors.black,
+        title: Text('AaramBD'),
+        backgroundColor: Colors.white12,
       ),
-      body: FutureBuilder<List<CategoryCount>>(
-        future: data,
+      body: FutureBuilder<Map<String, List<dynamic>>>(
+        future:data,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
               return Center(child: Text("Error: ${snapshot.error}"));
             } else if (snapshot.hasData) {
-              return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 3,
-                  crossAxisSpacing: 3,
-                  childAspectRatio: 0.90,
-                ),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  CategoryCount count = snapshot.data![index];
-                  return Container(
-                    margin: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      border: Border.all(width: 1, color: Colors.black),
-                      borderRadius: BorderRadius.circular(15),
+              final categories = snapshot.data!['categoryCounts'] as List<CategoryCount>;
+              final users = snapshot.data!['userDetails'] as List<UserDetail>;
+
+              return Column(
+                children: [
+                  Expanded(
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 3,
+                        crossAxisSpacing: 3,
+                        childAspectRatio: 0.90,
+                      ),
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        final count = categories[index];
+                        return Center(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>FavoriteScreen()),);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                border: Border.all(width: 1, color: Colors.black),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                '${count.categoryName} (${count.categoryCount})',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      '${count.categoryName} (${count.categoryCount})',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  );
-                },
+                  ),
+                  Expanded(child: 
+                  ListView.builder(shrinkWrap: true,
+                  itemCount: users.length,
+                  itemBuilder: (context,index){
+                    final user = users[index];
+                    // return Container(
+                    //   padding: EdgeInsets.only(top: 5),
+                    //   child: ListTile(
+                    //     title: Text(user.name),
+                    //     subtitle: Text('${user.category}-${user.location}\n0${user.phone}'),
+                    //     trailing: Text('Views: ${user.viewsCount}, Shares: ${user.shares}'),
+                      
+                    //   ),
+                    // );
+                    return Center(
+                      child: InkWell(
+                        onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>AdvertScreen()),);
+                            },
+                        child: Container(
+                          child: Card(
+                          margin: EdgeInsets.all(10),
+                          elevation: 4,
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Column(
+                              
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 10),
+                                Text(
+                                  user.name,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  user.category,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(user.location),
+                                SizedBox(height: 8),
+                                Divider(),
+                                SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('📞 0${user.phone}'),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.remove_red_eye, size: 16),
+                                        SizedBox(width: 4),
+                                        Text('${user.viewsCount}'),
+                                        SizedBox(width: 16),
+                                        Icon(Icons.share, size: 16),
+                                        SizedBox(width: 4),
+                                        Text('${user.shares}'),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                                            ),
+                        ),
+                      ),
+                    );
+
+                  },
+                  ),
+                  )
+                  
+                ],
               );
             }
           }
@@ -87,6 +233,8 @@ class CartPage extends StatelessWidget {
     );
   }
 }
+
+
 
 void main() {
   runApp(MaterialApp(

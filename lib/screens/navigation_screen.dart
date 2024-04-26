@@ -21,8 +21,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
   List<Widget> pages = [
     CartPage(),
     CartPage(),
-    Homepage(),
-    AdvertScreen ()
+    CartPage(),
+    AdvertScreen (),
   ];
 
   @override
@@ -81,7 +81,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         icons: [
           CupertinoIcons.home,
           CupertinoIcons.chart_bar_circle,
-          CupertinoIcons.phone,
+          CupertinoIcons.info_circle_fill,
           CupertinoIcons.profile_circled,
         ],
         activeIndex: pageIndex,
