@@ -22,8 +22,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     UserProfile(),
   ];
 
-
-
   List<String> imageList = [
     "images/image1.png",
     "images/image2.png",
@@ -59,33 +57,43 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (contex) => NavigationScreen(),
-              ),
-            );
-          },
+        title: Text(
+          'AaramBD',
         ),
-        title: Text('Favorite Screen'),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.person_search_outlined),
+            iconSize: 35,
+            onPressed: () {},
+          )
+        ],
+        backgroundColor: Colors.blue[100],
+        leading: IconButton(
+          onPressed: () {},
+          icon: IconButton(
+            icon: Icon(Icons.menu),
+            iconSize: 35,
+            onPressed: () {},
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25))),
       ),
-      body:
-
-      Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Search Button
           Container(
-            margin: EdgeInsets.only(bottom: 10),
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            margin: EdgeInsets.all(5),
+            padding: EdgeInsets.symmetric(horizontal: 10,),
             decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+              border: Border.all(width: 1, color: Colors.blue),
+              borderRadius: BorderRadius.circular(25),
             ),
             child: Row(
               children: [
@@ -104,18 +112,18 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           ),
           // Sliding Show
           SizedBox(
-            height: 150,
+            height: 160,
             child: ListView.builder(
               itemCount: imageList.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return Container(
-                  width: 150,
-                  margin: EdgeInsets.only(right: 10),
+                  width: 160,
+                  margin: EdgeInsets.only(top: 10,right: 10),
                   padding: EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.grey.shade300),
+                    border: Border.all(width:2, color:Colors.grey.shade300),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
@@ -128,6 +136,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               },
             ),
           ),
+          SizedBox(height: 10),
           // Product List
           Expanded(
             child: ListView.builder(
@@ -136,14 +145,17 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 return Center(
                   child: InkWell(
                     onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Homepage()),);
-                            },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Homepage()),
+                      );
+                    },
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                      margin: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        border: Border.all(width: 1, color: Colors.black),
+                        color: Colors.white,
+                        border: Border.all(width: 1, color: Colors.blue),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -152,9 +164,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             width: 100,
                             height: 100,
                             margin: EdgeInsets.only(right: 20),
+                            padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.grey),
+                              border: Border.all(width: 3,color: Colors.greenAccent),
                             ),
                             child: Image.asset(
                               imageList[index],
@@ -206,56 +219,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           ),
         ],
       ),
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.5,
-        elevation: 6.0,
-        children: [
-          SpeedDialChild(
-            child: Icon(Icons.info, size: 24, color: Colors.white),
-            backgroundColor: Colors.blue,
-            label: 'Info',
-            onTap: () {
-              // Handle Info option tapped
-            },
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.local_activity, size: 24, color: Colors.white),
-            backgroundColor: Colors.green,
-            label: 'Service',
-            onTap: () {
-              // Handle Service option tapped
-            },
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.shopping_cart, size: 24, color: Colors.white),
-            backgroundColor: Colors.orange,
-            label: 'Shops',
-            onTap: () {
-              // Handle Shops option tapped
-            },
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.person, size: 24, color: Colors.white),
-            backgroundColor: Colors.red,
-            label: 'My Profile',
-            onTap: () {
-              // Handle My Profile option tapped
-            },
-            
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.person, size: 24, color: Colors.white),
-            backgroundColor: Colors.red,
-            label: '',
-            onTap: () {
-              // Handle My Profile option tapped
-            },
-            
-          ),
-        ],
-      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         height: 80,
@@ -275,10 +238,19 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         elevation: 8,
         onTap: (index) {
           setState(() {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>NavigationScreen()),);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NavigationScreen()),
+            );
           });
         },
       ),
     );
   }
+}
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: FavoriteScreen(),
+  ));
 }

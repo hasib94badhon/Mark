@@ -35,56 +35,56 @@ class _NavigationScreenState extends State<NavigationScreen> {
         index: pageIndex,
         children: pages,
       ),
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.5,
-        elevation: 6.0,
-        children: [
-          SpeedDialChild(
-            child: Icon(Icons.info, size: 24, color: Colors.white),
-            backgroundColor: Colors.blue,
-            label: 'Info',
-            onTap: () {
-              // Handle Info option tapped
-            },
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.local_activity, size: 24, color: Colors.white),
-            backgroundColor: Colors.green,
-            label: 'Service',
-            onTap: () {
-              // Handle Service option tapped
-            },
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.shopping_cart, size: 24, color: Colors.white),
-            backgroundColor: Colors.orange,
-            label: 'Shops',
-            onTap: () {
-              // Handle Shops option tapped
-            },
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.person, size: 24, color: Colors.white),
-            backgroundColor: Colors.red,
-            label: 'My Profile',
-            onTap: () {
-              // Handle My Profile option tapped
-            },
+      // floatingActionButton: SpeedDial(
+      //   animatedIcon: AnimatedIcons.menu_close,
+      //   overlayColor: Colors.black,
+      //   overlayOpacity: 0.5,
+      //   elevation: 6.0,
+      //   children: [
+      //     SpeedDialChild(
+      //       child: Icon(Icons.info, size: 24, color: Colors.white),
+      //       backgroundColor: Colors.blue,
+      //       label: 'Info',
+      //       onTap: () {
+      //         // Handle Info option tapped
+      //       },
+      //     ),
+      //     SpeedDialChild(
+      //       child: Icon(Icons.local_activity, size: 24, color: Colors.white),
+      //       backgroundColor: Colors.green,
+      //       label: 'Service',
+      //       onTap: () {
+      //         // Handle Service option tapped
+      //       },
+      //     ),
+      //     SpeedDialChild(
+      //       child: Icon(Icons.shopping_cart, size: 24, color: Colors.white),
+      //       backgroundColor: Colors.orange,
+      //       label: 'Shops',
+      //       onTap: () {
+      //         // Handle Shops option tapped
+      //       },
+      //     ),
+      //     SpeedDialChild(
+      //       child: Icon(Icons.person, size: 24, color: Colors.white),
+      //       backgroundColor: Colors.red,
+      //       label: 'My Profile',
+      //       onTap: () {
+      //         // Handle My Profile option tapped
+      //       },
             
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.person, size: 24, color: Colors.white),
-            backgroundColor: Colors.red,
-            label: '',
-            onTap: () {
-              // Handle My Profile option tapped
-            },
+      //     ),
+      //     SpeedDialChild(
+      //       child: Icon(Icons.person, size: 24, color: Colors.white),
+      //       backgroundColor: Colors.red,
+      //       label: '',
+      //       onTap: () {
+      //         // Handle My Profile option tapped
+      //       },
             
-          ),
-        ],
-      ),
+      //     ),
+      //   ],
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         height: 80,

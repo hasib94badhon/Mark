@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
 import 'package:flutter/material.dart';
@@ -93,8 +94,30 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AaramBD'),
-        backgroundColor: Colors.white12,
+        title: Text(
+          'AaramBD',
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.person_search_outlined),
+            iconSize: 35,
+            onPressed: () {},
+          )
+        ],
+        backgroundColor: Colors.blue[100],
+        leading: IconButton(
+          onPressed: () {},
+          icon: IconButton(
+            icon: Icon(Icons.menu),
+            iconSize: 35,
+            onPressed: () {},
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25))),
       ),
       body: FutureBuilder<Map<String, List<dynamic>>>(
         future: data,
@@ -108,26 +131,43 @@ class CartPage extends StatelessWidget {
               final users = snapshot.data!['userDetails'] as List<UserDetail>;
 
               return Container(
-                margin: EdgeInsets.all(4),
+                margin: EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   color: Colors.white70,
-                  border: Border.all(width: 1, color: Colors.black),
+                  border: Border.all(width: 2, color: Colors.grey),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
                   children: [
+                    Container(
+                      
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.blue[100],
+                        border: Border.all(width: 1, color: Colors.black12),
+                        borderRadius: BorderRadius.circular(15)
+                      ),
+                        child: Text(
+                      "Categories",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    )),
                     Expanded(
+                      flex: 2,
                       child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
-                          mainAxisSpacing: 3,
-                          crossAxisSpacing: 3,
-                          childAspectRatio: 0.93,
+                          mainAxisSpacing: 1,
+                          crossAxisSpacing: 1,
+                          childAspectRatio: 0.92,
                         ),
                         itemCount: categories.length,
                         itemBuilder: (context, index) {
-                          final count = categories[index];
-                          return Center(
+                          final category = categories[index];
+                          return Card(
+                            elevation: 2.0,
+                            margin: EdgeInsets.all(5),
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -136,22 +176,29 @@ class CartPage extends StatelessWidget {
                                       builder: (context) => FavoriteScreen()),
                                 );
                               },
-                              child: Container(
-                                margin: EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border:
-                                      Border.all(width: 2, color: Colors.black),
-                                  borderRadius: BorderRadius.circular(250),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  '${count.categoryName} (${count.categoryCount})',
-                                  style: TextStyle(
-                                            fontSize: 16,
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 100,
+                                    width: 100,
+                                    margin: EdgeInsets.only(top: 8, bottom: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue[100],
+                                      borderRadius: BorderRadius.circular(35),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '${category.categoryName} \n ${category.categoryCount}',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           );
@@ -159,9 +206,8 @@ class CartPage extends StatelessWidget {
                       ),
                     ),
                     Divider(),
-                    SizedBox(height: 10,),
-                    Divider(),
                     Expanded(
+                      flex: 1,
                       child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: users.length,
@@ -182,41 +228,90 @@ class CartPage extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AdvertScreen()),
+                                      builder: (context) => Homepage()),
                                 );
                               },
                               child: Container(
-                                color: Colors.blue,
+                                margin: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue[100],
+                                  
+                                  border: Border.all(width: 2, color: Colors.black),
+                                  borderRadius: BorderRadius.circular(15)
+                                ),
+                                
                                 child: Card(
-                                  margin: EdgeInsets.only(top: 10,left: 10, right: 10),
-                                  elevation: 4,
+                                  margin: EdgeInsets.only(
+                                      top: 5, left: 5, right: 5),
+                                  elevation: 0,
                                   child: Padding(
-                                    padding: EdgeInsets.all(8),
+                                    padding: EdgeInsets.all(3),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        SizedBox(height: 5),
-                                        Text(
-                                          user.name,
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white12,
+                                            border:Border.all(width: 1,color: Colors.transparent),
+                                            borderRadius: BorderRadius.circular(15)
+                                          ),
+                                          
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 100,
+                                                height: 100,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(width: 2, color: Colors.lightGreen),
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Center(
+                                                  child: Icon(
+                                                    Icons.person,
+                                                    size: 50,
+                                                    color: Colors.grey[600],
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.all(10),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      user.name,
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 5),
+                                                    Text(
+                                                      user.category,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 5),
+                                                    Text(user.location),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                        SizedBox(height: 5),
-                                        Text(
-                                          user.category,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5),
-                                        Text(user.location),
+
                                         SizedBox(height: 5),
                                         Divider(),
                                         SizedBox(height: 5),
+                                        //lower part
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
@@ -260,6 +355,7 @@ class CartPage extends StatelessWidget {
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: CartPage(),
   ));
 }
