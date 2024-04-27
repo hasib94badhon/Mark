@@ -22,6 +22,7 @@ class CategoryCount {
     );
   }
 }
+
 // Data model for user details
 class UserDetail {
   final String category;
@@ -54,7 +55,6 @@ class UserDetail {
       userId: json['user_id'],
       viewsCount: json['viewsCount'],
       shares: json['shares'],
-
     );
   }
 }
@@ -83,7 +83,7 @@ Future<Map<String, List<dynamic>>> fetchData() async {
 }
 
 class CartPage extends StatelessWidget {
-  final Future<Map<String, List<dynamic>>>data;
+  final Future<Map<String, List<dynamic>>> data;
 
   CartPage({Key? key})
       : data = fetchData(),
@@ -97,131 +97,157 @@ class CartPage extends StatelessWidget {
         backgroundColor: Colors.white12,
       ),
       body: FutureBuilder<Map<String, List<dynamic>>>(
-        future:data,
+        future: data,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
               return Center(child: Text("Error: ${snapshot.error}"));
             } else if (snapshot.hasData) {
-              final categories = snapshot.data!['categoryCounts'] as List<CategoryCount>;
+              final categories =
+                  snapshot.data!['categoryCounts'] as List<CategoryCount>;
               final users = snapshot.data!['userDetails'] as List<UserDetail>;
 
-              return Column(
-                children: [
-                  Expanded(
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 3,
-                        crossAxisSpacing: 3,
-                        childAspectRatio: 0.90,
-                      ),
-                      itemCount: categories.length,
-                      itemBuilder: (context, index) {
-                        final count = categories[index];
-                        return Center(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>FavoriteScreen()),);
-                            },
-                            child: Container(
-                              margin: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                border: Border.all(width: 1, color: Colors.black),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '${count.categoryName} (${count.categoryCount})',
-                                style: TextStyle(color: Colors.white),
+              return Container(
+                margin: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.white70,
+                  border: Border.all(width: 1, color: Colors.black),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 3,
+                          crossAxisSpacing: 3,
+                          childAspectRatio: 0.93,
+                        ),
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          final count = categories[index];
+                          return Center(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => FavoriteScreen()),
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border:
+                                      Border.all(width: 2, color: Colors.black),
+                                  borderRadius: BorderRadius.circular(250),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '${count.categoryName} (${count.categoryCount})',
+                                  style: TextStyle(
+                                            fontSize: 16,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  Expanded(child: 
-                  ListView.builder(shrinkWrap: true,
-                  itemCount: users.length,
-                  itemBuilder: (context,index){
-                    final user = users[index];
-                    // return Container(
-                    //   padding: EdgeInsets.only(top: 5),
-                    //   child: ListTile(
-                    //     title: Text(user.name),
-                    //     subtitle: Text('${user.category}-${user.location}\n0${user.phone}'),
-                    //     trailing: Text('Views: ${user.viewsCount}, Shares: ${user.shares}'),
-                      
-                    //   ),
-                    // );
-                    return Center(
-                      child: InkWell(
-                        onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>AdvertScreen()),);
-                            },
-                        child: Container(
-                          child: Card(
-                          margin: EdgeInsets.all(10),
-                          elevation: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Column(
-                              
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 10),
-                                Text(
-                                  user.name,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  user.category,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(user.location),
-                                SizedBox(height: 8),
-                                Divider(),
-                                SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('📞 0${user.phone}'),
-                                    Row(
+                    Divider(),
+                    SizedBox(height: 10,),
+                    Divider(),
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: users.length,
+                        itemBuilder: (context, index) {
+                          final user = users[index];
+                          // return Container(
+                          //   padding: EdgeInsets.only(top: 5),
+                          //   child: ListTile(
+                          //     title: Text(user.name),
+                          //     subtitle: Text('${user.category}-${user.location}\n0${user.phone}'),
+                          //     trailing: Text('Views: ${user.viewsCount}, Shares: ${user.shares}'),
+
+                          //   ),
+                          // );
+                          return Center(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AdvertScreen()),
+                                );
+                              },
+                              child: Container(
+                                color: Colors.blue,
+                                child: Card(
+                                  margin: EdgeInsets.only(top: 10,left: 10, right: 10),
+                                  elevation: 4,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Icon(Icons.remove_red_eye, size: 16),
-                                        SizedBox(width: 4),
-                                        Text('${user.viewsCount}'),
-                                        SizedBox(width: 16),
-                                        Icon(Icons.share, size: 16),
-                                        SizedBox(width: 4),
-                                        Text('${user.shares}'),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          user.name,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          user.category,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(user.location),
+                                        SizedBox(height: 5),
+                                        Divider(),
+                                        SizedBox(height: 5),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text('📞 0${user.phone}'),
+                                            Row(
+                                              children: [
+                                                Icon(Icons.remove_red_eye,
+                                                    size: 16),
+                                                SizedBox(width: 4),
+                                                Text('${user.viewsCount}'),
+                                                SizedBox(width: 16),
+                                                Icon(Icons.share, size: 16),
+                                                SizedBox(width: 6),
+                                                Text('${user.shares}'),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                                            ),
-                        ),
+                          );
+                        },
                       ),
-                    );
-
-                  },
-                  ),
-                  )
-                  
-                ],
+                    )
+                  ],
+                ),
               );
             }
           }
@@ -231,8 +257,6 @@ class CartPage extends StatelessWidget {
     );
   }
 }
-
-
 
 void main() {
   runApp(MaterialApp(

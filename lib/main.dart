@@ -13,6 +13,7 @@ import 'package:aaram_bd/screens/signup_screen.dart';
 import 'package:aaram_bd/screens/splash_screen.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
 import 'package:aaram_bd/screens/test_data_post_screen.dart';
+import 'package:aaram_bd/screens/user_profile.dart';
 
 void main() => runApp(MyApp());
 
