@@ -34,7 +34,7 @@ class _UserProfileState extends State<UserProfile> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 200,
+                    height: 220,
                     child: FanCarouselImageSlider(
                       sliderHeight: 200,
                       autoPlay: true,

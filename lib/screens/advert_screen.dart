@@ -47,7 +47,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 200,
+                    height: 220,
                     child: FanCarouselImageSlider(
                       sliderHeight: 200,
                       autoPlay: true,
