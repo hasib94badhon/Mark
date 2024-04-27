@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
 
-
 class Album {
   final int user_id;
   final int reg_id;
@@ -70,7 +69,7 @@ class _HomepageState extends State<Homepage> {
     super.initState();
     futureAlbum = fetchAlbum();
   }
-  
+
   List<Widget> pages = [
     CartPage(),
     CartPage(),
@@ -82,14 +81,36 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     var pageIndex = 0;
     return MaterialApp(
-      title: 'All Adverts',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
+      // title: 'All Adverts',
+      // theme: ThemeData(
+      //   primarySwatch: Colors.deepPurple,
+      // ),
       home: Scaffold(
         appBar: AppBar(
-
-          title: const Text('Adverts'),
+          title: Text(
+            'AaramBD',
+          ),
+          centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.person_search_outlined),
+              iconSize: 35,
+              onPressed: () {},
+            )
+          ],
+          backgroundColor: Colors.blue[100],
+          leading: IconButton(
+            onPressed: () {},
+            icon: IconButton(
+              icon: Icon(Icons.menu),
+              iconSize: 35,
+              onPressed: () {},
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25))),
         ),
         body: Center(
           child: FutureBuilder<List<Album>>(
@@ -106,65 +127,75 @@ class _HomepageState extends State<Homepage> {
                     final album = snapshot.data![index];
                     return Center(
                       child: InkWell(
-                         onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>AdvertScreen()),);
-                            },
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AdvertScreen()),
+                          );
+                        },
                         child: Container(
+                          color: Colors.blue[200],
                           child: Card(
-                            elevation: 4,
-                            margin: const EdgeInsets.all(10),
+                            elevation: 6,
+                            margin: const EdgeInsets.only(
+                                left: 10, top: 10, right: 10, bottom: 4),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              color: Colors.white,
                               child: Row(
                                 children: [
                                   Container(
                                     width: 100,
                                     height: 100,
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(15),
+                                        border: Border.all(
+                                            width: 2, color: Colors.green)),
                                     child: Center(
                                       child: Icon(
                                         Icons.person,
                                         size: 50,
-                                        color: Colors.grey[600],
+                                        color: Colors.blue,
                                       ),
                                     ),
                                   ),
                                   SizedBox(width: 16),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
                                         Text(
                                           album.name,
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 20,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
                                           ),
                                         ),
-                                        SizedBox(height: 8),
+                                        
                                         Text(
-                                          ' ${album.category}',
+                                          '${album.category}',
                                           style: TextStyle(
                                             color: Colors.grey[600],
-                                            fontSize: 14,
+                                            fontSize: 16,
                                           ),
                                         ),
-                                        SizedBox(height: 4),
+                                        SizedBox(height: 10),
                                         Text(
-                                          ' ${album.location}',
+                                          '${album.location}',
                                           style: TextStyle(
                                             color: Colors.grey[600],
-                                            fontSize: 14,
+                                            fontSize: 16,
                                           ),
                                         ),
-                                        SizedBox(height: 8),
                                         Text(
                                           'Response: ${index + 1}',
                                           style: TextStyle(
@@ -177,17 +208,22 @@ class _HomepageState extends State<Homepage> {
                                   ),
                                   SizedBox(width: 16),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
                                           Icon(Icons.phone,
-                                              color: const Color.fromARGB(
-                                                  255, 83, 83, 83)),
+                                              color: Colors.green),
                                           SizedBox(width: 5),
                                           Text(album.phone,
-                                              style: TextStyle(color: Colors.black)),
+                                              style: TextStyle(
+                                                  color: Colors.black,fontSize: 14)),
                                         ],
                                       ),
                                       SizedBox(height: 16),
@@ -195,14 +231,15 @@ class _HomepageState extends State<Homepage> {
                                         onPressed: () {},
                                         style: ElevatedButton.styleFrom(
                                           padding: EdgeInsets.symmetric(
-                                            vertical: 12,
-                                            horizontal: 16,
+                                            vertical: 16,
+                                            horizontal: 46,
                                           ),
-                                          backgroundColor: Colors.greenAccent,
+                                          backgroundColor: Colors.green[300],
                                         ),
                                         child: Text(
                                           'Call',
-                                          style: TextStyle(color: Colors.white),
+                                          style:
+                                              TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                     ],
@@ -222,84 +259,88 @@ class _HomepageState extends State<Homepage> {
             },
           ),
         ),
-        floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        overlayColor: Colors.black,
-        overlayOpacity: 0.5,
-        elevation: 6.0,
-        children: [
-          SpeedDialChild(
-            child: Icon(Icons.info, size: 24, color: Colors.white),
-            backgroundColor: Colors.blue,
-            label: 'Info',
-            onTap: () {
-              // Handle Info option tapped
-            },
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.local_activity, size: 24, color: Colors.white),
-            backgroundColor: Colors.green,
-            label: 'Service',
-            onTap: () {
-              // Handle Service option tapped
-            },
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.shopping_cart, size: 24, color: Colors.white),
-            backgroundColor: Colors.orange,
-            label: 'Shops',
-            onTap: () {
-              // Handle Shops option tapped
-            },
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.person, size: 24, color: Colors.white),
-            backgroundColor: Colors.red,
-            label: 'My Profile',
-            onTap: () {
-              // Handle My Profile option tapped
-            },
-            
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.person, size: 24, color: Colors.white),
-            backgroundColor: Colors.red,
-            label: '',
-            onTap: () {
-              // Handle My Profile option tapped
-            },
-            
-          ),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        height: 80,
-        activeColor: Colors.green,
-        inactiveColor: Colors.black,
-        iconSize: 30,
-        icons: [
-          CupertinoIcons.home,
-          CupertinoIcons.chart_bar_circle,
-          CupertinoIcons.info_circle_fill,
-          CupertinoIcons.profile_circled,
-        ],
-        activeIndex: pageIndex,
-        gapLocation: GapLocation.none,
-        notchSmoothness: NotchSmoothness.softEdge,
-        leftCornerRadius: 10,
-        elevation: 8,
-        onTap: (index) {
-          setState(() {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>NavigationScreen()),);
-          });
-        },
-      ),
+        // floatingActionButton: SpeedDial(
+        //   animatedIcon: AnimatedIcons.menu_close,
+        //   overlayColor: Colors.black,
+        //   overlayOpacity: 0.5,
+        //   elevation: 6.0,
+        //   children: [
+        //     SpeedDialChild(
+        //       child: Icon(Icons.info, size: 24, color: Colors.white),
+        //       backgroundColor: Colors.blue,
+        //       label: 'Info',
+        //       onTap: () {
+        //         // Handle Info option tapped
+        //       },
+        //     ),
+        //     SpeedDialChild(
+        //       child: Icon(Icons.local_activity, size: 24, color: Colors.white),
+        //       backgroundColor: Colors.green,
+        //       label: 'Service',
+        //       onTap: () {
+        //         // Handle Service option tapped
+        //       },
+        //     ),
+        //     SpeedDialChild(
+        //       child: Icon(Icons.shopping_cart, size: 24, color: Colors.white),
+        //       backgroundColor: Colors.orange,
+        //       label: 'Shops',
+        //       onTap: () {
+        //         // Handle Shops option tapped
+        //       },
+        //     ),
+        //     SpeedDialChild(
+        //       child: Icon(Icons.person, size: 24, color: Colors.white),
+        //       backgroundColor: Colors.red,
+        //       label: 'My Profile',
+        //       onTap: () {
+        //         // Handle My Profile option tapped
+        //       },
+        //     ),
+        //     SpeedDialChild(
+        //       child: Icon(Icons.person, size: 24, color: Colors.white),
+        //       backgroundColor: Colors.red,
+        //       label: '',
+        //       onTap: () {
+        //         // Handle My Profile option tapped
+        //       },
+        //     ),
+        //   ],
+        // ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        bottomNavigationBar: AnimatedBottomNavigationBar(
+          height: 80,
+          activeColor: Colors.green,
+          inactiveColor: Colors.black,
+          iconSize: 30,
+          icons: [
+            CupertinoIcons.home,
+            CupertinoIcons.chart_bar_circle,
+            CupertinoIcons.info_circle_fill,
+            CupertinoIcons.profile_circled,
+          ],
+          activeIndex: pageIndex,
+          gapLocation: GapLocation.none,
+          notchSmoothness: NotchSmoothness.softEdge,
+          leftCornerRadius: 10,
+          elevation: 8,
+          onTap: (index) {
+            setState(() {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NavigationScreen()),
+              );
+            });
+          },
+        ),
       ),
     );
   }
 }
 
 void main() {
-  runApp(const Homepage());
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: Homepage(),
+  ));
 }

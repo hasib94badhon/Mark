@@ -24,26 +24,50 @@ class _AdvertScreenState extends State<AdvertScreen> {
     "images/image5.png"
   ];
 
-  
   List<Widget> pages = [
     CartPage(),
     CartPage(),
     CartPage(),
-    UserProfile (),
+    UserProfile(),
   ];
-  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'AaramBD',
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.person_search_outlined),
+            iconSize: 35,
+            onPressed: () {},
+          )
+        ],
+        backgroundColor: Colors.blue[100],
+        leading: IconButton(
+          onPressed: () {},
+          icon: IconButton(
+            icon: Icon(Icons.menu),
+            iconSize: 35,
+            onPressed: () {},
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25))),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Sliding Picture Show
             Container(
-              color: Colors.black87,
-              padding: EdgeInsets.symmetric(vertical: 20),
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 6),
               child: Column(
                 children: [
                   SizedBox(
@@ -55,27 +79,18 @@ class _AdvertScreenState extends State<AdvertScreen> {
                       isAssets: true,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Rafiq Ahmed",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
-                          ),
-                        ),
-                        SizedBox(height: 5),
                         Row(
                           children: [
                             Icon(
                               Icons.location_on,
-                              color: Colors.grey,
-                              size: 16,
+                              color: Colors.green,
+                              size: 18,
                             ),
                             SizedBox(width: 5),
                             Text(
@@ -83,7 +98,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: 18,
                               ),
                             ),
                           ],
@@ -95,12 +110,19 @@ class _AdvertScreenState extends State<AdvertScreen> {
               ),
             ),
 
-            // Profile Details
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.only(left: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    "John Doe", // Placeholder for the electrician's name
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   Text(
                     "Electrician",
                     style: TextStyle(
@@ -109,56 +131,85 @@ class _AdvertScreenState extends State<AdvertScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
                   RatingBar.builder(
-                    initialRating: 3,
+                    initialRating: 3.5,
                     minRating: 1,
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
-                    itemSize: 24,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    itemSize: 18,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                     itemBuilder: (context, _) => Icon(
                       Icons.star,
                       color: Colors.amber,
                     ),
-                    onRatingUpdate: (rating) {},
+                    onRatingUpdate: (rating) {
+                      print("Rating is $rating");
+                    },
                   ),
-                  SizedBox(height: 20),
+                  
+                  SizedBox(height: 10),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // TextButton(
-                      //   onPressed: () {
-                      //     // Handle Edit Profile button pressed
-                      //   },
-                      //   style: ButtonStyle(
-                      //     backgroundColor:
-                      //         MaterialStateProperty.all(Colors.amber),
-                      //     shape: MaterialStateProperty.all(
-                      //       RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(20),
-                      //       ),
-                      //     ),
-                      //   ),
-                      //   child: Text(
-                      //     "Edit Profile",
-                      //     style: TextStyle(
-                      //       color: Colors.black87,
-                      //       fontWeight: FontWeight.bold,
-                      //       fontSize: 16,
-                      //     ),
-                      //   ),
-                      // ),
-                      Text(
-                        "+01*******33",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Colors.grey,
-                        ),
+                      IconButton(
+                        icon: Icon(Icons.phone, color: Colors.green,size: 40,),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.message, color: Colors.blue,size: 40,),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.comment, color: Colors.orange,size: 40,),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.facebook, color: Colors.blue[800],size: 40,),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.south_america_sharp,
+                            color: Colors.green[800]),
+                        onPressed: () {},
                       ),
                     ],
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle Give Review
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.blue),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      "Give Review",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle Comments
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.grey),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      "Comments",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -353,7 +404,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
       //       onTap: () {
       //         // Handle My Profile option tapped
       //       },
-            
+
       //     ),
       //     SpeedDialChild(
       //       child: Icon(Icons.person, size: 24, color: Colors.white),
@@ -362,7 +413,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
       //       onTap: () {
       //         // Handle My Profile option tapped
       //       },
-            
+
       //     ),
       //   ],
       // ),
@@ -385,7 +436,10 @@ class _AdvertScreenState extends State<AdvertScreen> {
         elevation: 8,
         onTap: (index) {
           setState(() {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>NavigationScreen()),);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NavigationScreen()),
+            );
           });
         },
       ),
