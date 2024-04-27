@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 // Data model for category counts

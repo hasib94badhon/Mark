@@ -69,6 +69,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
             onTap: () {
               // Handle My Profile option tapped
             },
+            
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.person, size: 24, color: Colors.white),
+            backgroundColor: Colors.red,
+            label: '',
+            onTap: () {
+              // Handle My Profile option tapped
+            },
+            
           ),
         ],
       ),
