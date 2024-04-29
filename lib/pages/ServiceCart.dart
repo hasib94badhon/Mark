@@ -83,10 +83,10 @@ Future<Map<String, List<dynamic>>> fetchData() async {
   }
 }
 
-class CartPage extends StatelessWidget {
+class ServiceCart extends StatelessWidget {
   final Future<Map<String, List<dynamic>>> data;
 
-  CartPage({Key? key})
+  ServiceCart({Key? key})
       : data = fetchData(),
         super(key: key);
 
@@ -105,7 +105,7 @@ class CartPage extends StatelessWidget {
             onPressed: () {},
           )
         ],
-        backgroundColor: Colors.blue[100],
+        backgroundColor: Colors.green[100],
         leading: IconButton(
           onPressed: () {},
           icon: IconButton(
@@ -144,12 +144,12 @@ class CartPage extends StatelessWidget {
                       alignment: Alignment.center,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Colors.blue[100],
+                        color: Colors.green[100],
                         border: Border.all(width: 1, color: Colors.black12),
                         borderRadius: BorderRadius.circular(15)
                       ),
                         child: Text(
-                      "All Categories",
+                      "Service",
                       style:
                           TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     )),
@@ -184,7 +184,7 @@ class CartPage extends StatelessWidget {
                                     width: 100,
                                     margin: EdgeInsets.only(top: 8, bottom: 4),
                                     decoration: BoxDecoration(
-                                      color: Colors.blue[100],
+                                      color: Colors.green[100],
                                       borderRadius: BorderRadius.circular(35),
                                     ),
                                     child: Center(
@@ -234,7 +234,7 @@ class CartPage extends StatelessWidget {
                               child: Container(
                                 margin: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.blue[100],
+                                  color: Colors.green[100],
                                   
                                   border: Border.all(width: 2, color: Colors.black),
                                   borderRadius: BorderRadius.circular(15)
@@ -356,6 +356,6 @@ class CartPage extends StatelessWidget {
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: CartPage(),
+    home: ServiceCart(),
   ));
 }

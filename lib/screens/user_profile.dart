@@ -23,14 +23,40 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'AaramBD',
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.person_search_outlined),
+            iconSize: 35,
+            onPressed: () {},
+          )
+        ],
+        backgroundColor: Colors.purple[100],
+        leading: IconButton(
+          onPressed: () {},
+          icon: IconButton(
+            icon: Icon(Icons.menu),
+            iconSize: 35,
+            onPressed: () {},
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25))),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Sliding Picture Show
             Container(
-              color: Colors.black87,
-              padding: EdgeInsets.symmetric(vertical: 20),
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: [
                   SizedBox(
@@ -42,7 +68,7 @@ class _UserProfileState extends State<UserProfile> {
                       isAssets: true,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(

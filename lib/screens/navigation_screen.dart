@@ -1,3 +1,4 @@
+import 'package:aaram_bd/pages/ServiceCart.dart';
 import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,8 @@ import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:aaram_bd/pages/cartPage.dart';
+import 'package:aaram_bd/pages/ServiceCart.dart';
+import 'package:aaram_bd/pages/ShopsCart.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
 
 
@@ -23,8 +26,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   List<Widget> pages = [
     CartPage(),
-    CartPage(),
-    CartPage(),
+    ServiceCart(),
+    ShopsCart(),
     UserProfile (),
   ];
 
