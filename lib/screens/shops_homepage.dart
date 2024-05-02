@@ -54,14 +54,14 @@ Future<List<Album>> fetchAlbum() async {
   }
 }
 
-class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+class ShopsHomepage extends StatefulWidget {
+  const ShopsHomepage({Key? key}) : super(key: key);
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<ShopsHomepage> createState() => _ShopsHomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _ShopsHomepageState extends State<ShopsHomepage> {
   late Future<List<Album>> futureAlbum;
 
   @override
@@ -98,7 +98,7 @@ class _HomepageState extends State<Homepage> {
               onPressed: () {},
             )
           ],
-          backgroundColor: Colors.blue[100],
+          backgroundColor: Colors.purple[100],
           leading: IconButton(
             onPressed: () {},
             icon: IconButton(
@@ -137,7 +137,7 @@ class _HomepageState extends State<Homepage> {
                           );
                         },
                         child: Container(
-                          color: Colors.blue[200],
+                          color: Colors.purple[100],
                           child: Card(
                             elevation: 6,
                             margin: const EdgeInsets.only(
@@ -158,7 +158,7 @@ class _HomepageState extends State<Homepage> {
                                         borderRadius:
                                             BorderRadius.circular(15),
                                         border: Border.all(
-                                            width: 2, color: Colors.green)),
+                                            width: 2, color: Color.fromARGB(255, 199, 123, 212))),
                                     child: Center(
                                       child: Icon(
                                         Icons.person,
@@ -236,7 +236,7 @@ class _HomepageState extends State<Homepage> {
                                             vertical: 16,
                                             horizontal: 46,
                                           ),
-                                          backgroundColor: Colors.blue[100],
+                                          backgroundColor: Colors.purple[100],
                                         ),
                                         child: Text(
                                           'Call',
@@ -278,9 +278,9 @@ class _HomepageState extends State<Homepage> {
         //     SpeedDialChild(
         //       child: Icon(Icons.local_activity, size: 24, color: Colors.white),
         //       backgroundColor: Colors.green,
-        //       label: 'Service',
+        //       label: 'Shops',
         //       onTap: () {
-        //         // Handle Service option tapped
+        //         // Handle Shops option tapped
         //       },
         //     ),
         //     SpeedDialChild(
@@ -312,7 +312,7 @@ class _HomepageState extends State<Homepage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         bottomNavigationBar: AnimatedBottomNavigationBar(
           height: 80,
-          activeColor: Colors.green,
+          activeColor: Colors.purple,
           inactiveColor: Colors.black,
           iconSize: 30,
           icons: [
@@ -341,6 +341,6 @@ class _HomepageState extends State<Homepage> {
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Homepage(),
+    home: ShopsHomepage(),
   ));
 }

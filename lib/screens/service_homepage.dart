@@ -54,14 +54,14 @@ Future<List<Album>> fetchAlbum() async {
   }
 }
 
-class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+class ServiceHomepage extends StatefulWidget {
+  const ServiceHomepage({Key? key}) : super(key: key);
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<ServiceHomepage> createState() => _ServiceHomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _ServiceHomepageState extends State<ServiceHomepage> {
   late Future<List<Album>> futureAlbum;
 
   @override
@@ -98,7 +98,7 @@ class _HomepageState extends State<Homepage> {
               onPressed: () {},
             )
           ],
-          backgroundColor: Colors.blue[100],
+          backgroundColor: Colors.green[100],
           leading: IconButton(
             onPressed: () {},
             icon: IconButton(
@@ -137,7 +137,7 @@ class _HomepageState extends State<Homepage> {
                           );
                         },
                         child: Container(
-                          color: Colors.blue[200],
+                          color: Colors.green[100],
                           child: Card(
                             elevation: 6,
                             margin: const EdgeInsets.only(
@@ -236,7 +236,7 @@ class _HomepageState extends State<Homepage> {
                                             vertical: 16,
                                             horizontal: 46,
                                           ),
-                                          backgroundColor: Colors.blue[100],
+                                          backgroundColor: Colors.green[300],
                                         ),
                                         child: Text(
                                           'Call',
@@ -341,6 +341,6 @@ class _HomepageState extends State<Homepage> {
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Homepage(),
+    home: ServiceHomepage(),
   ));
 }

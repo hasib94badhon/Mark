@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
+import 'package:aaram_bd/screens/shops_favorite_screen.dart';
+import 'package:aaram_bd/screens/shops_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -173,7 +175,7 @@ class ShopsCart extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => FavoriteScreen()),
+                                      builder: (context) => ShopsFavorite()),
                                 );
                               },
                               child: Column(
@@ -228,7 +230,7 @@ class ShopsCart extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Homepage()),
+                                      builder: (context) => ShopsHomepage()),
                                 );
                               },
                               child: Container(

@@ -1,5 +1,6 @@
 import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/screens/navigation_screen.dart';
+import 'package:aaram_bd/screens/shops_homepage.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
@@ -7,12 +8,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-class FavoriteScreen extends StatefulWidget {
+class ShopsFavorite extends StatefulWidget {
   @override
-  State<FavoriteScreen> createState() => _FavoriteScreenState();
+  State<ShopsFavorite> createState() => _ShopsFavoriteState();
 }
 
-class _FavoriteScreenState extends State<FavoriteScreen> {
+class _ShopsFavoriteState extends State<ShopsFavorite> {
   int pageIndex = 0;
 
 
@@ -63,7 +64,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             onPressed: () {},
           )
         ],
-        backgroundColor: Colors.blue[100],
+        backgroundColor: Colors.purple[100],
         leading: IconButton(
           onPressed: () {},
           icon: IconButton(
@@ -86,12 +87,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             padding: EdgeInsets.symmetric(horizontal: 10,),
             decoration: BoxDecoration(
               color: Colors.white,
-              border: Border.all(width: 1, color: Colors.blue),
+              border: Border.all(width: 1, color: const Color.fromARGB(255, 235, 179, 245)),
               borderRadius: BorderRadius.circular(25),
             ),
             child: Row(
               children: [
-                Icon(Icons.search, color: Colors.blue),
+                Icon(Icons.search, color: Color.fromARGB(255, 235, 179, 245)),
                 SizedBox(width: 10),
                 Expanded(
                   child: TextField(
@@ -141,7 +142,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Homepage()),
+                        MaterialPageRoute(builder: (context) => ShopsHomepage()),
                       );
                     },
                     child: Container(
@@ -149,7 +150,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border.all(width: 1, color: Colors.blue),
+                        border: Border.all(width: 1, color: Color.fromARGB(255, 235, 179, 245)),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
@@ -216,7 +217,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         height: 80,
-        activeColor: Color.fromARGB(255, 0, 74, 134),
+        activeColor: Colors.purple,
         inactiveColor: Colors.black,
         iconSize: 30,
         icons: [
@@ -243,6 +244,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: FavoriteScreen(),
+    home: ShopsFavorite(),
   ));
 }

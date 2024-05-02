@@ -1,6 +1,6 @@
-import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 
 class UserProfile extends StatefulWidget {
   @override
@@ -8,55 +8,47 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  int pageIndex = 0;
-
   List<String> images = [
     "images/image1.png",
     "images/image2.png",
     "images/image3.png",
     "images/image4.png",
-    "images/image5.png"
+    "images/image5.png",
   ];
-
-  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'AaramBD',
-        ),
+        title: Text('AaramBD'),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.person_search_outlined),
-            iconSize: 35,
-            onPressed: () {},
-          )
-        ],
         backgroundColor: Colors.purple[100],
         leading: IconButton(
+          icon: Icon(Icons.menu),
           onPressed: () {},
-          icon: IconButton(
-            icon: Icon(Icons.menu),
-            iconSize: 35,
+          iconSize: 35,
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.person_search_outlined),
             onPressed: () {},
+            iconSize: 35,
+          ),
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(25),
+            bottomRight: Radius.circular(25),
           ),
         ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Sliding Picture Show
             Container(
               color: Colors.white,
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(vertical: 5),
               child: Column(
                 children: [
                   SizedBox(
@@ -68,7 +60,6 @@ class _UserProfileState extends State<UserProfile> {
                       isAssets: true,
                     ),
                   ),
-                  SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
@@ -77,7 +68,7 @@ class _UserProfileState extends State<UserProfile> {
                         Text(
                           "Rafiq Ahmed",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 24,
                           ),
@@ -107,8 +98,6 @@ class _UserProfileState extends State<UserProfile> {
                 ],
               ),
             ),
-
-            // Profile Details
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -122,15 +111,13 @@ class _UserProfileState extends State<UserProfile> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
                   RatingBar.builder(
                     initialRating: 3,
                     minRating: 1,
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
-                    itemSize: 24,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    itemSize: 18,
                     itemBuilder: (context, _) => Icon(
                       Icons.star,
                       color: Colors.amber,
@@ -146,8 +133,7 @@ class _UserProfileState extends State<UserProfile> {
                           // Handle Edit Profile button pressed
                         },
                         style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.amber),
+                          backgroundColor: MaterialStateProperty.all(Colors.amber),
                           shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -176,8 +162,6 @@ class _UserProfileState extends State<UserProfile> {
                 ],
               ),
             ),
-
-            // Gallery
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -199,8 +183,7 @@ class _UserProfileState extends State<UserProfile> {
                           // Handle Upload and Post button pressed
                         },
                         style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue),
+                          backgroundColor: MaterialStateProperty.all(Colors.blue),
                           shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -215,7 +198,7 @@ class _UserProfileState extends State<UserProfile> {
                             fontSize: 16,
                           ),
                         ),
-                      ),
+                                           ),
                     ],
                   ),
                   SizedBox(height: 20),
@@ -262,8 +245,7 @@ class _UserProfileState extends State<UserProfile> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -273,7 +255,7 @@ class _UserProfileState extends State<UserProfile> {
                                           ),
                                           SizedBox(width: 5),
                                           Text(
-                                            "100",
+                                            "100",  // Likes count
                                             style: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -288,7 +270,7 @@ class _UserProfileState extends State<UserProfile> {
                                           ),
                                           SizedBox(width: 5),
                                           Text(
-                                            "50",
+                                            "50",  // Shares count
                                             style: TextStyle(
                                               color: Colors.black,
                                             ),

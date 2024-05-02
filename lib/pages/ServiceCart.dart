@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:aaram_bd/pages/Homepage.dart';
+import 'package:aaram_bd/screens/Service_favorite_screen.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
+import 'package:aaram_bd/screens/service_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -173,7 +175,7 @@ class ServiceCart extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => FavoriteScreen()),
+                                      builder: (context) => ServiceFavorite()),
                                 );
                               },
                               child: Column(
@@ -228,7 +230,7 @@ class ServiceCart extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Homepage()),
+                                      builder: (context) => ServiceHomepage()),
                                 );
                               },
                               child: Container(
