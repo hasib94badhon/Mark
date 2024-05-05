@@ -154,6 +154,35 @@ def get_user_data():
 
         return jsonify({"users_data": users_with_phone_data})
 
+
+@app.route('/get_service_data', methods=['GET'])
+def get_service_data():
+    if request.method == 'GET':
+        # Connect to the database
+        connection = db_connector.connect()
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        try:
+            # SQL to fetch unique categories and count each
+            sql_query = """
+            SELECT category, COUNT(*) AS count
+            FROM service
+            GROUP BY category
+            """
+            cursor.execute(sql_query)
+            categories_data = cursor.fetchall()
+            print(categories_data)  # Optional: for logging purpose on the server
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
+        # Return the fetched data as JSON
+        return jsonify({"categories_data": categories_data})
+    
+
+
+
 @app.route('/get_category_and_counts_all_info', methods=['GET'])
 def get_category_and_counts_all_info():
     if request.method == 'GET':

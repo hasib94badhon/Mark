@@ -1,52 +1,77 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/screens/navigation_screen.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
+
+class Album {
+  final int service_id;
+  final String category;
+  final String business_name;
+  final String address;
+  final String phone;
+
+  const Album({
+    required this.service_id,
+    required this.category,
+    required this.business_name,
+    required this.address,
+    required this.phone,
+  });
+
+  factory Album.fromJson(Map<String, dynamic> json) {
+    return Album(
+      service_id: json['service_id'] ?? 0,
+      category: json['category'] ?? '',
+      business_name: json['business_name'],
+      address: json['address'],
+      phone: json['phone'],
+    );
+  }
+}
+
+
+Future<List<Album>> fetchAlbum() async {
+  final response =
+      await http.get(Uri.parse('http://192.168.0.101:5000/get_service_data'));
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> data = jsonDecode(response.body);
+    final List<dynamic> userData = data['category_data'];
+
+    return userData.map((json) => Album.fromJson(json)).toList();
+  } else {
+    throw Exception('Failed to load album');
+  }
+}
+
+
 class FavoriteScreen extends StatefulWidget {
+
   @override
   State<FavoriteScreen> createState() => _FavoriteScreenState();
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
+
   int pageIndex = 0;
 
+  late Future<List<Album>> futureAlbum;
 
-  List<String> imageList = [
-    "images/image1.png",
-    "images/image2.png",
-    "images/image3.png",
-    "images/image4.png",
-    "images/image5.png",
-  ];
+  @override
+  void initState(){
+    super.initState();
+    futureAlbum = fetchAlbum();
+  }
 
-  List<String> productTitles = [
-    "Electrician",
-    "Plumber",
-    "Carpenter",
-    "Photographer",
-    "Lo-let",
-  ];
-
-  List<String> prices = [
-    "\$300",
-    "\$300",
-    "\$300",
-    "\$300",
-    "\$300",
-  ];
-
-  List<String> reviews = [
-    "54",
-    "504",
-    "54",
-    "554",
-    "54",
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -104,111 +129,106 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               ],
             ),
           ),
-          // Sliding Show
-          SizedBox(
-            height: 160,
-            child: ListView.builder(
-              itemCount: imageList.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: 160,
-                  margin: EdgeInsets.only(top: 10,right: 10),
-                  padding: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(width:2, color:Colors.grey.shade300),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      imageList[index],
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+
           SizedBox(height: 10),
           // Product List
           Expanded(
-            child: ListView.builder(
-              itemCount: productTitles.length,
-              itemBuilder: (context, index) {
-                return Center(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Homepage()),
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(width: 1, color: Colors.blue),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            margin: EdgeInsets.only(right: 20),
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(width: 3,color: Colors.greenAccent),
-                            ),
-                            child: Image.asset(
-                              imageList[index],
-                              fit: BoxFit.cover,
-                            ),
+            
+
+            child: FutureBuilder<List<Album>>(
+              future: futureAlbum,
+              builder: (context, snapshot) {
+                if(snapshot.connectionState==ConnectionState.waiting){
+                  return CircularProgressIndicator();
+                } else if(snapshot.hasError){
+                  return Text('Error:${snapshot.error}');
+                }else if (snapshot.hasData){
+                  return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    final Album = snapshot.data![index];
+                    return Center(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Homepage()),
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(width: 1, color: Colors.blue),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  productTitles[index],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 100,
+                                margin: EdgeInsets.only(right: 20),
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(width: 3,color: Colors.greenAccent),
                                 ),
-                                SizedBox(height: 5),
-                                Text(
-                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: 5),
-                                Row(
+                                // child: Image.asset(
+                                //   //imageList[index],
+                                //   //fit: BoxFit.cover,
+                                // ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Icon(Icons.star, color: Colors.amber),
-                                    Text(reviews[index]),
-                                    SizedBox(width: 10),
                                     Text(
-                                      prices[index],
+                                      Album.category,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.blue,
+                                        fontSize: 18,
                                       ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      Album.address,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.star, color: Colors.amber),
+                                        //Text(reviews[index]),
+                                        SizedBox(width: 10),
+                                        // Text(
+                                        //   prices[index],
+                                        //   style: TextStyle(
+                                        //     fontWeight: FontWeight.bold,
+                                        //     color: Colors.blue,
+                                        //   ),
+                                        // ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 );
-              },
+                }
+                else{
+                  return Text('Something went wrong');
+                }
+
+                
+              }
             ),
           ),
         ],

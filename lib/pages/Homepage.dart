@@ -70,12 +70,6 @@ class _HomepageState extends State<Homepage> {
     futureAlbum = fetchAlbum();
   }
 
-  List<Widget> pages = [
-    CartPage(),
-    CartPage(),
-    CartPage(),
-    UserProfile(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +112,7 @@ class _HomepageState extends State<Homepage> {
           child: FutureBuilder<List<Album>>(
             future: futureAlbum,
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+              if(snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
