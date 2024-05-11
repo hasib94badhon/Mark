@@ -9,8 +9,79 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class AdvertScreen extends StatefulWidget {
+  
   @override
   State<AdvertScreen> createState() => _AdvertScreenState();
+}
+
+class TimelineWidget extends StatelessWidget {
+  final List<Map<String, dynamic>> posts;
+
+  TimelineWidget({Key? key, required this.posts}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 5),
+      padding: EdgeInsets.all(3),
+      height: 260, // Fixed height to show a part of the timeline
+      child: ListView.builder(
+        itemCount: posts.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          var post = posts[index];
+          return Container(
+            width: 200,
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              color: Colors.blue[100],
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
+                ),
+              ],
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(15)),
+                    child: Image.asset(
+                      post['image'],
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        post['businessName'],
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      SizedBox(height: 5),
+                      Text(post['category']),
+                      SizedBox(height: 5),
+                      Text(post['location']),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
 
 class _AdvertScreenState extends State<AdvertScreen> {
@@ -147,25 +218,40 @@ class _AdvertScreenState extends State<AdvertScreen> {
                       print("Rating is $rating");
                     },
                   ),
-                  
                   SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.phone, color: Colors.green,size: 40,),
+                        icon: Icon(
+                          Icons.phone,
+                          color: Colors.green,
+                          size: 40,
+                        ),
                         onPressed: () {},
                       ),
                       IconButton(
-                        icon: Icon(Icons.message, color: Colors.blue,size: 40,),
+                        icon: Icon(
+                          Icons.message,
+                          color: Colors.blue,
+                          size: 40,
+                        ),
                         onPressed: () {},
                       ),
                       IconButton(
-                        icon: Icon(Icons.comment, color: Colors.orange,size: 40,),
+                        icon: Icon(
+                          Icons.comment,
+                          color: Colors.orange,
+                          size: 40,
+                        ),
                         onPressed: () {},
                       ),
                       IconButton(
-                        icon: Icon(Icons.facebook, color: Colors.blue[800],size: 40,),
+                        icon: Icon(
+                          Icons.facebook,
+                          color: Colors.blue[800],
+                          size: 40,
+                        ),
                         onPressed: () {},
                       ),
                       IconButton(
@@ -176,41 +262,53 @@ class _AdvertScreenState extends State<AdvertScreen> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle Give Review
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+
+                  // After Review and Comments Row and before Gallery Section
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle Give Review
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blue),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0))),
                         ),
+                        child: Text("Review",
+                            style: TextStyle(color: Colors.white)),
                       ),
-                    ),
-                    child: Text(
-                      "Give Review",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Handle Comments
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.grey),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle Comments
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0))),
                         ),
+                        child: Text("Comments",
+                            style: TextStyle(color: Colors.white)),
                       ),
-                    ),
-                    child: Text(
-                      "Comments",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    ],
                   ),
+                  SizedBox(height: 20),
+                  TimelineWidget(
+                    posts: List.generate(
+                        6,
+                        (index) => {
+                              "businessName": "Business $index",
+                              "category": "Category $index",
+                              "location": "Location $index",
+                              "image": "images/image${index % 5 + 1}.png",
+                            }),
+                  ),
+// Continue with Gallery section
                 ],
               ),
             ),
@@ -222,7 +320,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
                         "Gallery",

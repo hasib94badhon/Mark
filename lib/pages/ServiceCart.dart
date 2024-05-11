@@ -64,7 +64,7 @@ class UserDetail {
 
 // Modified fetchData function to return both categories and user details
 Future<Map<String, List<dynamic>>> fetchData() async {
-  final url = 'http://192.168.0.101:5000/get_category_and_counts_all_info';
+  final url = 'http://192.168.0.102:5000/get_category_and_counts_all_info';
   final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
@@ -75,7 +75,7 @@ Future<Map<String, List<dynamic>>> fetchData() async {
     final userDetails = (jsonResponse['all_users_data'] as List)
         .map((data) => UserDetail.fromJson(data))
         .toList();
-
+      
     return {
       'categoryCounts': categoryCounts,
       'userDetails': userDetails,

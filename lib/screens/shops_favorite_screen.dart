@@ -78,141 +78,143 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25))),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Search Button
-          Container(
-            margin: EdgeInsets.all(5),
-            padding: EdgeInsets.symmetric(horizontal: 10,),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(width: 1, color: const Color.fromARGB(255, 235, 179, 245)),
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.search, color: Color.fromARGB(255, 235, 179, 245)),
-                SizedBox(width: 10),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Find your service',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Sliding Show
-          SizedBox(
-            height: 160,
-            child: ListView.builder(
-              itemCount: imageList.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: 160,
-                  margin: EdgeInsets.only(top: 10,right: 10),
-                  padding: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(width:2, color:Colors.grey.shade300),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      imageList[index],
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          SizedBox(height: 10),
-          // Product List
-          Expanded(
-            child: ListView.builder(
-              itemCount: productTitles.length,
-              itemBuilder: (context, index) {
-                return Center(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ShopsHomepage()),
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(width: 1, color: Color.fromARGB(255, 235, 179, 245)),
-                        borderRadius: BorderRadius.circular(20),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Search Button
+            Container(
+              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.symmetric(horizontal: 10,),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(width: 1, color: const Color.fromARGB(255, 235, 179, 245)),
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.search, color: Color.fromARGB(255, 235, 179, 245)),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Find your service',
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            margin: EdgeInsets.only(right: 20),
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(width: 3,color: Colors.greenAccent),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Sliding Show
+            SizedBox(
+              height: 160,
+              child: ListView.builder(
+                itemCount: imageList.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: 160,
+                    margin: EdgeInsets.only(top: 10,right: 10),
+                    padding: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(width:2, color:Colors.grey.shade300),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        imageList[index],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 10),
+            // Product List
+            Expanded(
+              child: ListView.builder(
+                itemCount: productTitles.length,
+                itemBuilder: (context, index) {
+                  return Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ShopsHomepage()),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(width: 1, color: Color.fromARGB(255, 235, 179, 245)),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 100,
+                              margin: EdgeInsets.only(right: 20),
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(width: 3,color: Colors.greenAccent),
+                              ),
+                              child: Image.asset(
+                                imageList[index],
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            child: Image.asset(
-                              imageList[index],
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  productTitles[index],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Icon(Icons.star, color: Colors.amber),
-                                    Text(reviews[index]),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      prices[index],
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.blue,
-                                      ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    productTitles[index],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
-                                  ],
-                                ),
-                              ],
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.star, color: Colors.amber),
+                                      Text(reviews[index]),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        prices[index],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: AnimatedBottomNavigationBar(

@@ -70,7 +70,6 @@ class _HomepageState extends State<Homepage> {
     futureAlbum = fetchAlbum();
   }
 
-
   @override
   Widget build(BuildContext context) {
     var pageIndex = 0;
@@ -106,17 +105,16 @@ class _HomepageState extends State<Homepage> {
                   bottomLeft: Radius.circular(25),
                   bottomRight: Radius.circular(25))),
         ),
-        
-        
+
         body: Center(
           child: FutureBuilder<List<Album>>(
             future: futureAlbum,
             builder: (context, snapshot) {
-              if(snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
-              } else if (snapshot.hasData) {
+              } else if (snapshot.hasData && snapshot.data != null) {
                 return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
@@ -149,8 +147,7 @@ class _HomepageState extends State<Homepage> {
                                     height: 100,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         border: Border.all(
                                             width: 2, color: Colors.green)),
                                     child: Center(
@@ -166,7 +163,8 @@ class _HomepageState extends State<Homepage> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         Text(
                                           album.name,
@@ -176,7 +174,6 @@ class _HomepageState extends State<Homepage> {
                                             color: Colors.black,
                                           ),
                                         ),
-                                        
                                         Text(
                                           '${album.category}',
                                           style: TextStyle(
@@ -204,13 +201,11 @@ class _HomepageState extends State<Homepage> {
                                   ),
                                   SizedBox(width: 16),
                                   Column(
-                                    
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.end,
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Row(
-                                        
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
@@ -219,7 +214,8 @@ class _HomepageState extends State<Homepage> {
                                           SizedBox(width: 5),
                                           Text(album.phone,
                                               style: TextStyle(
-                                                  color: Colors.black,fontSize: 14)),
+                                                  color: Colors.black,
+                                                  fontSize: 14)),
                                         ],
                                       ),
                                       SizedBox(height: 16),
@@ -234,8 +230,9 @@ class _HomepageState extends State<Homepage> {
                                         ),
                                         child: Text(
                                           'Call',
-                                          style:
-                                              TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                     ],

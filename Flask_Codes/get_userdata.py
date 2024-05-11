@@ -1,3 +1,4 @@
+import base64
 from flask import Flask, jsonify,request
 from json import *
 from flask_mysqldb import MySQL
@@ -158,28 +159,41 @@ def get_user_data():
 @app.route('/get_service_data', methods=['GET'])
 def get_service_data():
     if request.method == 'GET':
-        # Connect to the database
-        connection = db_connector.connect()
-        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        connection = None
         try:
-            # SQL to fetch unique categories and count each
-            sql_query = """
-            SELECT category, COUNT(*) AS count
-            FROM service
-            GROUP BY category
-            """
-            cursor.execute(sql_query)
-            categories_data = cursor.fetchall()
-            print(categories_data)  # Optional: for logging purpose on the server
+            connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
+            with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+                # Fetch categories and their counts
+                sql_query = "SELECT category, COUNT(*) AS count FROM service GROUP BY category"
+                cursor.execute(sql_query)
+                categories_data = cursor.fetchall()
+
+                # Fetch all service information
+                cursor.execute("SELECT * FROM service")
+                all_users_data = cursor.fetchall()
+
+                # Convert bytes to Base64 string if necessary
+                for user in all_users_data:
+                    for key, value in user.items():
+                        if isinstance(value, bytes):
+                            user[key] = base64.b64encode(value).decode()
+
+            # Prepare category count data
+            sep_category_count = []
+            for category in categories_data:
+                sep_category_count.append({"name": category['category'], "count": category['count']})
+
+            return jsonify({'category_count': sep_category_count, 'service_information': all_users_data})
+
+        except pymysql.MySQLError as e:
+            print(f"Database error: {e}")
+            return jsonify({"error": str(e)}), 500
         except Exception as e:
+            print(f"General error: {e}")
             return jsonify({"error": str(e)}), 500
         finally:
-            cursor.close()
-            connection.close()
-
-        # Return the fetched data as JSON
-        return jsonify({"categories_data": categories_data})
-    
+            if connection:
+                connection.close()  # 
 
 
 
@@ -223,4 +237,4 @@ def get_category_and_counts_all_info():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.0.101', port=5000,debug=True)
+    app.run(host='0.0.0.0', port=5000,debug=True)

@@ -18,6 +18,8 @@ class Album {
   final String business_name;
   final String address;
   final String phone;
+  final String photo;
+  
 
   const Album({
     required this.service_id,
@@ -25,6 +27,7 @@ class Album {
     required this.business_name,
     required this.address,
     required this.phone,
+    required this.photo
   });
 
   factory Album.fromJson(Map<String, dynamic> json) {
@@ -34,6 +37,7 @@ class Album {
       business_name: json['business_name'],
       address: json['address'],
       phone: json['phone'],
+      photo: json['photo']
     );
   }
 }
@@ -41,10 +45,10 @@ class Album {
 
 Future<List<Album>> fetchAlbum() async {
   final response =
-      await http.get(Uri.parse('http://192.168.0.101:5000/get_service_data'));
+      await http.get(Uri.parse('http://192.168.0.102:5000/get_service_data'));
 
   if (response.statusCode == 200) {
-    final Map<String, dynamic> data = jsonDecode(response.body);
+    final data = jsonDecode(response.body);
     final List<dynamic> userData = data['category_data'];
 
     return userData.map((json) => Album.fromJson(json)).toList();
@@ -146,6 +150,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
+                    // ignore: non_constant_identifier_names
                     final Album = snapshot.data![index];
                     return Center(
                       child: InkWell(
