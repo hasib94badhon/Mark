@@ -62,11 +62,25 @@ class UserDetail {
   }
 }
 
-// Modified fetchData function to return both categories and user details
-Future<Map<String, List<dynamic>>> fetchData() async {
-  final url = 'http://192.168.0.102:5000/get_service_data';
-  final response = await http.get(Uri.parse(url));
+class ServiceFavorite extends StatefulWidget {
+  @override
+ _ServiceFavoriteState createState() => _ServiceFavoriteState();
+}
 
+class _ServiceFavoriteState extends State<ServiceFavorite> {
+  late Future<Map<String, List<dynamic>>> data;
+
+  @override
+  void initState() {
+    super.initState();
+    data = fetchData();
+  }
+
+  Future<Map<String, List<dynamic>>> fetchData() async {
+  var client = http.Client();
+  final url = 'http://192.168.0.102:5000/get_service_data';
+  try{
+  final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
     final categoryCounts = jsonResponse['category_count'] != null
@@ -88,17 +102,14 @@ Future<Map<String, List<dynamic>>> fetchData() async {
   } else {
     throw Exception('Failed to load data from API');
   }
+}on http.ClientException catch(e){
+  throw Exception("Fail to connect to API:${e.message}");
+}catch (e)
+{
+  throw Exception("An unexpected error occured:${e.toString()}");
 }
-
-// ignore: must_be_immutable
-class ServiceFavorite extends StatelessWidget {
-  final Future<Map<String, List<dynamic>>> data;
-
-  ServiceFavorite({Key? key})
-      : data = fetchData(),
-        super(key: key);
-
-  @override
+}
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -175,9 +186,10 @@ class ServiceFavorite extends StatelessWidget {
                     SizedBox(
                       height: 160,
                       child: ListView.builder(
-                        itemCount: categories.length,
+                        itemCount: users.length -700,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
+                          final user = users[index];
                           return Container(
                             width: 160,
                             margin: EdgeInsets.only(top: 10, right: 10),
@@ -189,6 +201,8 @@ class ServiceFavorite extends StatelessWidget {
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
+                              child: Image.memory(base64Decode(user.photo),
+                                      fit: BoxFit.cover,)
                               // child: Image.asset(
                               //   imageList[index],
                               //   fit: BoxFit.cover,
@@ -202,7 +216,7 @@ class ServiceFavorite extends StatelessWidget {
                     // Product List
                     Expanded(
                       child: ListView.builder(
-                        itemCount: users.length,
+                        itemCount: users.length - 800,
                         itemBuilder: (context, index) {
                           if (users.isNotEmpty) {
                             final user = users[index];
@@ -241,8 +255,10 @@ class ServiceFavorite extends StatelessWidget {
                                             width: 3,
                                             color: Colors.greenAccent),
                                       ),
-                                      // child: Image.asset(
-                                      //   imageList[index],
+                                      child: Image.memory(base64Decode(user.photo),
+                                      fit: BoxFit.cover,)
+                                      // Image.asset(
+                                      //   user.photo[index],
                                       //   fit: BoxFit.cover,
                                       // ),
                                     ),
@@ -265,22 +281,22 @@ class ServiceFavorite extends StatelessWidget {
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           SizedBox(height: 5),
-                                          Row(
-                                            children: [
-                                              Icon(Icons.star,
-                                                  color: Colors.amber),
-                                              Text(user.category),
-                                              SizedBox(width: 10),
-                                              Text(
-                                                user.phone?.toString() ?? 'No Phone',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color.fromARGB(
-                                                      255, 133, 199, 136),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                          // Row(
+                                          //   children: [
+                                          //     Icon(Icons.star,
+                                          //         color: Colors.amber),
+                                          //     Text(user.category),
+                                          //     SizedBox(width: 10),
+                                          //     Text(
+                                          //       user.phone?.toString() ?? 'No Phone',
+                                          //       style: TextStyle(
+                                          //         fontWeight: FontWeight.bold,
+                                          //         color: Color.fromARGB(
+                                          //             255, 133, 199, 136),
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
                                         ],
                                       ),
                                     ),
@@ -329,6 +345,17 @@ class ServiceFavorite extends StatelessWidget {
     );
   }
 }
+
+
+
+// Modified fetchData function to return both categories and user details
+
+
+
+// ignore: must_be_immutable
+
+
+ 
 
 void main() {
   runApp(MaterialApp(
