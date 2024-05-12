@@ -1,3 +1,4 @@
+import 'package:aaram_bd/widgets/ExpendableText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
@@ -75,19 +76,22 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                         SizedBox(height: 5),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              Icons.location_on,
-                              color: Colors.grey,
-                              size: 16,
-                            ),
-                            SizedBox(width: 5),
                             Text(
                               "123 Main St, City",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              "+01*******33",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.grey,
                               ),
                             ),
                           ],
@@ -99,64 +103,79 @@ class _UserProfileState extends State<UserProfile> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20), // Added right padding for consistency
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Electrician",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    // Wrap Column in Expanded
+                    flex: 3, // Gives more weight to the Column part
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Electrician",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        
+                        Container(
+                          child: ExpandableText(
+                            text:
+                                "fgnsuhfasdfndicvuhsdbfgalekrjbgadkufvhsdkbnaeklrgaeiovfhuadfnvalekrgtaenrgmadfuvihadfngaerwkj gaedfivuadlcvafgaeirug afdsv",
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  RatingBar.builder(
-                    initialRating: 3,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: 18,
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {},
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  SizedBox(
+                      width: 10), // Provides a space buffer between elements
+                  Column(
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          // Handle Edit Profile button pressed
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.amber),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                      RatingBar.builder(
+                          initialRating: 3,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 18,
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {},
+                        ),  
+                      Expanded(
+                        // Wrap TextButton in Expanded
+                        flex: 1, // Lesser weight to the button part
+                        child: TextButton(
+                          onPressed: () {
+                            // Handle Edit Profile button pressed
+                          },
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.amber),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            "Edit Profile",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
                         ),
-                        child: Text(
-                          "Edit Profile",
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
                       ),
-                      Text(
-                        "+01*******33",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Colors.grey,
-                        ),
-                      ),
+                      
                     ],
                   ),
                 ],
@@ -183,7 +202,8 @@ class _UserProfileState extends State<UserProfile> {
                           // Handle Upload and Post button pressed
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.blue),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blue),
                           shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -198,7 +218,7 @@ class _UserProfileState extends State<UserProfile> {
                             fontSize: 16,
                           ),
                         ),
-                                           ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 20),
@@ -245,7 +265,8 @@ class _UserProfileState extends State<UserProfile> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -255,7 +276,7 @@ class _UserProfileState extends State<UserProfile> {
                                           ),
                                           SizedBox(width: 5),
                                           Text(
-                                            "100",  // Likes count
+                                            "100", // Likes count
                                             style: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -270,7 +291,7 @@ class _UserProfileState extends State<UserProfile> {
                                           ),
                                           SizedBox(width: 5),
                                           Text(
-                                            "50",  // Shares count
+                                            "50", // Shares count
                                             style: TextStyle(
                                               color: Colors.black,
                                             ),

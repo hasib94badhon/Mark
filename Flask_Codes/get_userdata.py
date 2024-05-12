@@ -125,7 +125,7 @@ def get_user_data():
         connection = db_connector.connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         try:
-            cursor.execute("SELECT * FROM users")
+            cursor.execute("SELECT * FROM service")
             users_data = cursor.fetchall()
             print(users_data)
         except Exception as e:
