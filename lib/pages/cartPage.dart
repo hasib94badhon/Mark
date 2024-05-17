@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:aaram_bd/pages/Homepage.dart';
-import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -31,7 +30,6 @@ class UserDetail {
   final String business_name;
   final String category;
   final int phone;
-  //final String photo;
   final int shop_id;
   final int service_id;
 
@@ -40,20 +38,18 @@ class UserDetail {
     required this.business_name,
     required this.category,
     required this.phone,
-    //required this.photo,
     required this.shop_id,
     required this.service_id,
   });
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
-     address: json['address'] ?? '',
+      address: json['address'] ?? '',
       category: json['category'] ?? '',
       business_name: json['business_name'] ?? '',
       phone: json['phone'] ?? 0,
-      //photo: json['photo'] ?? '',
       service_id: json['service_id'] ?? 0,
-      shop_id: json['service_id'] ?? 0,
+      shop_id: json['shop_id'] ?? 0,
     );
   }
 }
@@ -108,10 +104,10 @@ Future<Map<String, List<dynamic>>> fetchData() async {
 
 class CartPage extends StatefulWidget {
   @override
-  _CartPageStateState createState() => _CartPageStateState();
+  _CartPageState createState() => _CartPageState();
 }
- 
- class _CartPageStateState extends State<CartPage> {
+
+class _CartPageState extends State<CartPage> {
   late Future<Map<String, List<dynamic>>> data;
 
   @override
@@ -119,15 +115,12 @@ class CartPage extends StatefulWidget {
     super.initState();
     data = fetchData();
   }
- 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'AaramBD',
-        ),
+        title: Text('AaramBD'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -146,9 +139,11 @@ class CartPage extends StatefulWidget {
           ),
         ),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(25),
+            bottomRight: Radius.circular(25),
+          ),
+        ),
       ),
       body: FutureBuilder<Map<String, List<dynamic>>>(
         future: data,
@@ -171,17 +166,21 @@ class CartPage extends StatefulWidget {
                 child: Column(
                   children: [
                     Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: Colors.blue[100],
-                            border: Border.all(width: 1, color: Colors.black12),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          "All Categories",
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
-                        )),
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.blue[100],
+                        border: Border.all(width: 1, color: Colors.black12),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Text(
+                        "All Categories",
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                     Expanded(
                       flex: 2,
                       child: GridView.builder(
@@ -202,7 +201,10 @@ class CartPage extends StatefulWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => FavoriteScreen()),
+                                    builder: (context) => FavoriteScreen(
+                                      categoryName: category.categoryName,
+                                    ),
+                                  ),
                                 );
                               },
                               child: Column(
@@ -242,15 +244,6 @@ class CartPage extends StatefulWidget {
                         itemCount: users.length,
                         itemBuilder: (context, index) {
                           final user = users[index];
-                          // return Container(
-                          //   padding: EdgeInsets.only(top: 5),
-                          //   child: ListTile(
-                          //     title: Text(user.name),
-                          //     subtitle: Text('${user.category}-${user.location}\n0${user.phone}'),
-                          //     trailing: Text('Views: ${user.viewsCount}, Shares: ${user.shares}'),
-
-                          //   ),
-                          // );
                           return Center(
                             child: InkWell(
                               onTap: () {
@@ -263,13 +256,16 @@ class CartPage extends StatefulWidget {
                               child: Container(
                                 margin: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                    color: Colors.blue[100],
-                                    border: Border.all(
-                                        width: 2, color: Colors.black),
-                                    borderRadius: BorderRadius.circular(15)),
+                                  color: Colors.blue[100],
+                                  border: Border.all(width: 2, color: Colors.black),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
                                 child: Card(
                                   margin: EdgeInsets.only(
-                                      top: 5, left: 5, right: 5),
+                                    top: 5,
+                                    left: 5,
+                                    right: 5,
+                                  ),
                                   elevation: 0,
                                   child: Padding(
                                     padding: EdgeInsets.all(3),
@@ -279,12 +275,14 @@ class CartPage extends StatefulWidget {
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                              color: Colors.white12,
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color: Colors.transparent),
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
+                                            color: Colors.white12,
+                                            border: Border.all(
+                                              width: 1,
+                                              color: Colors.transparent,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
                                           child: Row(
                                             children: [
                                               Container(
@@ -292,8 +290,9 @@ class CartPage extends StatefulWidget {
                                                 height: 100,
                                                 decoration: BoxDecoration(
                                                   border: Border.all(
-                                                      width: 2,
-                                                      color: Colors.lightGreen),
+                                                    width: 2,
+                                                    color: Colors.lightGreen,
+                                                  ),
                                                   color: Colors.white,
                                                   borderRadius:
                                                       BorderRadius.circular(10),
@@ -337,11 +336,9 @@ class CartPage extends StatefulWidget {
                                             ],
                                           ),
                                         ),
-
                                         SizedBox(height: 5),
                                         Divider(),
                                         SizedBox(height: 5),
-                                        //lower part
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
@@ -352,11 +349,9 @@ class CartPage extends StatefulWidget {
                                                 Icon(Icons.remove_red_eye,
                                                     size: 16),
                                                 SizedBox(width: 4),
-                                                //Text('${user.viewsCount}'),
                                                 SizedBox(width: 16),
                                                 Icon(Icons.share, size: 16),
                                                 SizedBox(width: 6),
-                                                //Text('${user.shares}'),
                                               ],
                                             ),
                                           ],
