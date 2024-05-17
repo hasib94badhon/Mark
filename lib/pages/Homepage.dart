@@ -300,30 +300,6 @@ class _HomepageState extends State<Homepage> {
         //     ),
         //   ],
         // ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        bottomNavigationBar: AnimatedBottomNavigationBar(
-          height: 80,
-          activeColor: Colors.green,
-          inactiveColor: Colors.black,
-          iconSize: 30,
-          icons: [
-            CupertinoIcons.back,
-            CupertinoIcons.profile_circled,
-          ],
-          activeIndex: pageIndex,
-          gapLocation: GapLocation.none,
-          notchSmoothness: NotchSmoothness.softEdge,
-          leftCornerRadius: 10,
-          elevation: 8,
-          onTap: (index) {
-            setState(() {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NavigationScreen()),
-              );
-            });
-          },
-        ),
       ),
     );
   }

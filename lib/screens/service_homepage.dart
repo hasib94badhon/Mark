@@ -261,6 +261,7 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
             },
           ),
         ),
+        bottomNavigationBar: NavigationScreen(),
         // floatingActionButton: SpeedDial(
         //   animatedIcon: AnimatedIcons.menu_close,
         //   overlayColor: Colors.black,
@@ -309,30 +310,7 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
         //     ),
         //   ],
         // ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        bottomNavigationBar: AnimatedBottomNavigationBar(
-          height: 80,
-          activeColor: Colors.green,
-          inactiveColor: Colors.black,
-          iconSize: 30,
-          icons: [
-            CupertinoIcons.back,
-            CupertinoIcons.profile_circled,
-          ],
-          activeIndex: pageIndex,
-          gapLocation: GapLocation.none,
-          notchSmoothness: NotchSmoothness.softEdge,
-          leftCornerRadius: 10,
-          elevation: 8,
-          onTap: (index) {
-            setState(() {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NavigationScreen()),
-              );
-            });
-          },
-        ),
+        
       ),
     );
   }

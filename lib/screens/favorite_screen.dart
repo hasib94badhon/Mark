@@ -1,81 +1,116 @@
-import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:aaram_bd/pages/Homepage.dart';
+import 'package:aaram_bd/pages/ServiceCart.dart';
+import 'package:aaram_bd/pages/ShopsCart.dart';
 import 'package:aaram_bd/screens/navigation_screen.dart';
+import 'navigation_screen.dart';
+import 'package:aaram_bd/screens/service_homepage.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:http/http.dart' as http;
 
+// Data model for category counts
+class CategoryCount {
+  final int categoryCount;
+  final String categoryName;
 
-class Album {
-  final int service_id;
-  final String category;
-  final String business_name;
-  final String address;
-  final String phone;
-  final String photo;
-  
-
-  const Album({
-    required this.service_id,
-    required this.category,
-    required this.business_name,
-    required this.address,
-    required this.phone,
-    required this.photo
+  CategoryCount({
+    required this.categoryCount,
+    required this.categoryName,
   });
 
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      service_id: json['service_id'] ?? 0,
-      category: json['category'] ?? '',
-      business_name: json['business_name'],
-      address: json['address'],
-      phone: json['phone'],
-      photo: json['photo']
+  factory CategoryCount.fromJson(Map<String, dynamic> json) {
+    return CategoryCount(
+      categoryCount: json['count'],
+      categoryName: json['name'],
     );
   }
 }
 
+// Data model for user details
+class UserDetail {
+  final String address;
+  final String business_name;
+  final String category;
+  final int? phone;
+  final String photo;
+  final int service_id;
 
-Future<List<Album>> fetchAlbum() async {
-  final response =
-      await http.get(Uri.parse('http://192.168.0.102:5000/get_service_data'));
+  UserDetail({
+    required this.address,
+    required this.business_name,
+    required this.category,
+    required this.phone,
+    required this.photo,
+    required this.service_id,
+  });
 
-  if (response.statusCode == 200) {
-    final data = jsonDecode(response.body);
-    final List<dynamic> userData = data['category_data'];
-
-    return userData.map((json) => Album.fromJson(json)).toList();
-  } else {
-    throw Exception('Failed to load album');
+  factory UserDetail.fromJson(Map<String, dynamic> json) {
+    return UserDetail(
+      address: json['address'] ?? "No Address", // Provide default value if null
+      category:
+          json['category'] ?? "No Category", // Provide default value if null
+      business_name:
+          json['business_name'] ?? "No Name", // Provide default value if null
+      phone: json['phone'] as int?, // Cast as nullable int
+      photo: json['photo'] ?? "No Photo", // Provide default value if null
+      service_id:
+          json['service_id'], // Assuming service_id will always be provided
+    );
   }
 }
 
-
 class FavoriteScreen extends StatefulWidget {
-
   @override
-  State<FavoriteScreen> createState() => _FavoriteScreenState();
+  _FavoriteScreenState createState() => _FavoriteScreenState();
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-
   int pageIndex = 0;
-
-  late Future<List<Album>> futureAlbum;
+  late Future<Map<String, List<dynamic>>> data;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    futureAlbum = fetchAlbum();
+    data = fetchData();
   }
 
+  Future<Map<String, List<dynamic>>> fetchData() async {
+    final url = 'http://192.168.0.102:5000/get_service_data';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        final categoryCounts = jsonResponse['category_count'] != null
+            ? (jsonResponse['category_count'] as List)
+                .map((data) => CategoryCount.fromJson(data))
+                .toList()
+            : <CategoryCount>[];
+        print(categoryCounts);
+        final userDetails = jsonResponse['service_information'] != null
+            ? (jsonResponse['service_information'] as List)
+                .map((data) => UserDetail.fromJson(data))
+                .toList()
+            : <UserDetail>[];
+
+        return {
+          'categoryCounts': categoryCounts,
+          'userDetails': userDetails,
+        };
+      } else {
+        throw Exception('Failed to load data from API');
+      }
+    } on http.ClientException catch (e) {
+      throw Exception("Fail to connect to API:${e.message}");
+    } catch (e) {
+      throw Exception("An unexpected error occured:${e.toString()}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +127,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             onPressed: () {},
           )
         ],
-        backgroundColor: Colors.blue[100],
+        backgroundColor: Colors.green[100],
         leading: IconButton(
           onPressed: () {},
           icon: IconButton(
@@ -106,165 +141,202 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25))),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Search Button
-          Container(
-            margin: EdgeInsets.all(5),
-            padding: EdgeInsets.symmetric(horizontal: 10,),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(width: 1, color: Colors.blue),
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.search, color: Colors.blue),
-                SizedBox(width: 10),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Find your service',
+      body: FutureBuilder<Map<String, List<dynamic>>>(
+        future: data,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (snapshot.hasData) {
+              final categories =
+                  snapshot.data!['categoryCounts'] as List<CategoryCount>;
+              final users = snapshot.data!['userDetails'] as List<UserDetail>;
+
+              return Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Search Button
+                    Container(
+                      margin: EdgeInsets.all(5),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                            width: 1,
+                            color: Color.fromARGB(255, 133, 199, 136)),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.search,
+                              color: Color.fromARGB(255, 133, 199, 136)),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Find your service',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(height: 10),
-          // Product List
-          Expanded(
-            
-
-            child: FutureBuilder<List<Album>>(
-              future: futureAlbum,
-              builder: (context, snapshot) {
-                if(snapshot.connectionState==ConnectionState.waiting){
-                  return CircularProgressIndicator();
-                } else if(snapshot.hasError){
-                  return Text('Error:${snapshot.error}');
-                }else if (snapshot.hasData){
-                  return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    // ignore: non_constant_identifier_names
-                    final Album = snapshot.data![index];
-                    return Center(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Homepage()),
+                    // Sliding Show
+                    SizedBox(
+                      height: 160,
+                      child: ListView.builder(
+                        itemCount: users.length - 700,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final user = users[index];
+                          return Container(
+                            width: 160,
+                            margin: EdgeInsets.only(top: 10, right: 10),
+                            padding: EdgeInsets.only(bottom: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                  width: 2, color: Colors.grey.shade300),
+                            ),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.memory(
+                                  base64Decode(user.photo),
+                                  fit: BoxFit.cover,
+                                )
+                                // child: Image.asset(
+                                //   imageList[index],
+                                //   fit: BoxFit.cover,
+                                // ),
+                                ),
                           );
                         },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(width: 1, color: Colors.blue),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 100,
-                                height: 100,
-                                margin: EdgeInsets.only(right: 20),
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(width: 3,color: Colors.greenAccent),
-                                ),
-                                // child: Image.asset(
-                                //   //imageList[index],
-                                //   //fit: BoxFit.cover,
-                                // ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      Album.category,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      Album.address,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Icon(Icons.star, color: Colors.amber),
-                                        //Text(reviews[index]),
-                                        SizedBox(width: 10),
-                                        // Text(
-                                        //   prices[index],
-                                        //   style: TextStyle(
-                                        //     fontWeight: FontWeight.bold,
-                                        //     color: Colors.blue,
-                                        //   ),
-                                        // ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
-                    );
-                  },
-                );
-                }
-                else{
-                  return Text('Something went wrong');
-                }
-
-                
-              }
-            ),
-          ),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        height: 80,
-        activeColor: Color.fromARGB(255, 0, 74, 134),
-        inactiveColor: Colors.black,
-        iconSize: 30,
-        icons: [
-          CupertinoIcons.back,
-          CupertinoIcons.home,
-        ],
-        activeIndex: pageIndex,
-        gapLocation: GapLocation.none,
-        notchSmoothness: NotchSmoothness.softEdge,
-        leftCornerRadius: 10,
-        elevation: 8,
-        onTap: (index) {
-          setState(() {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NavigationScreen()),
-            );
-          });
+                    ),
+                    SizedBox(height: 10),
+                    // Product List
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: users.length - 800,
+                        itemBuilder: (context, index) {
+                          if (users.isNotEmpty) {
+                            final user = users[index];
+                            // Widget code here
+                            return Center(
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ServiceHomepage()),
+                                  );
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 3, horizontal: 8),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        width: 1,
+                                        color:
+                                            Color.fromARGB(255, 133, 199, 136)),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                          width: 100,
+                                          height: 100,
+                                          margin: EdgeInsets.only(right: 20),
+                                          padding: EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            border: Border.all(
+                                                width: 3,
+                                                color: Colors.greenAccent),
+                                          ),
+                                          child: Image.memory(
+                                            base64Decode(user.photo),
+                                            fit: BoxFit.cover,
+                                          )
+                                          // Image.asset(
+                                          //   user.photo[index],
+                                          //   fit: BoxFit.cover,
+                                          // ),
+                                          ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              user.business_name,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            Text(
+                                              user.address,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            SizedBox(height: 5),
+                                            // Row(
+                                            //   children: [
+                                            //     Icon(Icons.star,
+                                            //         color: Colors.amber),
+                                            //     Text(user.category),
+                                            //     SizedBox(width: 10),
+                                            //     Text(
+                                            //       user.phone?.toString() ?? 'No Phone',
+                                            //       style: TextStyle(
+                                            //         fontWeight: FontWeight.bold,
+                                            //         color: Color.fromARGB(
+                                            //             255, 133, 199, 136),
+                                            //       ),
+                                            //     ),
+                                            //   ],
+                                            // ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+          }
+          return Center(child: CircularProgressIndicator());
         },
       ),
+
+      bottomNavigationBar: NavigationScreen(),
+      
     );
   }
 }
+
+// Modified fetchData function to return both categories and user details
+
+// ignore: must_be_immutable
+
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,

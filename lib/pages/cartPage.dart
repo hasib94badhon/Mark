@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:convert';
 import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
@@ -18,77 +19,107 @@ class CategoryCount {
 
   factory CategoryCount.fromJson(Map<String, dynamic> json) {
     return CategoryCount(
-      categoryCount: json['category_count'],
-      categoryName: json['category_name'],
+      categoryCount: json['count'],
+      categoryName: json['category'],
     );
   }
 }
 
 // Data model for user details
 class UserDetail {
+  final String address;
+  final String business_name;
   final String category;
-  final String location;
-  final String name;
   final int phone;
-  final int regId;
-  final int userId;
-  final int viewsCount;
-  final int shares;
+  //final String photo;
+  final int shop_id;
+  final int service_id;
 
   UserDetail({
+    required this.address,
+    required this.business_name,
     required this.category,
-    required this.location,
-    required this.name,
     required this.phone,
-    required this.regId,
-    required this.userId,
-    required this.viewsCount,
-    required this.shares,
+    //required this.photo,
+    required this.shop_id,
+    required this.service_id,
   });
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
-      category: json['category'],
-      location: json['location'],
-      name: json['name'],
-      phone: json['phone'],
-      regId: json['reg_id'],
-      userId: json['user_id'],
-      viewsCount: json['viewsCount'],
-      shares: json['shares'],
+     address: json['address'] ?? '',
+      category: json['category'] ?? '',
+      business_name: json['business_name'] ?? '',
+      phone: json['phone'] ?? 0,
+      //photo: json['photo'] ?? '',
+      service_id: json['service_id'] ?? 0,
+      shop_id: json['service_id'] ?? 0,
     );
   }
 }
 
 // Modified fetchData function to return both categories and user details
 Future<Map<String, List<dynamic>>> fetchData() async {
-  final url = 'http://192.168.0.102:5000/get_category_and_counts_all_info';
-  final response = await http.get(Uri.parse(url));
+  final url = 'http://192.168.0.102:5000/get_combined_data';
+  int retries = 3;
+  for (int i = 0; i < retries; i++) {
+    try {
+      final response = await http
+          .get(Uri.parse(url))
+          .timeout(const Duration(seconds: 60)); // Increase timeout duration
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        final categoryCounts = jsonResponse['category_count'] != null
+            ? (jsonResponse['category_count'] as List)
+                .map((data) => CategoryCount.fromJson(data))
+                .toList()
+            : <CategoryCount>[];
+        print(categoryCounts);
+        final userDetails = jsonResponse['combined_information'] != null
+            ? (jsonResponse['combined_information'] as List)
+                .map((data) => UserDetail.fromJson(data))
+                .toList()
+            : <UserDetail>[];
 
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    final categoryCounts = (jsonResponse['category_counts'] as List)
-        .map((data) => CategoryCount.fromJson(data))
-        .toList();
-    final userDetails = (jsonResponse['all_users_data'] as List)
-        .map((data) => UserDetail.fromJson(data))
-        .toList();
-
-    return {
-      'categoryCounts': categoryCounts,
-      'userDetails': userDetails,
-    };
-  } else {
-    throw Exception('Failed to load data from API');
+        return {
+          'categoryCounts': categoryCounts,
+          'userDetails': userDetails,
+        };
+      } else {
+        throw Exception('Failed to load data from API');
+      }
+    } on SocketException catch (e) {
+      if (i == retries - 1) {
+        throw Exception("Failed to connect to API: ${e.message}");
+      }
+    } on http.ClientException catch (e) {
+      if (i == retries - 1) {
+        throw Exception("Failed to connect to API: ${e.message}");
+      }
+    } catch (e) {
+      if (i == retries - 1) {
+        throw Exception("An unexpected error occurred: ${e.toString()}");
+      }
+    }
+    await Future.delayed(Duration(seconds: 2)); // Delay before retrying
   }
+  throw Exception("Failed to connect to API after $retries attempts");
 }
 
-class CartPage extends StatelessWidget {
-  final Future<Map<String, List<dynamic>>> data;
+class CartPage extends StatefulWidget {
+  @override
+  _CartPageStateState createState() => _CartPageStateState();
+}
+ 
+ class _CartPageStateState extends State<CartPage> {
+  late Future<Map<String, List<dynamic>>> data;
 
-  CartPage({Key? key})
-      : data = fetchData(),
-        super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    data = fetchData();
+  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -140,19 +171,17 @@ class CartPage extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: Colors.blue[100],
-                        border: Border.all(width: 1, color: Colors.black12),
-                        borderRadius: BorderRadius.circular(15)
-                      ),
+                        alignment: Alignment.center,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: Colors.blue[100],
+                            border: Border.all(width: 1, color: Colors.black12),
+                            borderRadius: BorderRadius.circular(15)),
                         child: Text(
-                      "All Categories",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    )),
+                          "All Categories",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        )),
                     Expanded(
                       flex: 2,
                       child: GridView.builder(
@@ -234,12 +263,10 @@ class CartPage extends StatelessWidget {
                               child: Container(
                                 margin: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.blue[100],
-                                  
-                                  border: Border.all(width: 2, color: Colors.black),
-                                  borderRadius: BorderRadius.circular(15)
-                                ),
-                                
+                                    color: Colors.blue[100],
+                                    border: Border.all(
+                                        width: 2, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(15)),
                                 child: Card(
                                   margin: EdgeInsets.only(
                                       top: 5, left: 5, right: 5),
@@ -252,18 +279,21 @@ class CartPage extends StatelessWidget {
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.white12,
-                                            border:Border.all(width: 1,color: Colors.transparent),
-                                            borderRadius: BorderRadius.circular(15)
-                                          ),
-                                          
+                                              color: Colors.white12,
+                                              border: Border.all(
+                                                  width: 1,
+                                                  color: Colors.transparent),
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
                                           child: Row(
                                             children: [
                                               Container(
                                                 width: 100,
                                                 height: 100,
                                                 decoration: BoxDecoration(
-                                                  border: Border.all(width: 2, color: Colors.lightGreen),
+                                                  border: Border.all(
+                                                      width: 2,
+                                                      color: Colors.lightGreen),
                                                   color: Colors.white,
                                                   borderRadius:
                                                       BorderRadius.circular(10),
@@ -283,7 +313,7 @@ class CartPage extends StatelessWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      user.name,
+                                                      user.business_name,
                                                       style: TextStyle(
                                                         fontSize: 18,
                                                         fontWeight:
@@ -300,7 +330,7 @@ class CartPage extends StatelessWidget {
                                                       ),
                                                     ),
                                                     SizedBox(height: 5),
-                                                    Text(user.location),
+                                                    Text(user.address),
                                                   ],
                                                 ),
                                               ),
@@ -316,17 +346,17 @@ class CartPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
-                                            Text('📞 0${user.phone}'),
+                                            Text('📞 +880${user.phone}'),
                                             Row(
                                               children: [
                                                 Icon(Icons.remove_red_eye,
                                                     size: 16),
                                                 SizedBox(width: 4),
-                                                Text('${user.viewsCount}'),
+                                                //Text('${user.viewsCount}'),
                                                 SizedBox(width: 16),
                                                 Icon(Icons.share, size: 16),
                                                 SizedBox(width: 6),
-                                                Text('${user.shares}'),
+                                                //Text('${user.shares}'),
                                               ],
                                             ),
                                           ],

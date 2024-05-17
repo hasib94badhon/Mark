@@ -20,59 +20,53 @@ class CategoryCount {
 
   factory CategoryCount.fromJson(Map<String, dynamic> json) {
     return CategoryCount(
-      categoryCount: json['category_count'],
-      categoryName: json['category_name'],
+      categoryCount: json['count'],
+      categoryName: json['name'],
     );
   }
 }
 
 // Data model for user details
 class UserDetail {
+  final String address;
+  final String business_name;
   final String category;
-  final String location;
-  final String name;
   final int phone;
-  final int regId;
-  final int userId;
-  final int viewsCount;
-  final int shares;
+  final photo;
+  final int shop_id;
 
   UserDetail({
+    required this.address,
+    required this.business_name,
     required this.category,
-    required this.location,
-    required this.name,
     required this.phone,
-    required this.regId,
-    required this.userId,
-    required this.viewsCount,
-    required this.shares,
+    required this.photo,
+    required this.shop_id,
   });
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
+      address: json['address'],
+      business_name: json['business_name'],
       category: json['category'],
-      location: json['location'],
-      name: json['name'],
       phone: json['phone'],
-      regId: json['reg_id'],
-      userId: json['user_id'],
-      viewsCount: json['viewsCount'],
-      shares: json['shares'],
+      photo: json['photo'],
+      shop_id: json['shop_id'],
     );
   }
 }
 
 // Modified fetchData function to return both categories and user details
 Future<Map<String, List<dynamic>>> fetchData() async {
-  final url = 'http://192.168.0.102:5000/get_category_and_counts_all_info';
+  final url = 'http://192.168.0.102:5000//get_shops_data';
   final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
     final jsonResponse = json.decode(response.body);
-    final categoryCounts = (jsonResponse['category_counts'] as List)
+    final categoryCounts = (jsonResponse['category_count'] as List)
         .map((data) => CategoryCount.fromJson(data))
         .toList();
-    final userDetails = (jsonResponse['all_users_data'] as List)
+    final userDetails = (jsonResponse['service_information'] as List)
         .map((data) => UserDetail.fromJson(data))
         .toList();
 
@@ -285,7 +279,7 @@ class ShopsCart extends StatelessWidget {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      user.name,
+                                                      user.business_name,
                                                       style: TextStyle(
                                                         fontSize: 18,
                                                         fontWeight:
@@ -302,7 +296,7 @@ class ShopsCart extends StatelessWidget {
                                                       ),
                                                     ),
                                                     SizedBox(height: 5),
-                                                    Text(user.location),
+                                                    Text(user.address),
                                                   ],
                                                 ),
                                               ),
@@ -318,17 +312,17 @@ class ShopsCart extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
-                                            Text('📞 0${user.phone}'),
+                                            Text('📞 +880${user.phone}'),
                                             Row(
                                               children: [
                                                 Icon(Icons.remove_red_eye,
                                                     size: 16),
                                                 SizedBox(width: 4),
-                                                Text('${user.viewsCount}'),
+                                                // Text('${user.viewsCount}'),
                                                 SizedBox(width: 16),
                                                 Icon(Icons.share, size: 16),
                                                 SizedBox(width: 6),
-                                                Text('${user.shares}'),
+                                                // Text('${user.shares}'),
                                               ],
                                             ),
                                           ],

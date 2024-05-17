@@ -515,32 +515,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
       //     ),
       //   ],
       // ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        height: 80,
-        //activeColor: Colors.green,
-        inactiveColor: Colors.black,
-        iconSize: 30,
-        icons: [
-          CupertinoIcons.home,
-          CupertinoIcons.chart_bar_circle,
-          CupertinoIcons.info_circle_fill,
-          CupertinoIcons.profile_circled,
-        ],
-        activeIndex: pageIndex,
-        gapLocation: GapLocation.none,
-        notchSmoothness: NotchSmoothness.softEdge,
-        leftCornerRadius: 10,
-        elevation: 8,
-        onTap: (index) {
-          setState(() {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NavigationScreen()),
-            );
-          });
-        },
-      ),
+      
     );
   }
 }

@@ -81,7 +81,6 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
   }
 
   Future<Map<String, List<dynamic>>> fetchData() async {
-    var client = http.Client();
     final url = 'http://192.168.0.102:5000/get_service_data';
     try {
       final response = await http.get(Uri.parse(url));
@@ -327,30 +326,8 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
           return Center(child: CircularProgressIndicator());
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        height: 80,
-        activeColor: Colors.green,
-        inactiveColor: Colors.black,
-        iconSize: 30,
-        icons: [
-          CupertinoIcons.back,
-          CupertinoIcons.home,
-        ],
-        activeIndex: pageIndex,
-        gapLocation: GapLocation.none,
-        notchSmoothness: NotchSmoothness.softEdge,
-        leftCornerRadius: 10,
-        elevation: 8,
-        onTap: (index) {
-          setState(() {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NavigationScreen()),
-            );
-          });
-        },
-      ),
+      bottomNavigationBar: NavigationScreen(),
+      
     );
   }
 }

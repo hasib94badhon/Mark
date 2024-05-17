@@ -244,6 +244,45 @@ def get_service_data():
             if connection:
                 connection.close()  # 
 
+"""Get Shops Data from DB"""
+@app.route('/get_shops_data', methods=['GET'])
+def get_shops_data():
+    if request.method == 'GET':
+        connection = None
+        try:
+            connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
+            with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+                # Fetch categories and their counts
+                sql_query = "SELECT category, COUNT(*) AS count FROM shops GROUP BY category"
+                cursor.execute(sql_query)
+                categories_data = cursor.fetchall()
+
+                # Fetch all service information
+                cursor.execute("SELECT * FROM shops")
+                all_users_data = cursor.fetchall()
+
+                # Convert bytes to Base64 string if necessary
+                for user in all_users_data:
+                    for key, value in user.items():
+                        if isinstance(value, bytes):
+                            user[key] = base64.b64encode(value).decode()
+
+            # Prepare category count data
+            sep_category_count = []
+            for category in categories_data:
+                sep_category_count.append({"name": category['category'], "count": category['count']})
+
+            return jsonify({'category_count': sep_category_count, 'service_information': all_users_data})
+
+        except pymysql.MySQLError as e:
+            print(f"Database error: {e}")
+            return jsonify({"error": str(e)}), 500
+        except Exception as e:
+            print(f"General error: {e}")
+            return jsonify({"error": str(e)}), 500
+        finally:
+            if connection:
+                connection.close() 
 
 
 @app.route('/get_category_and_counts_all_info', methods=['GET'])
@@ -281,6 +320,69 @@ def get_category_and_counts_all_info():
             connection.close()
 
         return jsonify({"category_counts": separated_category_counts, "all_users_data": all_users_data})
+
+
+
+@app.route('/get_combined_data', methods=['GET'])
+def get_combined_data():
+    if request.method == 'GET':
+        connection = None
+        try:
+            connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
+            with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+                # Fetch categories and their counts from service table
+                sql_query_service = "SELECT category, COUNT(*) AS count FROM service GROUP BY category"
+                cursor.execute(sql_query_service)
+                service_categories_data = cursor.fetchall()
+
+                # Fetch all service information
+                cursor.execute("SELECT * FROM service")
+                all_service_data = cursor.fetchall()
+
+                # Fetch categories and their counts from shops table
+                sql_query_shops = "SELECT category, COUNT(*) AS count FROM shops GROUP BY category"
+                cursor.execute(sql_query_shops)
+                shops_categories_data = cursor.fetchall()
+
+                # Fetch all shops information
+                cursor.execute("SELECT * FROM shops")
+                all_shops_data = cursor.fetchall()
+
+                # Convert bytes to Base64 string if necessary
+                for user in all_service_data:
+                    for key, value in user.items():
+                        if isinstance(value, bytes):
+                            user[key] = base64.b64encode(value).decode()
+
+                for user in all_shops_data:
+                    for key, value in user.items():
+                        if isinstance(value, bytes):
+                            user[key] = base64.b64encode(value).decode()
+
+            # Interleave the service and shops data
+            combined_data = []
+            max_length = max(len(all_service_data), len(all_shops_data))
+            for i in range(max_length):
+                if i < len(all_service_data):
+                    combined_data.append(all_service_data[i])
+                if i < len(all_shops_data):
+                    combined_data.append(all_shops_data[i])
+
+            # Prepare combined category count data
+            combined_category_count = service_categories_data + shops_categories_data
+
+            return jsonify({'category_count': combined_category_count, 'combined_information': combined_data})
+
+        except pymysql.MySQLError as e:
+            print(f"Database error: {e}")
+            return jsonify({"error": str(e)}), 500
+        except Exception as e:
+            print(f"General error: {e}")
+            return jsonify({"error": str(e)}), 500
+        finally:
+            if connection:
+                connection.close()
+
     
   
 
