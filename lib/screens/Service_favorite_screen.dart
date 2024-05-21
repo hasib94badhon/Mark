@@ -81,7 +81,7 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
   }
 
   Future<Map<String, List<dynamic>>> fetchData() async {
-    final url = 'http://192.168.0.102:5000/get_service_data';
+    final url = 'http://192.168.0.103:5000/get_service_data';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {

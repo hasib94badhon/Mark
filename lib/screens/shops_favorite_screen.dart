@@ -82,7 +82,7 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
 
   Future<Map<String, List<dynamic>>> fetchData() async {
     var client = http.Client();
-    final url = 'http://192.168.0.102:5000/get_service_data';
+    final url = 'http://192.168.0.103:5000/get_service_data';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {

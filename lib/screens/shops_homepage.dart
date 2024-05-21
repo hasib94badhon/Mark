@@ -42,7 +42,7 @@ class Album {
 
 Future<List<Album>> fetchAlbum() async {
   final response =
-      await http.get(Uri.parse('http://192.168.0.101:5000/get_users_data'));
+      await http.get(Uri.parse('http://192.168.0.103:5000/get_users_data'));
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = jsonDecode(response.body);
@@ -129,13 +129,13 @@ class _ShopsHomepageState extends State<ShopsHomepage> {
                     final album = snapshot.data![index];
                     return Center(
                       child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AdvertScreen()),
-                          );
-                        },
+                        // onTap: () {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => AdvertScreen()),
+                        //   );
+                        // },
                         child: Container(
                           color: Colors.purple[100],
                           child: Card(

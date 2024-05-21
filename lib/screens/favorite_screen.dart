@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/service_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -54,7 +55,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 
   Future<List<UserDetail>> fetchUserDetails(String category) async {
-    final url = 'http://192.168.0.102:5000/get_service_data_by_category?category=$category';
+    final url = 'http://192.168.0.103:5000/get_service_data_by_category?category=$category';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -106,7 +107,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ServiceHomepage()),
+                              builder: (context) => AdvertScreen(
+                                UserDetails: user.service_id
+                              )),
                         );
                       },
                       child: Container(

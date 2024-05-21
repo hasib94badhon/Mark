@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> loginUser() async {
     final String apiUrl =
-        'http://192.168.0.101:5000/login'; // Replace with your API URL
+        'http://192.168.0.103:5000/login'; // Replace with your API URL
 
     final Map<String, dynamic> requestData = {
       'phone': _phoneController.text,

@@ -7,11 +7,52 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+
+class UserDetail {
+  final String address;
+  final String business_name;
+  final String category;
+  final int phone;
+  
+  final int service_id;
+
+  UserDetail({
+    required this.address,
+    required this.business_name,
+    required this.category,
+    required this.phone,
+    
+    required this.service_id,
+  });
+
+  factory UserDetail.fromJson(Map<String, dynamic> json) {
+    return UserDetail(
+      address: json['address'] ?? '',
+      category: json['category'] ?? '',
+      business_name: json['business_name'] ?? '',
+      phone: json['phone'] ?? 0,
+      service_id: json['service_id'] ?? 0,
+      
+    );
+  }
+}
+
+
+
+
+
 
 class AdvertScreen extends StatefulWidget {
+  final int UserDetails;
+  AdvertScreen({required this.UserDetails});
   
   @override
   State<AdvertScreen> createState() => _AdvertScreenState();
+
+ 
 }
 
 class TimelineWidget extends StatelessWidget {
@@ -85,6 +126,42 @@ class TimelineWidget extends StatelessWidget {
 }
 
 class _AdvertScreenState extends State<AdvertScreen> {
+
+  late Future<List<UserDetail>> data;
+
+  @override 
+  void initState(){
+    super.initState();
+    data = fetchUserDetails(widget.UserDetails.toString());
+  }
+
+   Future<List<UserDetail>> fetchUserDetails(String id) async {
+    final url = 'http://192.168.0.103:5000/get_service_users_data?service_id=$id';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        final userDetails = jsonResponse['service_data'] != null
+            ? (jsonResponse['service_data'] as List)
+                .map((data) => UserDetail.fromJson(data))
+                .toList()
+            : <UserDetail>[];
+
+        return userDetails;
+      } else {
+        throw Exception('Failed to load data from API');
+      }
+    } catch (e) {
+      throw Exception("An unexpected error occurred: ${e.toString()}");
+    }
+  }
+
+
+  // ////////////////////////////////////////////
+
+
+
+
   int pageIndex = 0;
 
   List<String> images = [
@@ -131,7 +208,26 @@ class _AdvertScreenState extends State<AdvertScreen> {
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25))),
       ),
-      body: SingleChildScrollView(
+      body: FutureBuilder<List<UserDetail>>(
+        future: data,
+        builder: (context, snapshot) {
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (snapshot.hasData) {
+              final users = snapshot.data!;
+              if (users.isEmpty)
+              {
+                return Center(child: Text("No data available"),);
+              }
+             
+              
+              return 
+              SingleChildScrollView(
+                
+
+       
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -141,6 +237,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
               padding: EdgeInsets.symmetric(vertical: 6),
               child: Column(
                 children: [
+                
                   SizedBox(
                     height: 220,
                     child: FanCarouselImageSlider(
@@ -165,7 +262,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              "123 Main St, City",
+                              users.isNotEmpty ? users[0].address : 'Unknown',
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -187,7 +284,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "John Doe", // Placeholder for the electrician's name
+                    users[0].business_name , // Placeholder for the electrician's name
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 26,
@@ -195,7 +292,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
                     ),
                   ),
                   Text(
-                    "Electrician",
+                     users[0].category ,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
@@ -464,7 +561,21 @@ class _AdvertScreenState extends State<AdvertScreen> {
             ),
           ],
         ),
+      );
+              
+            }
+          }
+          return Center(child: CircularProgressIndicator());
+        }
+        
+        
+  
+          
       ),
+      
+      
+      
+      
       // floatingActionButton: SpeedDial(
       //   animatedIcon: AnimatedIcons.menu_close,
       //   overlayColor: Colors.black,
@@ -515,7 +626,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
       //     ),
       //   ],
       // ),
-      
+  
     );
   }
 }

@@ -56,7 +56,7 @@ class UserDetail {
 
 // Modified fetchData function to return both categories and user details
 Future<Map<String, List<dynamic>>> fetchData() async {
-  final url = 'http://192.168.0.102:5000/get_combined_data';
+  final url = 'http://192.168.0.103:5000/get_combined_data';
   int retries = 3;
   for (int i = 0; i < retries; i++) {
     try {

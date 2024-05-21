@@ -17,7 +17,7 @@ class _SignUpState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> addDataToDB() async {
-    final String apiUrl = 'http://192.168.0.101:5000/add';
+    final String apiUrl = 'http://192.168.0.103:5000/add';
 
     final Map<String, dynamic> requestData = {
       'phone': _phoneController.text,
