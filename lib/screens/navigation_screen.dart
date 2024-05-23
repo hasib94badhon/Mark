@@ -44,7 +44,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         height: 80,
-        activeColor: Colors.redAccent,
+        activeColor: Colors.lightGreenAccent,
         inactiveColor: Colors.black,
         iconSize: 30,
         icons: [

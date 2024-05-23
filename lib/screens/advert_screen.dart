@@ -1,3 +1,5 @@
+
+
 import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:aaram_bd/screens/navigation_screen.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
@@ -296,6 +298,17 @@ class _AdvertScreenState extends State<AdvertScreen> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                 
+                   Text(
+                     "                         +880${users[0].phone}" ,
+                    style: TextStyle(
+                      color: Colors.cyan[40],
+                      
+                      fontStyle: FontStyle.italic,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
