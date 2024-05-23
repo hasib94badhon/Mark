@@ -9,6 +9,7 @@ class UserDetail {
   final String business_name;
   final String category;
   final int? phone;
+  final bool isService;
  // final String photo;
   final int service_id;
 
@@ -19,6 +20,7 @@ class UserDetail {
     required this.phone,
    // required this.photo,
     required this.service_id,
+    required this.isService
   });
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
@@ -31,7 +33,8 @@ class UserDetail {
       phone: json['phone'] as int?, // Cast as nullable int
      // photo: json['photo'] ?? "No Photo", // Provide default value if null
       service_id:
-          json['service_id'], // Assuming service_id will always be provided
+          json['service_id'],
+      isService: true // Assuming service_id will always be provided
     );
   }
 }
@@ -108,7 +111,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => AdvertScreen(
-                                UserDetails: user.service_id
+                                userId: user.service_id.toString(),
+                                isService: user.isService,
                               )),
                         );
                       },

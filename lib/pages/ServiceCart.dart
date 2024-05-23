@@ -167,7 +167,9 @@ class ServiceCart extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ServiceFavorite()),
+                                      builder: (context) => FavoriteScreen(
+                                      categoryName: category.categoryName,
+                                    ),),
                                 );
                               },
                               child: Column(

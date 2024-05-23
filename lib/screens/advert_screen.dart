@@ -18,6 +18,7 @@ class UserDetail {
   final int phone;
   
   final int service_id;
+  final int shop_id;
 
   UserDetail({
     required this.address,
@@ -26,6 +27,7 @@ class UserDetail {
     required this.phone,
     
     required this.service_id,
+    required this.shop_id
   });
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class UserDetail {
       business_name: json['business_name'] ?? '',
       phone: json['phone'] ?? 0,
       service_id: json['service_id'] ?? 0,
+      shop_id: json['shop_id'] ?? 0
       
     );
   }
@@ -46,8 +49,9 @@ class UserDetail {
 
 
 class AdvertScreen extends StatefulWidget {
-  final int UserDetails;
-  AdvertScreen({required this.UserDetails});
+  final String userId;
+  final bool isService;
+  AdvertScreen({required this.userId,required this.isService});
   
   @override
   State<AdvertScreen> createState() => _AdvertScreenState();
@@ -129,20 +133,23 @@ class _AdvertScreenState extends State<AdvertScreen> {
 
   late Future<List<UserDetail>> data;
 
-  @override 
-  void initState(){
+   @override 
+  void initState() {
     super.initState();
-    data = fetchUserDetails(widget.UserDetails.toString());
+    data = fetchUserDetails(widget.userId, widget.isService);
   }
 
-   Future<List<UserDetail>> fetchUserDetails(String id) async {
-    final url = 'http://192.168.0.103:5000/get_service_users_data?service_id=$id';
+  Future<List<UserDetail>> fetchUserDetails(String id, bool isService) async {
+    final String idParam = isService ? 'service_id=$id' : 'shop_id=$id';
+    final String url = 'http://192.168.0.103:5000/get_service_or_shop_data?$idParam';
+
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        final userDetails = jsonResponse['service_data'] != null
-            ? (jsonResponse['service_data'] as List)
+        final dataKey = isService ? 'service_data' : 'shop_data';
+        final userDetails = jsonResponse[dataKey] != null
+            ? (jsonResponse[dataKey] as List)
                 .map((data) => UserDetail.fromJson(data))
                 .toList()
             : <UserDetail>[];
@@ -155,7 +162,6 @@ class _AdvertScreenState extends State<AdvertScreen> {
       throw Exception("An unexpected error occurred: ${e.toString()}");
     }
   }
-
 
   // ////////////////////////////////////////////
 

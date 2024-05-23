@@ -421,33 +421,76 @@ def get_service_data_by_category():
         if connection:
             connection.close()
 
+
+@app.route('/get_shop_data_by_category',methods=['GET'])
+def get_shop_data_by_category():
+    category = request.args.get('category', None)
+    connection = None
+    try:
+        connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
+        with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+            if category:
+                # Fetch data for a specific category
+                sql_query = "SELECT * FROM shops WHERE category = %s"
+                cursor.execute(sql_query, (category,))
+                all_users_data = cursor.fetchall()
+            else:
+                # Fetch all service information
+                cursor.execute("SELECT * FROM shops")
+                all_users_data = cursor.fetchall()
+
+            # Convert bytes to Base64 string if necessary
+            for user in all_users_data:
+                for key, value in user.items():
+                    if isinstance(value, bytes):
+                        user[key] = base64.b64encode(value).decode()
+
+            return jsonify({'shop_information': all_users_data})
+
+    except pymysql.MySQLError as e:
+        print(f"Database error: {e}")
+        return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        print(f"General error: {e}")
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection:
+            connection.close()
+
     
 
-@app.route('/get_service_users_data',methods =["GET"])
-def get_service_user_details():
-    service_id = request.args.get('service_id',None)
+@app.route('/get_service_or_shop_data',methods =["GET"])
+def get_service_or_shop_data():
+    service_id = request.args.get('service_id', None)
+    shop_id = request.args.get('shop_id', None)
     connection = None
     try:
         connection = db_connector.connect()
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
             if service_id:
-                # fetch data for a service_id
+                # Fetch data for a service_id
                 sql = "SELECT * FROM service WHERE service_id = %s"
-                cursor.execute(sql,(service_id,))
-                all_users_data = cursor.fetchall()
+                cursor.execute(sql, (service_id,))
+                data = cursor.fetchall()
+                data_key = "service_data"
+            elif shop_id:
+                # Fetch data for a shop_id
+                sql = "SELECT * FROM shops WHERE shop_id = %s"
+                cursor.execute(sql, (shop_id,))
+                data = cursor.fetchall()
+                data_key = "shop_data"
             else:
-                cursor.execute("SELECT * FROM service")
-                all_users_data = cursor.fetchall()
-            
-            for user in all_users_data:
-                for key, value in user.items():
-                    if isinstance(value, bytes):
-                        user[key] = base64.b64encode(value).decode()
-            
+                # Return error if no ID is provided
+                return jsonify({"error": "Please provide either a service_id or a shop_id"}), 400
 
-            
-            return jsonify({"service_data":all_users_data})
-        
+            # Process data (e.g., encode binary data as base64)
+            for record in data:
+                for key, value in record.items():
+                    if isinstance(value, bytes):
+                        record[key] = base64.b64encode(value).decode()
+
+            return jsonify({data_key: data})
+
     except pymysql.MySQLError as e:
         print(f"Database error: {e}")
         return jsonify({"error": str(e)}), 500
