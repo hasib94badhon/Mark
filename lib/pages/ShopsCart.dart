@@ -136,19 +136,17 @@ class ShopsCart extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: Colors.purple[100],
-                        border: Border.all(width: 1, color: Colors.black12),
-                        borderRadius: BorderRadius.circular(15)
-                      ),
+                        alignment: Alignment.center,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: Colors.purple[100],
+                            border: Border.all(width: 1, color: Colors.black12),
+                            borderRadius: BorderRadius.circular(15)),
                         child: Text(
-                      "Shops",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    )),
+                          "Shops",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        )),
                     Expanded(
                       flex: 2,
                       child: GridView.builder(
@@ -170,8 +168,7 @@ class ShopsCart extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => ShopsFavorite(
-                                        categoryName: category.categoryName
-                                      )),
+                                          categoryName: category.categoryName)),
                                 );
                               },
                               child: Column(
@@ -232,97 +229,114 @@ class ShopsCart extends StatelessWidget {
                               child: Container(
                                 margin: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: Colors.purple[100],
-                                  
-                                  border: Border.all(width: 2, color: Colors.black),
-                                  borderRadius: BorderRadius.circular(15)
-                                ),
-                                
+                                    color: Colors.purple[100],
+                                    border: Border.all(
+                                        width: 2, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(15)),
                                 child: Card(
-                                  margin: EdgeInsets.only(
-                                      top: 5, left: 5, right: 5),
-                                  elevation: 0,
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 5),
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                   child: Padding(
-                                    padding: EdgeInsets.all(3),
+                                    padding: EdgeInsets.all(10),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white12,
-                                            border:Border.all(width: 1,color: Colors.transparent),
-                                            borderRadius: BorderRadius.circular(15)
-                                          ),
-                                          
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                width: 100,
-                                                height: 100,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(width: 2, color: Colors.lightGreen),
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 100,
+                                              height: 100,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    width: 2,
+                                                    color: Colors.lightGreen),
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                child: Image.network(
+                                                  user.photo,
+                                                  fit: BoxFit.cover,
                                                 ),
-                                                child: Center(
-                                                  child: Icon(
-                                                    Icons.person,
-                                                    size: 50,
-                                                    color: Colors.grey[600],
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    user.business_name,
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
                                                   ),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.all(10),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      user.business_name,
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
+                                                  SizedBox(height: 5),
+                                                  Text(
+                                                    user.category,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.grey[600],
                                                     ),
-                                                    SizedBox(height: 5),
-                                                    Text(
-                                                      user.category,
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                      ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                  ),
+                                                  SizedBox(height: 5),
+                                                  Text(
+                                                    user.address,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.grey[600],
                                                     ),
-                                                    SizedBox(height: 5),
-                                                    Text(user.address),
-                                                  ],
-                                                ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 2,
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-
-                                        SizedBox(height: 5),
+                                        SizedBox(height: 10),
                                         Divider(),
-                                        SizedBox(height: 5),
-                                        //lower part
+                                        SizedBox(height: 10),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text('📞 +880${user.phone}'),
+                                            Text(
+                                              '📞 +880${user.phone}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey[800],
+                                              ),
+                                            ),
                                             Row(
                                               children: [
                                                 Icon(Icons.remove_red_eye,
-                                                    size: 16),
+                                                    size: 16,
+                                                    color: Colors.grey[600]),
                                                 SizedBox(width: 4),
                                                 // Text('${user.viewsCount}'),
                                                 SizedBox(width: 16),
-                                                Icon(Icons.share, size: 16),
+                                                Icon(Icons.share,
+                                                    size: 16,
+                                                    color: Colors.grey[600]),
                                                 SizedBox(width: 6),
                                                 // Text('${user.shares}'),
                                               ],

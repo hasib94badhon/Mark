@@ -112,8 +112,7 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
                   bottomLeft: Radius.circular(25),
                   bottomRight: Radius.circular(25))),
         ),
-        
-        
+
         body: Center(
           child: FutureBuilder<List<Album>>(
             future: futureAlbum,
@@ -155,8 +154,7 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
                                     height: 100,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         border: Border.all(
                                             width: 2, color: Colors.green)),
                                     child: Center(
@@ -172,7 +170,8 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         Text(
                                           album.name,
@@ -182,7 +181,6 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
                                             color: Colors.black,
                                           ),
                                         ),
-                                        
                                         Text(
                                           '${album.category}',
                                           style: TextStyle(
@@ -210,13 +208,11 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
                                   ),
                                   SizedBox(width: 16),
                                   Column(
-                                    
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.end,
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Row(
-                                        
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
@@ -225,7 +221,8 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
                                           SizedBox(width: 5),
                                           Text(album.phone,
                                               style: TextStyle(
-                                                  color: Colors.black,fontSize: 14)),
+                                                  color: Colors.black,
+                                                  fontSize: 14)),
                                         ],
                                       ),
                                       SizedBox(height: 16),
@@ -240,8 +237,9 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
                                         ),
                                         child: Text(
                                           'Call',
-                                          style:
-                                              TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                     ],
@@ -261,7 +259,7 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
             },
           ),
         ),
-        bottomNavigationBar: NavigationScreen(),
+
         // floatingActionButton: SpeedDial(
         //   animatedIcon: AnimatedIcons.menu_close,
         //   overlayColor: Colors.black,
@@ -310,7 +308,6 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
         //     ),
         //   ],
         // ),
-        
       ),
     );
   }

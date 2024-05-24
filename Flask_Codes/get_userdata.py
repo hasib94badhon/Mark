@@ -248,7 +248,11 @@ def get_service_data():
 
 """Get Shops Data from DB"""
 @app.route('/get_shops_data', methods=['GET'])
+
+# Define your HTTP base URL
+ # Adjust this to match the actual URL structu
 def get_shops_data():
+    HTTP_BASE_URL = "http://aarambd.com/photo" 
     if request.method == 'GET':
         connection = None
         try:
@@ -263,11 +267,10 @@ def get_shops_data():
                 cursor.execute("SELECT * FROM shops")
                 all_users_data = cursor.fetchall()
 
-                # Convert bytes to Base64 string if necessary
+                # Update photo path to include the full HTTP URL
                 for user in all_users_data:
-                    for key, value in user.items():
-                        if isinstance(value, bytes):
-                            user[key] = base64.b64encode(value).decode()
+                    if 'photo' in user and user['photo']:
+                        user['photo'] = f"{HTTP_BASE_URL}/{user['photo']}"
 
             # Prepare category count data
             sep_category_count = []
@@ -284,7 +287,8 @@ def get_shops_data():
             return jsonify({"error": str(e)}), 500
         finally:
             if connection:
-                connection.close() 
+                connection.close()
+
 
 
 @app.route('/get_category_and_counts_all_info', methods=['GET'])

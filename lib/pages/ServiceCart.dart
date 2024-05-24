@@ -167,9 +167,10 @@ class ServiceCart extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => FavoriteScreen(
+                                    builder: (context) => FavoriteScreen(
                                       categoryName: category.categoryName,
-                                    ),),
+                                    ),
+                                  ),
                                 );
                               },
                               child: Column(
@@ -272,35 +273,48 @@ class ServiceCart extends StatelessWidget {
                                                     child: Image.memory(
                                                       base64Decode(user.photo),
                                                       fit: BoxFit.cover,
-                                                    )
-                                                    ),
+                                                    )),
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.all(10),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      user.business_name,
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                              Expanded(
+                                                child: Container(
+                                                  margin: EdgeInsets.all(10),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        user.business_name,
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
                                                       ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Text(
-                                                      user.category,
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontStyle:
-                                                            FontStyle.normal,
+                                                      SizedBox(height: 5),
+                                                      Text(
+                                                        user.category,
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
                                                       ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Text(user.address),
-                                                  ],
+                                                      SizedBox(height: 5),
+                                                      Text(
+                                                        user.address,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ],

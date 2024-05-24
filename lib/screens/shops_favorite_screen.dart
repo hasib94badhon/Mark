@@ -21,39 +21,37 @@ class UserDetail {
   final String business_name;
   final String category;
   final int? phone;
- // final String photo;
+  // final String photo;
   final int shop_id;
   final bool is_service;
 
-  UserDetail({
-    required this.address,
-    required this.business_name,
-    required this.category,
-    required this.phone,
-   // required this.photo,
-    required this.shop_id,
-    required this.is_service
-  });
+  UserDetail(
+      {required this.address,
+      required this.business_name,
+      required this.category,
+      required this.phone,
+      // required this.photo,
+      required this.shop_id,
+      required this.is_service});
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
-      address: json['address'] ?? "No Address", // Provide default value if null
-      category:
-          json['category'] ?? "No Category", // Provide default value if null
-      business_name:
-          json['business_name'] ?? "No Name", // Provide default value if null
-      phone: json['phone'] as int?, // Cast as nullable int
-     // photo: json['photo'] ?? "No Photo", // Provide default value if null
-      shop_id:
-          json['shop_id'],
-      is_service: false // Assuming service_id will always be provided
-    );
+        address:
+            json['address'] ?? "No Address", // Provide default value if null
+        category:
+            json['category'] ?? "No Category", // Provide default value if null
+        business_name:
+            json['business_name'] ?? "No Name", // Provide default value if null
+        phone: json['phone'] as int?, // Cast as nullable int
+        // photo: json['photo'] ?? "No Photo", // Provide default value if null
+        shop_id: json['shop_id'],
+        is_service: false // Assuming service_id will always be provided
+        );
   }
 }
 
-
 class ShopsFavorite extends StatefulWidget {
-   final String categoryName;
+  final String categoryName;
   ShopsFavorite({required this.categoryName});
   @override
   _ShopsFavoriteState createState() => _ShopsFavoriteState();
@@ -61,6 +59,13 @@ class ShopsFavorite extends StatefulWidget {
 
 class _ShopsFavoriteState extends State<ShopsFavorite> {
   late Future<List<UserDetail>> data;
+  List<Widget> pages = [
+    CartPage(),
+    ServiceCart(),
+    ShopsCart(),
+    ShopsFavorite(categoryName: ""),
+    UserProfile(),
+  ];
 
   @override
   void initState() {
@@ -69,7 +74,8 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
   }
 
   Future<List<UserDetail>> fetchUserDetails(String category) async {
-    final url = 'http://192.168.0.103:5000/get_shop_data_by_category?category=$category';
+    final url =
+        'http://192.168.0.103:5000/get_shop_data_by_category?category=$category';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -89,11 +95,12 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
     }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AaramBD - ${widget.categoryName}',
+        title: Text(
+          'AaramBD - ${widget.categoryName}',
         ),
         centerTitle: true,
         backgroundColor: Colors.purple[100],
@@ -123,13 +130,14 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => AdvertScreen(
-                                userId: user.shop_id.toString(),
-                                isService: user.is_service,
-                              )),
+                                    userId: user.shop_id.toString(),
+                                    isService: user.is_service,
+                                  )),
                         );
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 3, horizontal: 8),
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Colors.purple[100],
@@ -148,7 +156,9 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                    width: 3, color: const Color.fromARGB(255, 232, 141, 248)),
+                                    width: 3,
+                                    color: const Color.fromARGB(
+                                        255, 232, 141, 248)),
                               ),
                               // child: Image.memory(
                               //   base64Decode(user.photo),

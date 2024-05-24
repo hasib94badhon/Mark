@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'package:aaram_bd/pages/ServiceCart.dart';
+import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/service_homepage.dart';
+import 'package:aaram_bd/screens/navigation_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,32 +14,31 @@ class UserDetail {
   final String category;
   final int? phone;
   final bool isService;
- // final String photo;
+  // final String photo;
   final int service_id;
 
-  UserDetail({
-    required this.address,
-    required this.business_name,
-    required this.category,
-    required this.phone,
-   // required this.photo,
-    required this.service_id,
-    required this.isService
-  });
+  UserDetail(
+      {required this.address,
+      required this.business_name,
+      required this.category,
+      required this.phone,
+      // required this.photo,
+      required this.service_id,
+      required this.isService});
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
-      address: json['address'] ?? "No Address", // Provide default value if null
-      category:
-          json['category'] ?? "No Category", // Provide default value if null
-      business_name:
-          json['business_name'] ?? "No Name", // Provide default value if null
-      phone: json['phone'] as int?, // Cast as nullable int
-     // photo: json['photo'] ?? "No Photo", // Provide default value if null
-      service_id:
-          json['service_id'],
-      isService: true // Assuming service_id will always be provided
-    );
+        address:
+            json['address'] ?? "No Address", // Provide default value if null
+        category:
+            json['category'] ?? "No Category", // Provide default value if null
+        business_name:
+            json['business_name'] ?? "No Name", // Provide default value if null
+        phone: json['phone'] as int?, // Cast as nullable int
+        // photo: json['photo'] ?? "No Photo", // Provide default value if null
+        service_id: json['service_id'],
+        isService: true // Assuming service_id will always be provided
+        );
   }
 }
 
@@ -58,7 +61,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 
   Future<List<UserDetail>> fetchUserDetails(String category) async {
-    final url = 'http://192.168.0.103:5000/get_service_data_by_category?category=$category';
+    final url =
+        'http://192.168.0.103:5000/get_service_data_by_category?category=$category';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -111,13 +115,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => AdvertScreen(
-                                userId: user.service_id.toString(),
-                                isService: user.isService,
-                              )),
+                                    userId: user.service_id.toString(),
+                                    isService: user.isService,
+                                  )),
                         );
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 3, horizontal: 8),
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Colors.white,

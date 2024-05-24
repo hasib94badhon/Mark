@@ -326,8 +326,6 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
           return Center(child: CircularProgressIndicator());
         },
       ),
-      bottomNavigationBar: NavigationScreen(),
-      
     );
   }
 }

@@ -13,7 +13,6 @@ import 'package:aaram_bd/pages/ServiceCart.dart';
 import 'package:aaram_bd/pages/ShopsCart.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
 
-
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key});
 
@@ -28,19 +27,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
     CartPage(),
     ServiceCart(),
     ShopsCart(),
-    UserProfile (),
+    UserProfile(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
       body: IndexedStack(
         index: pageIndex,
         children: pages,
       ),
-      
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         height: 80,

@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'package:aaram_bd/pages/Homepage.dart';
+import 'package:aaram_bd/pages/ServiceCart.dart';
+import 'package:aaram_bd/pages/ShopsCart.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
+import 'package:aaram_bd/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -54,54 +57,6 @@ class UserDetail {
   }
 }
 
-// Modified fetchData function to return both categories and user details
-Future<Map<String, List<dynamic>>> fetchData() async {
-  final url = 'http://192.168.0.103:5000/get_combined_data';
-  int retries = 3;
-  for (int i = 0; i < retries; i++) {
-    try {
-      final response = await http
-          .get(Uri.parse(url))
-          .timeout(const Duration(seconds: 60)); // Increase timeout duration
-      if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
-        final categoryCounts = jsonResponse['category_count'] != null
-            ? (jsonResponse['category_count'] as List)
-                .map((data) => CategoryCount.fromJson(data))
-                .toList()
-            : <CategoryCount>[];
-        print(categoryCounts);
-        final userDetails = jsonResponse['combined_information'] != null
-            ? (jsonResponse['combined_information'] as List)
-                .map((data) => UserDetail.fromJson(data))
-                .toList()
-            : <UserDetail>[];
-
-        return {
-          'categoryCounts': categoryCounts,
-          'userDetails': userDetails,
-        };
-      } else {
-        throw Exception('Failed to load data from API');
-      }
-    } on SocketException catch (e) {
-      if (i == retries - 1) {
-        throw Exception("Failed to connect to API: ${e.message}");
-      }
-    } on http.ClientException catch (e) {
-      if (i == retries - 1) {
-        throw Exception("Failed to connect to API: ${e.message}");
-      }
-    } catch (e) {
-      if (i == retries - 1) {
-        throw Exception("An unexpected error occurred: ${e.toString()}");
-      }
-    }
-    await Future.delayed(Duration(seconds: 2)); // Delay before retrying
-  }
-  throw Exception("Failed to connect to API after $retries attempts");
-}
-
 class CartPage extends StatefulWidget {
   @override
   _CartPageState createState() => _CartPageState();
@@ -109,11 +64,97 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   late Future<Map<String, List<dynamic>>> data;
+  String categoryName = "Auto painting"; // Example category name
 
   @override
   void initState() {
     super.initState();
     data = fetchData();
+  }
+
+  // Modified fetchData function to return both categories and user details
+  Future<Map<String, List<dynamic>>> fetchData() async {
+    final url = 'http://192.168.0.103:5000/get_combined_data';
+    int retries = 3;
+    for (int i = 0; i < retries; i++) {
+      try {
+        final response = await http
+            .get(Uri.parse(url))
+            .timeout(const Duration(seconds: 60)); // Increase timeout duration
+        if (response.statusCode == 200) {
+          final jsonResponse = json.decode(response.body);
+          final categoryCounts = jsonResponse['category_count'] != null
+              ? (jsonResponse['category_count'] as List)
+                  .map((data) => CategoryCount.fromJson(data))
+                  .toList()
+              : <CategoryCount>[];
+          print(categoryCounts);
+          final userDetails = jsonResponse['combined_information'] != null
+              ? (jsonResponse['combined_information'] as List)
+                  .map((data) => UserDetail.fromJson(data))
+                  .toList()
+              : <UserDetail>[];
+
+          return {
+            'categoryCounts': categoryCounts,
+            'userDetails': userDetails,
+          };
+        } else {
+          throw Exception('Failed to load data from API');
+        }
+      } on SocketException catch (e) {
+        if (i == retries - 1) {
+          throw Exception("Failed to connect to API: ${e.message}");
+        }
+      } on http.ClientException catch (e) {
+        if (i == retries - 1) {
+          throw Exception("Failed to connect to API: ${e.message}");
+        }
+      } catch (e) {
+        if (i == retries - 1) {
+          throw Exception("An unexpected error occurred: ${e.toString()}");
+        }
+      }
+      await Future.delayed(Duration(seconds: 2)); // Delay before retrying
+    }
+    throw Exception("Failed to connect to API after $retries attempts");
+  }
+
+  void _onItemTapped(int index) {
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CartPage(),
+          ),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ServiceCart(),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShopsCart(),
+          ),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UserProfile(),
+          ),
+        );
+        break;
+    }
   }
 
   @override
@@ -257,7 +298,8 @@ class _CartPageState extends State<CartPage> {
                                 margin: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color: Colors.blue[100],
-                                  border: Border.all(width: 2, color: Colors.black),
+                                  border:
+                                      Border.all(width: 2, color: Colors.black),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Card(
@@ -305,32 +347,46 @@ class _CartPageState extends State<CartPage> {
                                                   ),
                                                 ),
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.all(10),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      user.business_name,
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                              Expanded(
+                                                child: Container(
+                                                  margin: EdgeInsets.all(10),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        user.business_name,
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
                                                       ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Text(
-                                                      user.category,
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontStyle:
-                                                            FontStyle.normal,
+                                                      SizedBox(height: 5),
+                                                      Text(
+                                                        user.category,
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
                                                       ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Text(user.address),
-                                                  ],
+                                                      SizedBox(height: 5),
+                                                      Text(
+                                                        user.address,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ],

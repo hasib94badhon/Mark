@@ -19,8 +19,8 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
     );
   }
 
-     TextEditingController textEditingController = new TextEditingController(text: "");
-
+  TextEditingController textEditingController =
+      new TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -64,46 +64,44 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
               ),
               SizedBox(height: 50),
               TextFieldPin(
-                  textController: textEditingController,
-                  autoFocus: false,
-                  codeLength: 4,
-                  alignment: MainAxisAlignment.center,
-                  defaultBoxSize: 55.0,
-                  margin: 10,
-                  selectedBoxSize: 50.0,
-                  textStyle: TextStyle(fontSize: 16),
-                  defaultDecoration: _pinPutDecoration.copyWith(
-                      border: Border.all(color: Colors.grey)),
-                  selectedDecoration: _pinPutDecoration,
-                  onChange: (code) {
-                      setState(() {
-                        
-                      });
-                  },
-                ),
-                SizedBox(height: 30),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => NavigationScreen(),
-                        ));
-                  },
-                  child: Text(
-                    "Verify",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        ),
+                textController: textEditingController,
+                autoFocus: false,
+                codeLength: 4,
+                alignment: MainAxisAlignment.center,
+                defaultBoxSize: 55.0,
+                margin: 10,
+                selectedBoxSize: 50.0,
+                textStyle: TextStyle(fontSize: 16),
+                defaultDecoration: _pinPutDecoration.copyWith(
+                    border: Border.all(color: Colors.grey)),
+                selectedDecoration: _pinPutDecoration,
+                onChange: (code) {
+                  setState(() {});
+                },
+              ),
+              SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => NavigationScreen(),
+                  //     ));
+                },
+                child: Text(
+                  "Verify",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: Size.fromHeight(60),
-                      backgroundColor: Color.fromARGB(255, 30, 224, 208),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8))),
                 ),
+                style: ElevatedButton.styleFrom(
+                    minimumSize: Size.fromHeight(60),
+                    backgroundColor: Color.fromARGB(255, 30, 224, 208),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8))),
+              ),
             ],
           ),
         ),
@@ -112,8 +110,6 @@ class _OTPVerifyScreenState extends State<OTPVerifyScreen> {
   }
 }
 
-class _onOtpCallBack {
-}
+class _onOtpCallBack {}
 
-class _pinPutDecoration {
-}
+class _pinPutDecoration {}

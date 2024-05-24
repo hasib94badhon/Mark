@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/pages/cartPage.dart';
@@ -19,17 +18,16 @@ void main() => runApp(MyApp());
 
 //O:\Test_Flutter\aarambd
 
-class MyApp extends StatelessWidget{
-  Widget build(BuildContext context){
+class MyApp extends StatelessWidget {
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
-        "/":(context)=> (NavigationScreen()),
+        "/": (context) => (NavigationScreen()),
       },
     );
   }
 }
-
