@@ -90,7 +90,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         centerTitle: true,
         backgroundColor: Colors.green[100],
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          iconSize: 40,
+          color: Colors.white,
+          icon: Icon(Icons.arrow_back_rounded),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -129,7 +131,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           border: Border.all(
                               width: 1,
                               color: Color.fromARGB(255, 133, 199, 136)),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(40),
                         ),
                         child: Row(
                           children: [
@@ -139,7 +141,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               margin: EdgeInsets.only(right: 20),
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(60),
                                 border: Border.all(
                                     width: 3, color: Colors.greenAccent),
                               ),
@@ -156,10 +158,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                     user.business_name,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                      fontSize: 20,
                                     ),
                                   ),
-                                  SizedBox(height: 5),
+                                  SizedBox(height: 3),
                                   Text(
                                     user.address,
                                     maxLines: 2,

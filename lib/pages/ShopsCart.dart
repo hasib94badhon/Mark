@@ -136,17 +136,32 @@ class ShopsCart extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: Colors.purple[100],
-                            border: Border.all(width: 1, color: Colors.black12),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          "Shops",
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
-                        )),
+                      margin: EdgeInsets.all(6),
+                      child: SearchAnchor(builder:
+                          (BuildContext context, SearchController controller) {
+                        return SearchBar(
+                          controller: controller,
+                          padding: const MaterialStatePropertyAll<EdgeInsets>(
+                              EdgeInsets.symmetric(horizontal: 16.0)),
+                          onTap: () {
+                            controller.openView();
+                          },
+                          onChanged: (_) {
+                            controller.openView();
+                          },
+                          leading: const Icon(Icons.search),
+                        );
+                      }, suggestionsBuilder:
+                          (BuildContext context, SearchController controller) {
+                        return List<ListTile>.generate(5, (int index) {
+                          final String item = 'item $index';
+                          return ListTile(
+                            title: Text(item),
+                            onTap: () {},
+                          );
+                        });
+                      }),
+                    ),
                     Expanded(
                       flex: 2,
                       child: GridView.builder(
@@ -160,8 +175,11 @@ class ShopsCart extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final category = categories[index];
                           return Card(
-                            elevation: 2.0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(45)),
+                            elevation: 4.0,
                             margin: EdgeInsets.all(5),
+                            color: Color.fromARGB(235, 255, 246, 246),
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -174,23 +192,14 @@ class ShopsCart extends StatelessWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    height: 100,
-                                    width: 100,
-                                    margin: EdgeInsets.only(top: 8, bottom: 4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.purple[100],
-                                      borderRadius: BorderRadius.circular(35),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '${category.categoryName} \n ${category.categoryCount}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 16,
+                                  Center(
+                                    child: Text(
+                                      '${category.categoryName} ${category.categoryCount}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
+                                          color: Colors.black),
                                     ),
                                   ),
                                 ],
@@ -200,7 +209,10 @@ class ShopsCart extends StatelessWidget {
                         },
                       ),
                     ),
-                    Divider(),
+                    Divider(
+                      color: Colors.black,
+                      height: 10,
+                    ),
                     Expanded(
                       flex: 1,
                       child: ListView.builder(
@@ -227,21 +239,19 @@ class ShopsCart extends StatelessWidget {
                                 );
                               },
                               child: Container(
-                                margin: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                     color: Colors.purple[100],
                                     border: Border.all(
                                         width: 2, color: Colors.black),
-                                    borderRadius: BorderRadius.circular(15)),
+                                    borderRadius: BorderRadius.circular(25)),
                                 child: Card(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 5),
-                                  elevation: 2,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
+                                  color: Colors.white,
+                                  margin: EdgeInsets.only(
+                                      top: 3, left: 4, right: 5, bottom: 6),
+                                  elevation: 0,
                                   child: Padding(
-                                    padding: EdgeInsets.all(10),
+                                    padding: EdgeInsets.all(3),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -257,11 +267,11 @@ class ShopsCart extends StatelessWidget {
                                                     color: Colors.lightGreen),
                                                 color: Colors.white,
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
+                                                    BorderRadius.circular(60),
                                               ),
                                               child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(8),
+                                                    BorderRadius.circular(60),
                                                 child: Image.network(
                                                   user.photo,
                                                   fit: BoxFit.cover,
@@ -270,59 +280,61 @@ class ShopsCart extends StatelessWidget {
                                             ),
                                             SizedBox(width: 10),
                                             Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    user.business_name,
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                              child: Container(
+                                                margin: EdgeInsets.all(6),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      user.business_name,
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
                                                     ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                  ),
-                                                  SizedBox(height: 5),
-                                                  Text(
-                                                    user.category,
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey[600],
+                                                    SizedBox(height: 3),
+                                                    Text(
+                                                      user.category,
+                                                      style: TextStyle(
+                                                          fontSize: 17,
+                                                          color: Colors.black54,
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
                                                     ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 1,
-                                                  ),
-                                                  SizedBox(height: 5),
-                                                  Text(
-                                                    user.address,
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey[600],
+                                                    SizedBox(height: 3),
+                                                    Text(
+                                                      user.address,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 1,
                                                     ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 2,
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 10),
+                                        SizedBox(height: 3),
                                         Divider(),
-                                        SizedBox(height: 10),
+                                        SizedBox(height: 3),
                                         Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             Text(
                                               '📞 +880${user.phone}',
                                               style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 16,
                                                 color: Colors.grey[800],
                                               ),
                                             ),

@@ -199,28 +199,48 @@ class _CartPageState extends State<CartPage> {
 
               return Container(
                 margin: EdgeInsets.all(3),
+                padding: EdgeInsets.all(3),
                 decoration: BoxDecoration(
-                  color: Colors.white70,
-                  border: Border.all(width: 2, color: Colors.grey),
+                  color: Colors.white,
+                  border: Border.all(width: 2, color: Colors.blueGrey),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
                   children: [
                     Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Colors.blue[100],
-                        border: Border.all(width: 1, color: Colors.black12),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text(
-                        "All Categories",
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                          color: Colors.white,
+                          border: Border.all(width: 1),
+                          borderRadius: BorderRadius.circular(15)),
+                      margin: EdgeInsets.all(6),
+                      child: SearchAnchor(builder:
+                          (BuildContext context, SearchController controller) {
+                        return SearchBar(
+                          controller: controller,
+                          padding: const MaterialStatePropertyAll<EdgeInsets>(
+                              EdgeInsets.symmetric(horizontal: 16.0)),
+                          onTap: () {
+                            controller.openView();
+                          },
+                          onChanged: (_) {
+                            controller.openView();
+                          },
+                          leading: const Icon(Icons.search),
+                        );
+                      }, suggestionsBuilder:
+                          (BuildContext context, SearchController controller) {
+                        return List<ListTile>.generate(5, (int index) {
+                          final String item = 'item $index';
+                          return ListTile(
+                            title: Text(item),
+                            onTap: () {
+                              setState(() {
+                                controller.closeView(item);
+                              });
+                            },
+                          );
+                        });
+                      }),
                     ),
                     Expanded(
                       flex: 2,
@@ -235,8 +255,11 @@ class _CartPageState extends State<CartPage> {
                         itemBuilder: (context, index) {
                           final category = categories[index];
                           return Card(
-                            elevation: 2.0,
-                            margin: EdgeInsets.all(5),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(45)),
+                            elevation: 10.0,
+                            color: Colors.white,
+                            //margin: EdgeInsets.all(3),
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -251,23 +274,15 @@ class _CartPageState extends State<CartPage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    height: 100,
-                                    width: 100,
-                                    margin: EdgeInsets.only(top: 8, bottom: 4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue[100],
-                                      borderRadius: BorderRadius.circular(35),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        '${category.categoryName} \n ${category.categoryCount}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 16,
+                                  Center(
+                                    child: Text(
+                                      '${category.categoryName}  ${category.categoryCount}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
+                                          //backgroundColor: Colors.white,
+                                          color: Colors.black),
                                     ),
                                   ),
                                 ],
@@ -277,7 +292,10 @@ class _CartPageState extends State<CartPage> {
                         },
                       ),
                     ),
-                    Divider(),
+                    Divider(
+                      color: Colors.black,
+                      height: 10,
+                    ),
                     Expanded(
                       flex: 1,
                       child: ListView.builder(
@@ -295,19 +313,17 @@ class _CartPageState extends State<CartPage> {
                                 );
                               },
                               child: Container(
-                                margin: EdgeInsets.all(8),
+                                margin: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   color: Colors.blue[100],
                                   border:
                                       Border.all(width: 2, color: Colors.black),
-                                  borderRadius: BorderRadius.circular(15),
+                                  borderRadius: BorderRadius.circular(25),
                                 ),
                                 child: Card(
+                                  color: Colors.white,
                                   margin: EdgeInsets.only(
-                                    top: 5,
-                                    left: 5,
-                                    right: 5,
-                                  ),
+                                      top: 3, left: 4, right: 5, bottom: 6),
                                   elevation: 0,
                                   child: Padding(
                                     padding: EdgeInsets.all(3),
@@ -337,7 +353,7 @@ class _CartPageState extends State<CartPage> {
                                                   ),
                                                   color: Colors.white,
                                                   borderRadius:
-                                                      BorderRadius.circular(10),
+                                                      BorderRadius.circular(60),
                                                 ),
                                                 child: Center(
                                                   child: Icon(
@@ -349,7 +365,7 @@ class _CartPageState extends State<CartPage> {
                                               ),
                                               Expanded(
                                                 child: Container(
-                                                  margin: EdgeInsets.all(10),
+                                                  margin: EdgeInsets.all(6),
                                                   child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
@@ -358,7 +374,7 @@ class _CartPageState extends State<CartPage> {
                                                       Text(
                                                         user.business_name,
                                                         style: TextStyle(
-                                                          fontSize: 18,
+                                                          fontSize: 20,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -366,19 +382,23 @@ class _CartPageState extends State<CartPage> {
                                                             .ellipsis,
                                                         maxLines: 1,
                                                       ),
-                                                      SizedBox(height: 5),
+                                                      SizedBox(height: 3),
                                                       Text(
                                                         user.category,
                                                         style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                        ),
+                                                            fontSize: 17,
+                                                            color:
+                                                                Colors.black54,
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         maxLines: 1,
                                                       ),
-                                                      SizedBox(height: 5),
+                                                      SizedBox(height: 3),
                                                       Text(
                                                         user.address,
                                                         overflow: TextOverflow
@@ -392,9 +412,9 @@ class _CartPageState extends State<CartPage> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(height: 5),
+                                        SizedBox(height: 3),
                                         Divider(),
-                                        SizedBox(height: 5),
+                                        SizedBox(height: 3),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
