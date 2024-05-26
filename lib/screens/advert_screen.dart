@@ -1,7 +1,6 @@
 import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:aaram_bd/screens/navigation_screen.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
-import 'package:aaram_bd/widgets/ExpendableText.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:aaram_bd/widgets/ExpendableText.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:aaram_bd/widgets/TimelineWidget.dart';
 
 class UserDetail {
   final String address;
@@ -275,33 +275,29 @@ class _AdvertScreenState extends State<AdvertScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            alignment: Alignment.center,
                             margin: EdgeInsets.only(left: 8, right: 8),
                             padding: EdgeInsets.only(left: 8, right: 8),
                             decoration: BoxDecoration(
                                 color: Colors.grey[200],
                                 border: Border.all(width: 1),
                                 borderRadius: BorderRadius.circular(25)),
-                            child: Column(
-                              children: [
-                                Text(
-                                  users[0]
-                                      .business_name, // Placeholder for the electrician's name
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 26,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                            child: Text(
+                              users[0].business_name,
+                              textAlign: TextAlign
+                                  .center, // Placeholder for the electrician's name
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
 
                           Container(
                             margin: EdgeInsets.only(top: 10, bottom: 10),
-                            padding: EdgeInsets.only(left: 8, right: 8),
+                            padding: EdgeInsets.only(left: 20, right: 20),
                             decoration: BoxDecoration(
-                                color: Colors.grey[200],
+                                color: Colors.grey[100],
                                 border: Border.all(width: 1),
                                 borderRadius: BorderRadius.circular(25)),
                             child: Text(
@@ -320,7 +316,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
                             direction: Axis.horizontal,
                             allowHalfRating: true,
                             itemCount: 5,
-                            itemSize: 22,
+                            itemSize: 26,
                             itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                             itemBuilder: (context, _) => Icon(
                               Icons.star,
@@ -334,42 +330,101 @@ class _AdvertScreenState extends State<AdvertScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.phone,
-                                  color: Colors.green,
-                                  size: 40,
+                              Container(
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 3),
+                                  borderRadius: BorderRadius.circular(60),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.green.withOpacity(0.2),
+                                      spreadRadius: 2,
+                                      blurRadius: 3,
+                                      offset: Offset(
+                                          0, 2), // changes position of shadow
+                                    ),
+                                  ],
                                 ),
-                                onPressed: () {},
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.message,
-                                  color: Colors.blue,
-                                  size: 40,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.phone,
+                                    color: Colors.green,
+                                    size: 40,
+                                  ),
+                                  onPressed: () {},
                                 ),
-                                onPressed: () {},
                               ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.comment,
-                                  color: Colors.orange,
-                                  size: 40,
+                              Container(
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 3),
+                                  borderRadius: BorderRadius.circular(60),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.amber.withOpacity(0.3),
+                                      spreadRadius: 2,
+                                      blurRadius: 3,
+                                      offset: Offset(
+                                          0, 2), // changes position of shadow
+                                    ),
+                                  ],
                                 ),
-                                onPressed: () {},
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.facebook,
-                                  color: Colors.blue[800],
-                                  size: 40,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.comment,
+                                    color: Colors.orange,
+                                    size: 40,
+                                  ),
+                                  onPressed: () {},
                                 ),
-                                onPressed: () {},
                               ),
-                              IconButton(
-                                icon: Icon(Icons.south_america_sharp,
-                                    color: Colors.green[800]),
-                                onPressed: () {},
+                              Container(
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 3),
+                                  borderRadius: BorderRadius.circular(60),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.blue.withOpacity(0.3),
+                                      spreadRadius: 2,
+                                      blurRadius: 3,
+                                      offset: Offset(
+                                          0, 2), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.facebook,
+                                    color: Colors.blue[800],
+                                    size: 40,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 3),
+                                  borderRadius: BorderRadius.circular(60),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.green.withOpacity(0.3),
+                                      spreadRadius: 2,
+                                      blurRadius: 3,
+                                      offset: Offset(
+                                          0, 2), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.wechat_sharp,
+                                    color: Colors.green[800],
+                                    size: 40,
+                                  ),
+                                  onPressed: () {},
+                                ),
                               ),
                             ],
                           ),
