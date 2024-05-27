@@ -271,43 +271,61 @@ class _AdvertScreenState extends State<AdvertScreen> {
                         ),
                       ),
 
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.only(left: 8, right: 8),
-                            padding: EdgeInsets.only(left: 8, right: 8),
+                            width: 100,
+                            height: 100,
+                            margin: EdgeInsets.only(right: 20),
+                            padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                border: Border.all(width: 1),
-                                borderRadius: BorderRadius.circular(25)),
-                            child: Text(
-                              users[0].business_name,
-                              textAlign: TextAlign
-                                  .center, // Placeholder for the electrician's name
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 26,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              borderRadius: BorderRadius.circular(60),
+                              border: Border.all(
+                                  width: 3, color: Colors.greenAccent),
                             ),
+                            // child: Image.memory(
+                            //   base64Decode(user.photo),
+                            //   fit: BoxFit.cover,
+                            // ),
                           ),
-
-                          Container(
-                            margin: EdgeInsets.only(top: 10, bottom: 10),
-                            padding: EdgeInsets.only(left: 20, right: 20),
-                            decoration: BoxDecoration(
-                                color: Colors.grey[100],
-                                border: Border.all(width: 1),
-                                borderRadius: BorderRadius.circular(25)),
-                            child: Text(
-                              users[0].category,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
+                          Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(left: 8, right: 8),
+                                padding: EdgeInsets.only(left: 8, right: 8),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    border: Border.all(width: 1),
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: Text(
+                                  users[0].business_name,
+                                  textAlign: TextAlign
+                                      .center, // Placeholder for the electrician's name
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10, bottom: 10),
+                                padding: EdgeInsets.only(left: 20, right: 20),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[100],
+                                    border: Border.all(width: 1),
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: Text(
+                                  users[0].category,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
 
                           RatingBar.builder(

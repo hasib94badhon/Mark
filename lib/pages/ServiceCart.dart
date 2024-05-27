@@ -128,14 +128,19 @@ class ServiceCart extends StatelessWidget {
 
               return Container(
                 margin: EdgeInsets.all(3),
+                padding: EdgeInsets.all(3),
                 decoration: BoxDecoration(
-                  color: Colors.white70,
-                  border: Border.all(width: 2, color: Colors.grey),
+                  color: Colors.white,
+                  border: Border.all(width: 2, color: Colors.blueGrey),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
                   children: [
                     Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(width: 1),
+                          borderRadius: BorderRadius.circular(15)),
                       margin: EdgeInsets.all(6),
                       child: SearchAnchor(builder:
                           (BuildContext context, SearchController controller) {
@@ -177,8 +182,9 @@ class ServiceCart extends StatelessWidget {
                           return Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(45)),
-                            elevation: 4.0,
+                            elevation: 10.0,
                             //margin: EdgeInsets.all(5),
+                            color: Colors.white,
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -221,15 +227,7 @@ class ServiceCart extends StatelessWidget {
                         itemCount: users.length,
                         itemBuilder: (context, index) {
                           final user = users[index];
-                          // return Container(
-                          //   padding: EdgeInsets.only(top: 5),
-                          //   child: ListTile(
-                          //     title: Text(user.name),
-                          //     subtitle: Text('${user.category}-${user.location}\n0${user.phone}'),
-                          //     trailing: Text('Views: ${user.viewsCount}, Shares: ${user.shares}'),
 
-                          //   ),
-                          // );
                           return Center(
                             child: InkWell(
                               onTap: () {
@@ -247,6 +245,7 @@ class ServiceCart extends StatelessWidget {
                                         width: 2, color: Colors.black),
                                     borderRadius: BorderRadius.circular(25)),
                                 child: Card(
+                                  color: Colors.white,
                                   margin: EdgeInsets.only(
                                       top: 3, left: 4, right: 5, bottom: 6),
                                   elevation: 0,

@@ -128,14 +128,19 @@ class ShopsCart extends StatelessWidget {
 
               return Container(
                 margin: EdgeInsets.all(3),
+                padding: EdgeInsets.all(3),
                 decoration: BoxDecoration(
-                  color: Colors.white70,
-                  border: Border.all(width: 2, color: Colors.grey),
+                  color: Colors.white,
+                  border: Border.all(width: 2, color: Colors.blueGrey),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
                   children: [
                     Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(width: 1),
+                          borderRadius: BorderRadius.circular(15)),
                       margin: EdgeInsets.all(6),
                       child: SearchAnchor(builder:
                           (BuildContext context, SearchController controller) {
@@ -177,9 +182,8 @@ class ShopsCart extends StatelessWidget {
                           return Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(45)),
-                            elevation: 4.0,
-                            margin: EdgeInsets.all(5),
-                            color: Color.fromARGB(235, 255, 246, 246),
+                            elevation: 10.0,
+                            color: Colors.white,
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -220,15 +224,7 @@ class ShopsCart extends StatelessWidget {
                         itemCount: users.length,
                         itemBuilder: (context, index) {
                           final user = users[index];
-                          // return Container(
-                          //   padding: EdgeInsets.only(top: 5),
-                          //   child: ListTile(
-                          //     title: Text(user.name),
-                          //     subtitle: Text('${user.category}-${user.location}\n0${user.phone}'),
-                          //     trailing: Text('Views: ${user.viewsCount}, Shares: ${user.shares}'),
 
-                          //   ),
-                          // );
                           return Center(
                             child: InkWell(
                               onTap: () {
