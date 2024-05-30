@@ -32,7 +32,36 @@ class _NavigationScreenState extends State<NavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AaramBD'),
+        backgroundColor: Colors.lightBlue,
+        titleSpacing: 2,
+        title: Row(
+          children: [
+            // Spacing between home button and logo
+            // AaramBD Logo
+            // Image.asset(
+            //   'assets/aaram_bd_logo.png',
+            //   height: 40,
+            // ),
+            SizedBox(width: 8), // Spacing between logo and text
+            // AaramBD Text
+            Text(
+              'AaramBD',
+              style: TextStyle(
+                fontSize: 25,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Spacer(), // Spacer to push the logout icon to the right
+            // Logout Icon
+            IconButton(
+              icon: Icon(Icons.logout, color: Colors.white),
+              onPressed: () {
+                // Handle Logout button press
+              },
+            ),
+          ],
+        ),
       ),
       drawer: AppDrawer(),
       body: IndexedStack(

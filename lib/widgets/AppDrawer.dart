@@ -8,12 +8,8 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            margin: EdgeInsets.all(2),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(40),
-              ),
+              color: Colors.green,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +24,7 @@ class AppDrawer extends StatelessWidget {
                   'User Name',
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 18,
+                    fontSize: 26,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -36,143 +32,462 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('My contacts'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'Timeline',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('To-day Live'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'Daily Use',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('Market Place'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'Social Market',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('Dayli Use'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'To-day Live',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('Collaborators'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'My Contacts',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('About AaramBD'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'Emergency Contacts',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('Terms and Conditions'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'Business',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('Terms and Conditions'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'Terms and policies',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('Terms and Conditions'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'Contact AaramBD',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('Terms and Conditions'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'Collaborators',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
           ),
           Container(
-            margin: EdgeInsets.all(5),
+            margin: EdgeInsets.only(left: 6, right: 6, bottom: 5),
             decoration: BoxDecoration(
-                border: Border.all(width: 1),
-                borderRadius: BorderRadius.circular(25)),
+              color: Colors.white,
+              border: Border.all(width: 1),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green,
+                  offset: const Offset(
+                    5.0,
+                    5.0,
+                  ),
+                  blurRadius: 6.0,
+                  spreadRadius: 1.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
             child: ListTile(
-              leading: Icon(Icons.description),
-              title: Text('Terms and Conditions'),
+              leading: Icon(
+                Icons.description,
+                size: 30,
+              ),
+              title: Text(
+                'More',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
