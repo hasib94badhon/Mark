@@ -20,29 +20,6 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('AaramBD'),
-        centerTitle: true,
-        backgroundColor: Colors.purple[100],
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
-          iconSize: 35,
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.person_search_outlined),
-            onPressed: () {},
-            iconSize: 35,
-          ),
-        ],
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(25),
-            bottomRight: Radius.circular(25),
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

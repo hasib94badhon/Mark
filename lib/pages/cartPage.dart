@@ -160,32 +160,6 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('AaramBD'),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.person_search_outlined),
-            iconSize: 35,
-            onPressed: () {},
-          )
-        ],
-        backgroundColor: Colors.blue[100],
-        leading: IconButton(
-          onPressed: () {},
-          icon: IconButton(
-            icon: Icon(Icons.menu),
-            iconSize: 35,
-            onPressed: () {},
-          ),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(25),
-            bottomRight: Radius.circular(25),
-          ),
-        ),
-      ),
       body: FutureBuilder<Map<String, List<dynamic>>>(
         future: data,
         builder: (context, snapshot) {
