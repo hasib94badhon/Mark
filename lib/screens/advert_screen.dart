@@ -178,13 +178,6 @@ class _AdvertScreenState extends State<AdvertScreen> {
     "images/image5.png"
   ];
 
-  List<Widget> pages = [
-    CartPage(),
-    CartPage(),
-    CartPage(),
-    UserProfile(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

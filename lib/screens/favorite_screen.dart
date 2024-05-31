@@ -12,23 +12,24 @@ class UserDetail {
   final String address;
   final String business_name;
   final String category;
+  final String photo;
   final int phone;
-  final photo;
   final int shop_id;
   final int service_id;
   final int userId;
   final bool isservice;
 
-  UserDetail(
-      {required this.address,
-      required this.business_name,
-      required this.category,
-      required this.phone,
-      required this.photo,
-      required this.userId,
-      required this.shop_id,
-      required this.service_id,
-      required this.isservice});
+  UserDetail({
+    required this.address,
+    required this.business_name,
+    required this.category,
+    required this.photo,
+    required this.phone,
+    required this.userId,
+    required this.shop_id,
+    required this.service_id,
+    required this.isservice,
+  });
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     int serviceId = json['service_id'] ?? 0;
@@ -37,7 +38,7 @@ class UserDetail {
       address: json['address'] ?? '',
       category: json['category'] ?? '',
       business_name: json['business_name'] ?? '',
-      photo: json['photo'],
+      photo: json['photo'] ?? '',
       phone: json['phone'] ?? 0,
       userId: serviceId != 0 ? serviceId : shopId,
       service_id: serviceId,
@@ -57,23 +58,26 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
-  late Future<List<UserDetail>> data;
+  late Future<List<UserDetail>> serviceData;
+  late Future<List<UserDetail>> shopData;
 
   @override
   void initState() {
     super.initState();
-    data = fetchUserDetails(widget.categoryName);
+    serviceData = fetchUserDetails(widget.categoryName, 'service');
+    shopData = fetchUserDetails(widget.categoryName, 'shops');
   }
 
-  Future<List<UserDetail>> fetchUserDetails(String category) async {
+  Future<List<UserDetail>> fetchUserDetails(
+      String category, String dataType) async {
     final url =
-        'http://192.168.0.103:5000/get_service_data_by_category?category=$category';
+        'http://192.168.0.103:5000/get_data_by_category?category=$category&data_type=$dataType';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        final userDetails = jsonResponse['service_information'] != null
-            ? (jsonResponse['service_information'] as List)
+        final userDetails = jsonResponse['${dataType}_information'] != null
+            ? (jsonResponse['${dataType}_information'] as List)
                 .map((data) => UserDetail.fromJson(data))
                 .toList()
             : <UserDetail>[];
@@ -104,7 +108,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         ),
       ),
       body: FutureBuilder<List<UserDetail>>(
-        future: data,
+        future: Future.wait([serviceData, shopData])
+            .then((results) => results.expand((x) => x).toList()),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
@@ -121,21 +126,22 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AdvertScreen(
-                                    userId: user.userId.toString(),
-                                    isService: user.isservice,
-                                    advertData: AdvertData(
-                                      userId: user.service_id.toString(),
-                                      isService: user.isservice,
-                                      additionalData: user.isservice
-                                          ? {
-                                              'service_id': user.service_id,
-                                            } // Replace with actual service details
-                                          : {
-                                              'shop_id': user.shop_id,
-                                            },
-                                    ),
-                                  )),
+                            builder: (context) => AdvertScreen(
+                              userId: user.userId.toString(),
+                              isService: user.isservice,
+                              advertData: AdvertData(
+                                userId: user.service_id.toString(),
+                                isService: user.isservice,
+                                additionalData: user.isservice
+                                    ? {
+                                        'service_id': user.service_id,
+                                      } // Replace with actual service details
+                                    : {
+                                        'shop_id': user.shop_id,
+                                      },
+                              ),
+                            ),
+                          ),
                         );
                       },
                       child: Container(

@@ -6,6 +6,7 @@ import 'package:aaram_bd/pages/ServiceCart.dart';
 import 'package:aaram_bd/pages/ShopsCart.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
+import 'package:aaram_bd/screens/login_screen.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -133,42 +134,43 @@ class _CartPageState extends State<CartPage> {
     throw Exception("Failed to connect to API after $retries attempts");
   }
 
-  void _onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CartPage(),
-          ),
-        );
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ServiceCart(),
-          ),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ShopsCart(),
-          ),
-        );
-        break;
-      case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => UserProfile(),
-          ),
-        );
-        break;
-    }
-  }
+  // void _onItemTapped(int index) {
+  //   switch (index) {
+  //     case 0:
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => CartPage(),
+  //         ),
+  //       );
+  //       break;
+  //     case 1:
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => ServiceCart(),
+  //         ),
+  //       );
+  //       break;
+  //     case 2:
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => ShopsCart(),
+  //         ),
+  //       );
+  //       break;
+  //     case 3:
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+
+  //           builder: (context) => UserProfile('user Phone: $userPhone' ,),
+  //         ),
+  //       );
+  //       break;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -364,7 +366,7 @@ class _CartPageState extends State<CartPage> {
                                   color: Colors.white,
                                   margin: EdgeInsets.only(
                                       top: 3, left: 4, right: 5, bottom: 6),
-                                  elevation: 0,
+                                  elevation: 2,
                                   child: Padding(
                                     padding: EdgeInsets.all(3),
                                     child: Column(
@@ -384,18 +386,19 @@ class _CartPageState extends State<CartPage> {
                                           child: Row(
                                             children: [
                                               Container(
-                                                width: 100,
-                                                height: 100,
+                                                width: 135,
+                                                height: 135,
                                                 decoration: BoxDecoration(
                                                   border: Border.all(
-                                                    width: 2,
+                                                    width: 4,
                                                     color: Colors.lightGreen,
                                                   ),
                                                   color: Colors.white,
                                                   borderRadius:
                                                       BorderRadius.circular(60),
                                                 ),
-                                                child: Center(
+                                                child: Container(
+                                                  padding: EdgeInsets.all(16),
                                                   child: Image.network(
                                                     user.photo,
                                                     fit: BoxFit.cover,

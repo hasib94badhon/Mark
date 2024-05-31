@@ -108,7 +108,9 @@ def login_user():
             user = cursor.fetchone()
             if user:
                 # User found, return success message
-                return jsonify({"message": "Login successful", "user": user})
+                # phone = user[1]
+                # print(phone)
+                return jsonify({"message": "Login successful", "user": {"phone": user[1]}})
             else:
                 # User not found, return error message
                 return jsonify({"error": "Invalid phone number or password"}), 401
@@ -438,10 +440,10 @@ def get_service_or_shop_data():
                 return jsonify({"error": "Please provide either a service_id or a shop_id"}), 400
 
             # Process data (e.g., encode binary data as base64)
-            for record in data:
-                for key, value in record.items():
-                    if isinstance(value, bytes):
-                        record[key] = base64.b64encode(value).decode()
+            # for record in data:
+            #     for key, value in record.items():
+            #         if isinstance(value, bytes):
+            #             record[key] = base64.b64encode(value).decode()
 
             return jsonify({data_key: data})
 
@@ -455,7 +457,41 @@ def get_service_or_shop_data():
         if connection:
             connection.close()
 
+#  used in advert_screen on flutter
+@app.route('/get_data_by_category', methods=['GET'])
+def get_data_by_category():
+    category = request.args.get('category', None)
+    data_type = request.args.get('data_type', None)  # 'service' or 'shop'
+    connection = None
+    
+    if not data_type or data_type not in ['service', 'shops']:
+        return jsonify({"error": "Invalid or missing data_type parameter"}), 400
 
+    try:
+        connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
+        with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+            if category:
+                # Fetch data for a specific category
+                sql_query = f"SELECT * FROM {data_type} WHERE category = %s"
+                cursor.execute(sql_query, (category,))
+            else:
+                # Fetch all information
+                sql_query = f"SELECT * FROM {data_type}"
+                cursor.execute(sql_query)
+
+            all_data = cursor.fetchall()
+
+            return jsonify({f'{data_type}_information': all_data})
+
+    except pymysql.MySQLError as e:
+        print(f"Database error: {e}")
+        return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        print(f"General error: {e}")
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection:
+            connection.close()
 
 
 

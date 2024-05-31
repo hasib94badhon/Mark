@@ -70,13 +70,6 @@ class _ServiceHomepageState extends State<ServiceHomepage> {
     futureAlbum = fetchAlbum();
   }
 
-  List<Widget> pages = [
-    CartPage(),
-    CartPage(),
-    CartPage(),
-    UserProfile(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     var pageIndex = 0;

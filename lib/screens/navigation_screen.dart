@@ -16,21 +16,33 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
 class NavigationScreen extends StatefulWidget {
-  const NavigationScreen({Key? key});
+  final String userPhone;
+
+  NavigationScreen({required this.userPhone});
 
   @override
-  State<NavigationScreen> createState() => _NavigationScreenState();
+  State<NavigationScreen> createState() =>
+      _NavigationScreenState(userPhone: userPhone);
 }
 
 class _NavigationScreenState extends State<NavigationScreen> {
+  final String userPhone;
+  _NavigationScreenState({required this.userPhone});
+
   int pageIndex = 0;
 
-  List<Widget> pages = [
-    CartPage(),
-    ServiceCart(),
-    ShopsCart(),
-    UserProfile(),
-  ];
+  late List<Widget> pages;
+
+  @override
+  void initState() {
+    super.initState();
+    pages = [
+      CartPage(),
+      ServiceCart(), // Assuming this screen doesn't need the phone number
+      ShopsCart(), // Assuming this screen doesn't need the phone number
+      UserProfile(userPhone: userPhone),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {

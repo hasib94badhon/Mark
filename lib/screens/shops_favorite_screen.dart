@@ -62,13 +62,6 @@ class ShopsFavorite extends StatefulWidget {
 
 class _ShopsFavoriteState extends State<ShopsFavorite> {
   late Future<List<UserDetail>> data;
-  List<Widget> pages = [
-    CartPage(),
-    ServiceCart(),
-    ShopsCart(),
-    ShopsFavorite(categoryName: ""),
-    UserProfile(),
-  ];
 
   @override
   void initState() {

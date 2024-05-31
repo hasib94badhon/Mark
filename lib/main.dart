@@ -4,6 +4,7 @@ import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
 import 'package:aaram_bd/screens/forgot_screen.dart';
+
 import 'package:aaram_bd/screens/login_screen.dart';
 import 'package:aaram_bd/screens/navigation_screen.dart';
 import 'package:aaram_bd/screens/otp_screen.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
-        "/": (context) => (NavigationScreen()),
+        "/": (context) => (SplashScreen()),
       },
     );
   }

@@ -1,14 +1,22 @@
-import 'package:aaram_bd/widgets/ExpendableText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
+import 'package:aaram_bd/widgets/ExpandableText.dart';
 
 class UserProfile extends StatefulWidget {
+  final String userPhone;
+
+  UserProfile({required this.userPhone});
+
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  State<UserProfile> createState() => _UserProfileState(userPhone: userPhone);
 }
 
 class _UserProfileState extends State<UserProfile> {
+  final String userPhone;
+
+  _UserProfileState({required this.userPhone});
+
   List<String> images = [
     "images/image1.png",
     "images/image2.png",
@@ -38,12 +46,31 @@ class _UserProfileState extends State<UserProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Rafiq Ahmed",
+                          "User Name",
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 24,
                           ),
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.phone,
+                              color: Colors.grey,
+                              size: 16,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              widget.userPhone,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(height: 5),
                         Row(
@@ -71,14 +98,12 @@ class _UserProfileState extends State<UserProfile> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20), // Added right padding for consistency
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    // Wrap Column in Expanded
-                    flex: 3, // Gives more weight to the Column part
+                    flex: 3,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -103,20 +128,17 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                           onRatingUpdate: (rating) {},
                         ),
-                        Container(
-                          child: ExpandableText(
-                            text:
-                                "fgnsuhfasdfndicvuhsdbfgalekrjbgadkufvhsdkbnaeklrgaeiovfhuadfnvalekrgtaenrgmadfuvihadfngaerwkj gaedfivuadlcvafgaeirug afdsv",
-                          ),
-                        ),
+                        // Container(
+                        //   child: ExpandableText(
+                        //     text: "fgnsuhfasdfndicvuhsdbfgalekrjbgadkufvhsdkbnaeklrgaeiovfhuadfnvalekrgtaenrgmadfuvihadfngaerwkj gaedfivuadlcvafgaeirug afdsv",
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                      width: 10), // Provides a space buffer between elements
+                  SizedBox(width: 10),
                   Expanded(
-                    // Wrap TextButton in Expanded
-                    flex: 1, // Lesser weight to the button part
+                    flex: 1,
                     child: TextButton(
                       onPressed: () {
                         // Handle Edit Profile button pressed

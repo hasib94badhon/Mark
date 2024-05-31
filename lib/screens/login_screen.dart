@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:aaram_bd/screens/advert_screen.dart';
+import 'package:aaram_bd/screens/user_profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/screens/SignUp_screen.dart';
 import 'package:aaram_bd/screens/forgot_screen.dart';
@@ -39,6 +40,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final userPhone = responseData['user']['phone'];
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login Successfull')),
       );
@@ -47,8 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => NavigationScreen(),
-          ));
+              builder: (context) => NavigationScreen(userPhone: userPhone)));
       // Navigate to the homepage screen
       // Navigator.pushReplacementNamed(context, '/navigationscrenn');
     } else {
@@ -57,9 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context) => AlertDialog(
           alignment: Alignment.center,
           backgroundColor: Colors.transparent,
-          content: 
-          
-          Container(
+          content: Container(
             //color: Colors.amber,
             width: 350,
             height: 80,
@@ -72,14 +73,15 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 60),
+                    margin: EdgeInsets.only(top: 60),
                     //color: Colors.green,
                     height: 30,
                     width: 350,
                     child: Text("You have insert wrong phone or password",
-                    style: TextStyle(color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold))),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold))),
               ],
             ),
           ),
@@ -218,4 +220,11 @@ class _LoginScreenState extends State<LoginScreen> {
       ))),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: LoginScreen(),
+  ));
 }

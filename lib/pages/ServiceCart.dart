@@ -282,7 +282,7 @@ class ServiceCart extends StatelessWidget {
                                   color: Colors.white,
                                   margin: EdgeInsets.only(
                                       top: 3, left: 4, right: 5, bottom: 6),
-                                  elevation: 0,
+                                  elevation: 2,
                                   child: Padding(
                                     padding: EdgeInsets.all(3),
                                     child: Column(
@@ -300,11 +300,11 @@ class ServiceCart extends StatelessWidget {
                                           child: Row(
                                             children: [
                                               Container(
-                                                width: 100,
-                                                height: 100,
+                                                width: 135,
+                                                height: 135,
                                                 decoration: BoxDecoration(
                                                   border: Border.all(
-                                                      width: 2,
+                                                      width: 4,
                                                       color: Colors.lightGreen),
                                                   color: Colors.white,
                                                   borderRadius:
@@ -314,9 +314,13 @@ class ServiceCart extends StatelessWidget {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             60),
-                                                    child: Image.network(
-                                                      user.photo,
-                                                      fit: BoxFit.cover,
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.all(16),
+                                                      child: Image.network(
+                                                        user.photo,
+                                                        fit: BoxFit.cover,
+                                                      ),
                                                     )),
                                               ),
                                               Expanded(
