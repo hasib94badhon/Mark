@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:aaram_bd/widgets/AppDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,8 @@ import 'package:aaram_bd/pages/ShopsCart.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
 import 'package:aaram_bd/screens/advert_screen.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
@@ -44,7 +48,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Spacer(), // Spacer to push the logout icon to the right
+            Spacer(),
+            // Spacer to push the logout icon to the right
             // Logout Icon
             IconButton(
               icon: Icon(Icons.logout, color: Colors.white),

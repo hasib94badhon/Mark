@@ -177,38 +177,58 @@ class ServiceCart extends StatelessWidget {
                                   ),
                                 );
                               },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 100,
-                                    height: 100,
+                              child: Stack(children: [
+                                Center(
+                                  child: Container(
+                                    height: 200,
+                                    width: 200,
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 2, color: Colors.lightGreen),
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(60),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(60),
-                                      child: Image.network(
-                                        category.photo,
-                                        fit: BoxFit.cover,
+                                        border: Border.all(
+                                            width: 2, color: Colors.lightGreen),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(60),
+                                        image: DecorationImage(
+                                            image: NetworkImage(category.photo),
+                                            fit: BoxFit.cover)),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 10,
+                                  left: 5,
+                                  right: 5,
+                                  child: Container(
+                                    margin: EdgeInsets.only(top: 10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(
+                                              10,
+                                            ))),
+                                    child: Center(
+                                      child: Container(
+                                        margin: EdgeInsets.all(8),
+                                        padding: EdgeInsets.all(3),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(width: 1),
+                                          borderRadius:
+                                              BorderRadius.circular(35),
+                                          color: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                        ),
+                                        child: Text(
+                                          "${category.categoryName} (${category.categoryCount})",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  Center(
-                                    child: Text(
-                                      '${category.categoryName}  ${category.categoryCount}',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                )
+                              ]),
                             ),
                           );
                         },

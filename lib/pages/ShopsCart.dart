@@ -177,18 +177,26 @@ class ShopsCart extends StatelessWidget {
                                 );
                               },
                               child: Stack(children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(
-                                          image: NetworkImage(category.photo),
-                                          fit: BoxFit.contain)),
+                                Center(
+                                  child: Container(
+                                    height: 200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 2, color: Colors.lightGreen),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(60),
+                                        image: DecorationImage(
+                                            image: NetworkImage(category.photo),
+                                            fit: BoxFit.cover)),
+                                  ),
                                 ),
                                 Positioned(
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
+                                  bottom: 10,
+                                  left: 5,
+                                  right: 5,
                                   child: Container(
+                                    margin: EdgeInsets.only(top: 10),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.only(
                                             bottomLeft: Radius.circular(10),
@@ -196,13 +204,24 @@ class ShopsCart extends StatelessWidget {
                                               10,
                                             ))),
                                     child: Center(
-                                      child: Text(
-                                        "${category.categoryName} (${category.categoryCount})",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                      child: Container(
+                                        margin: EdgeInsets.all(8),
+                                        padding: EdgeInsets.all(3),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(width: 1),
+                                          borderRadius:
+                                              BorderRadius.circular(35),
+                                          color: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                        ),
+                                        child: Text(
+                                          "${category.categoryName} (${category.categoryCount})",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
                                         ),
                                       ),
                                     ),
