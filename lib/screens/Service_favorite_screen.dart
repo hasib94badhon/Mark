@@ -141,20 +141,29 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
                       },
                       child: Container(
                         margin:
-                            EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-                        padding: EdgeInsets.all(10),
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                        padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(
                               width: 1,
                               color: Color.fromARGB(255, 133, 199, 136)),
-                          borderRadius: BorderRadius.circular(40),
+                          borderRadius: BorderRadius.circular(60),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 3,
+                              blurRadius: 5,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
                         ),
                         child: Row(
                           children: [
                             Container(
-                              width: 100,
-                              height: 100,
+                              width: 130,
+                              height: 130,
                               margin: EdgeInsets.only(right: 20),
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(
@@ -162,9 +171,14 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
                                 border: Border.all(
                                     width: 3, color: Colors.greenAccent),
                               ),
-                              child: Image.network(
-                                "http://aarambd.com/photo/${user.photo}",
-                                fit: BoxFit.cover,
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(60)),
+                                child: Image.network(
+                                  "http://aarambd.com/photo/${user.photo}",
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             Expanded(
