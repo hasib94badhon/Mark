@@ -23,6 +23,7 @@ class UserDetail {
   final int? phone;
   // final String photo;
   final int shop_id;
+  final int service_id;
   final bool is_service;
 
   UserDetail(
@@ -32,7 +33,8 @@ class UserDetail {
       required this.phone,
       // required this.photo,
       required this.shop_id,
-      required this.is_service});
+      required this.is_service,
+      required this.service_id});
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
@@ -45,6 +47,7 @@ class UserDetail {
         phone: json['phone'] as int?, // Cast as nullable int
         // photo: json['photo'] ?? "No Photo", // Provide default value if null
         shop_id: json['shop_id'],
+        service_id: json['service_id'] ?? 0,
         is_service: false // Assuming service_id will always be provided
         );
   }
@@ -132,6 +135,17 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
                               builder: (context) => AdvertScreen(
                                     userId: user.shop_id.toString(),
                                     isService: user.is_service,
+                                    advertData: AdvertData(
+                                      userId: user.shop_id.toString(),
+                                      isService: user.is_service,
+                                      additionalData: user.is_service
+                                          ? {
+                                              'service_id': user.service_id,
+                                            } // Replace with actual service details
+                                          : {
+                                              'shop_id': user.shop_id,
+                                            },
+                                    ),
                                   )),
                         );
                       },

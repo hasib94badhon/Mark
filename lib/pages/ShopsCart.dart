@@ -12,16 +12,19 @@ import 'package:http/http.dart' as http;
 class CategoryCount {
   final int categoryCount;
   final String categoryName;
+  final photo;
 
   CategoryCount({
     required this.categoryCount,
     required this.categoryName,
+    required this.photo,
   });
 
   factory CategoryCount.fromJson(Map<String, dynamic> json) {
     return CategoryCount(
       categoryCount: json['count'],
       categoryName: json['name'],
+      photo: json['photo'],
     );
   }
 }
@@ -34,6 +37,9 @@ class UserDetail {
   final int phone;
   final photo;
   final int shop_id;
+  final int service_id;
+
+  final bool is_service;
 
   UserDetail({
     required this.address,
@@ -42,17 +48,20 @@ class UserDetail {
     required this.phone,
     required this.photo,
     required this.shop_id,
+    required this.service_id,
+    required this.is_service,
   });
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
-      address: json['address'],
-      business_name: json['business_name'],
-      category: json['category'],
-      phone: json['phone'],
-      photo: json['photo'],
-      shop_id: json['shop_id'],
-    );
+        address: json['address'],
+        business_name: json['business_name'],
+        category: json['category'],
+        phone: json['phone'],
+        photo: json['photo'],
+        shop_id: json['shop_id'],
+        service_id: json['shop_id'] ?? 0,
+        is_service: false);
   }
 }
 
@@ -145,7 +154,7 @@ class ShopsCart extends StatelessWidget {
                       flex: 2,
                       child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
+                          crossAxisCount: 2,
                           mainAxisSpacing: 1,
                           crossAxisSpacing: 1,
                           childAspectRatio: 0.92,
@@ -167,21 +176,39 @@ class ShopsCart extends StatelessWidget {
                                           categoryName: category.categoryName)),
                                 );
                               },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      '${category.categoryName} ${category.categoryCount}',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
+                              child: Stack(children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(
+                                          image: NetworkImage(category.photo),
+                                          fit: BoxFit.contain)),
+                                ),
+                                Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(
+                                              10,
+                                            ))),
+                                    child: Center(
+                                      child: Text(
+                                        "${category.categoryName} (${category.categoryCount})",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black),
+                                          color: Colors.black,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                )
+                              ]),
                             ),
                           );
                         },
@@ -205,7 +232,22 @@ class ShopsCart extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ShopsHomepage()),
+                                      builder: (context) => AdvertScreen(
+                                            userId: user.shop_id.toString(),
+                                            isService: user.is_service,
+                                            advertData: AdvertData(
+                                              userId: user.shop_id.toString(),
+                                              isService: user.is_service,
+                                              additionalData: user.is_service
+                                                  ? {
+                                                      'service_id':
+                                                          user.service_id,
+                                                    } // Replace with actual service details
+                                                  : {
+                                                      'shop_id': user.shop_id,
+                                                    },
+                                            ),
+                                          )),
                                 );
                               },
                               child: Container(

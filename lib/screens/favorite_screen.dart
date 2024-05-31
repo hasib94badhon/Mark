@@ -12,33 +12,35 @@ class UserDetail {
   final String address;
   final String business_name;
   final String category;
-  final int? phone;
-  final bool isService;
-  // final String photo;
+  final int phone;
+  final int shop_id;
   final int service_id;
+  final int userId;
+  final bool isservice;
 
   UserDetail(
       {required this.address,
       required this.business_name,
       required this.category,
       required this.phone,
-      // required this.photo,
+      required this.userId,
+      required this.shop_id,
       required this.service_id,
-      required this.isService});
+      required this.isservice});
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
+    int serviceId = json['service_id'] ?? 0;
+    int shopId = json['shop_id'] ?? 0;
     return UserDetail(
-        address:
-            json['address'] ?? "No Address", // Provide default value if null
-        category:
-            json['category'] ?? "No Category", // Provide default value if null
-        business_name:
-            json['business_name'] ?? "No Name", // Provide default value if null
-        phone: json['phone'] as int?, // Cast as nullable int
-        // photo: json['photo'] ?? "No Photo", // Provide default value if null
-        service_id: json['service_id'],
-        isService: true // Assuming service_id will always be provided
-        );
+      address: json['address'] ?? '',
+      category: json['category'] ?? '',
+      business_name: json['business_name'] ?? '',
+      phone: json['phone'] ?? 0,
+      userId: serviceId != 0 ? serviceId : shopId,
+      service_id: serviceId,
+      shop_id: shopId,
+      isservice: serviceId != 0,
+    );
   }
 }
 
@@ -117,8 +119,19 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => AdvertScreen(
-                                    userId: user.service_id.toString(),
-                                    isService: user.isService,
+                                    userId: user.userId.toString(),
+                                    isService: user.isservice,
+                                    advertData: AdvertData(
+                                      userId: user.service_id.toString(),
+                                      isService: user.isservice,
+                                      additionalData: user.isservice
+                                          ? {
+                                              'service_id': user.service_id,
+                                            } // Replace with actual service details
+                                          : {
+                                              'shop_id': user.shop_id,
+                                            },
+                                    ),
                                   )),
                         );
                       },

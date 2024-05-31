@@ -1,7 +1,7 @@
 import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:aaram_bd/screens/navigation_screen.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:aaram_bd/widgets/ExpendableText.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:aaram_bd/widgets/ExpendableText.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:aaram_bd/widgets/TimelineWidget.dart';
 
 class UserDetail {
   final String address;
@@ -40,10 +39,24 @@ class UserDetail {
   }
 }
 
-class AdvertScreen extends StatefulWidget {
+class AdvertData {
   final String userId;
   final bool isService;
-  AdvertScreen({required this.userId, required this.isService});
+  final Map<String, dynamic> additionalData;
+  AdvertData(
+      {required this.userId,
+      required this.isService,
+      required this.additionalData});
+}
+
+class AdvertScreen extends StatefulWidget {
+  final AdvertData advertData;
+  final String userId;
+  final bool isService;
+  AdvertScreen(
+      {required this.advertData,
+      required this.userId,
+      required this.isService});
 
   @override
   State<AdvertScreen> createState() => _AdvertScreenState();
@@ -227,12 +240,6 @@ class _AdvertScreenState extends State<AdvertScreen> {
                           children: [
                             SizedBox(
                               height: 220,
-                              child: FanCarouselImageSlider(
-                                sliderHeight: 200,
-                                autoPlay: true,
-                                imagesLink: images,
-                                isAssets: true,
-                              ),
                             ),
                             SizedBox(height: 5),
                             Padding(
@@ -271,61 +278,47 @@ class _AdvertScreenState extends State<AdvertScreen> {
                         ),
                       ),
 
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            width: 100,
-                            height: 100,
-                            margin: EdgeInsets.only(right: 20),
-                            padding: EdgeInsets.all(8),
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(left: 8, right: 8),
+                            padding: EdgeInsets.only(left: 8, right: 8),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(60),
-                              border: Border.all(
-                                  width: 3, color: Colors.greenAccent),
-                            ),
-                            // child: Image.memory(
-                            //   base64Decode(user.photo),
-                            //   fit: BoxFit.cover,
-                            // ),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 8, right: 8),
-                                padding: EdgeInsets.only(left: 8, right: 8),
-                                decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    border: Border.all(width: 1),
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: Text(
-                                  users[0].business_name,
-                                  textAlign: TextAlign
-                                      .center, // Placeholder for the electrician's name
+                                color: Colors.grey[200],
+                                border: Border.all(width: 1),
+                                borderRadius: BorderRadius.circular(25)),
+                            child: Column(
+                              children: [
+                                Text(
+                                  users[0]
+                                      .business_name, // Placeholder for the electrician's name
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 26,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                              ],
+                            ),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                            padding: EdgeInsets.only(left: 8, right: 8),
+                            decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                border: Border.all(width: 1),
+                                borderRadius: BorderRadius.circular(25)),
+                            child: Text(
+                              users[0].category,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Container(
-                                margin: EdgeInsets.only(top: 10, bottom: 10),
-                                padding: EdgeInsets.only(left: 20, right: 20),
-                                decoration: BoxDecoration(
-                                    color: Colors.grey[100],
-                                    border: Border.all(width: 1),
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: Text(
-                                  users[0].category,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
 
                           RatingBar.builder(
@@ -334,7 +327,7 @@ class _AdvertScreenState extends State<AdvertScreen> {
                             direction: Axis.horizontal,
                             allowHalfRating: true,
                             itemCount: 5,
-                            itemSize: 26,
+                            itemSize: 22,
                             itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                             itemBuilder: (context, _) => Icon(
                               Icons.star,
@@ -348,101 +341,42 @@ class _AdvertScreenState extends State<AdvertScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: 3),
-                                  borderRadius: BorderRadius.circular(60),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.green.withOpacity(0.2),
-                                      spreadRadius: 2,
-                                      blurRadius: 3,
-                                      offset: Offset(
-                                          0, 2), // changes position of shadow
-                                    ),
-                                  ],
+                              IconButton(
+                                icon: Icon(
+                                  Icons.phone,
+                                  color: Colors.green,
+                                  size: 40,
                                 ),
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.phone,
-                                    color: Colors.green,
-                                    size: 40,
-                                  ),
-                                  onPressed: () {},
-                                ),
+                                onPressed: () {},
                               ),
-                              Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: 3),
-                                  borderRadius: BorderRadius.circular(60),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.amber.withOpacity(0.3),
-                                      spreadRadius: 2,
-                                      blurRadius: 3,
-                                      offset: Offset(
-                                          0, 2), // changes position of shadow
-                                    ),
-                                  ],
+                              IconButton(
+                                icon: Icon(
+                                  Icons.message,
+                                  color: Colors.blue,
+                                  size: 40,
                                 ),
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.comment,
-                                    color: Colors.orange,
-                                    size: 40,
-                                  ),
-                                  onPressed: () {},
-                                ),
+                                onPressed: () {},
                               ),
-                              Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: 3),
-                                  borderRadius: BorderRadius.circular(60),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.blue.withOpacity(0.3),
-                                      spreadRadius: 2,
-                                      blurRadius: 3,
-                                      offset: Offset(
-                                          0, 2), // changes position of shadow
-                                    ),
-                                  ],
+                              IconButton(
+                                icon: Icon(
+                                  Icons.comment,
+                                  color: Colors.orange,
+                                  size: 40,
                                 ),
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.facebook,
-                                    color: Colors.blue[800],
-                                    size: 40,
-                                  ),
-                                  onPressed: () {},
-                                ),
+                                onPressed: () {},
                               ),
-                              Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  border: Border.all(width: 3),
-                                  borderRadius: BorderRadius.circular(60),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.green.withOpacity(0.3),
-                                      spreadRadius: 2,
-                                      blurRadius: 3,
-                                      offset: Offset(
-                                          0, 2), // changes position of shadow
-                                    ),
-                                  ],
+                              IconButton(
+                                icon: Icon(
+                                  Icons.facebook,
+                                  color: Colors.blue[800],
+                                  size: 40,
                                 ),
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.wechat_sharp,
-                                    color: Colors.green[800],
-                                    size: 40,
-                                  ),
-                                  onPressed: () {},
-                                ),
+                                onPressed: () {},
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.south_america_sharp,
+                                    color: Colors.green[800]),
+                                onPressed: () {},
                               ),
                             ],
                           ),
@@ -718,57 +652,6 @@ class _AdvertScreenState extends State<AdvertScreen> {
             }
             return Center(child: CircularProgressIndicator());
           }),
-
-      // floatingActionButton: SpeedDial(
-      //   animatedIcon: AnimatedIcons.menu_close,
-      //   overlayColor: Colors.black,
-      //   overlayOpacity: 0.5,
-      //   elevation: 6.0,
-      //   children: [
-      //     SpeedDialChild(
-      //       child: Icon(Icons.info, size: 24, color: Colors.white),
-      //       backgroundColor: Colors.blue,
-      //       label: 'Info',
-      //       onTap: () {
-      //         // Handle Info option tapped
-      //       },
-      //     ),
-      //     SpeedDialChild(
-      //       child: Icon(Icons.local_activity, size: 24, color: Colors.white),
-      //       backgroundColor: Colors.green,
-      //       label: 'Service',
-      //       onTap: () {
-      //         // Handle Service option tapped
-      //       },
-      //     ),
-      //     SpeedDialChild(
-      //       child: Icon(Icons.shopping_cart, size: 24, color: Colors.white),
-      //       backgroundColor: Colors.orange,
-      //       label: 'Shops',
-      //       onTap: () {
-      //         // Handle Shops option tapped
-      //       },
-      //     ),
-      //     SpeedDialChild(
-      //       child: Icon(Icons.person, size: 24, color: Colors.white),
-      //       backgroundColor: Colors.red,
-      //       label: 'My Profile',
-      //       onTap: () {
-      //         // Handle My Profile option tapped
-      //       },
-
-      //     ),
-      //     SpeedDialChild(
-      //       child: Icon(Icons.person, size: 24, color: Colors.white),
-      //       backgroundColor: Colors.red,
-      //       label: '',
-      //       onTap: () {
-      //         // Handle My Profile option tapped
-      //       },
-
-      //     ),
-      //   ],
-      // ),
     );
   }
 }

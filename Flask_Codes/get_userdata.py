@@ -139,7 +139,7 @@ def get_user_data():
         # Fetch data from the reg table based on the foreign key relationship
         users_with_phone_data = []
         for user in users_data:
-            reg_id = user['reg_id']
+            reg_id = user['service_id']
             connection = db_connector.connect()
             cursor = connection.cursor()
             try:
@@ -157,65 +157,18 @@ def get_user_data():
 
         return jsonify({"users_data": users_with_phone_data})
 
-#################################################################
-# def get_db_connection():
-#     # This function should handle connection setup robustly.
-#     # You might also consider using connection pools for better performance.
-#     return pymysql.connect(host='localhost',
-#                            user='root',
-#                            password='',
-#                            db='registration',
-#                            charset='utf8mb4',
-#                            cursorclass=pymysql.cursors.DictCursor)
 
-# @app.route('/get_service_data', methods=['GET'])
-# def get_service_data():
-#     if request.method == 'GET':
-#         connection = None
-#         try:
-#             connection = get_db_connection()
-#             with connection.cursor() as cursor:
-#                 # Fetch categories and their counts
-#                 sql_query = "SELECT category, COUNT(*) AS count FROM service GROUP BY category"
-#                 cursor.execute(sql_query)
-#                 categories_data = cursor.fetchall()
-
-#                 # Fetch all service information
-#                 cursor.execute("SELECT * FROM service")
-#                 all_users_data = cursor.fetchall()
-
-#                 # Convert bytes to Base64 string if necessary
-#                 for user in all_users_data:
-#                     for key, value in user.items():
-#                         if isinstance(value, bytes):
-#                             user[key] = base64.b64encode(value).decode()
-
-#             # Prepare category count data
-#             sep_category_count = []
-#             for category in categories_data:
-#                 sep_category_count.append({"name": category['category'], "count": category['count']})
-
-#             return jsonify({'category_count': sep_category_count, 'service_information': all_users_data})
-
-#         except pymysql.MySQLError as e:
-#             app.logger.error(f"Database error: {e}")
-#             return jsonify({"error": "Database connection error"}), 500
-#         except Exception as e:
-#             app.logger.error(f"General error: {e}")
-#             return jsonify({"error": "An unexpected error occurred"}), 500
-#         finally:
-#             if connection:
-#                 connection.close()
 
 @app.route('/get_service_data', methods=['GET'])
 def get_service_data():
+    HTTP_BASE_URL = "http://aarambd.com/photo" 
     if request.method == 'GET':
         connection = None
         try:
             connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 # Fetch categories and their counts
-                sql_query = "SELECT category, COUNT(*) AS count FROM service GROUP BY category"
+                sql_query = "SELECT category,MIN(photo) AS photo, COUNT(*) AS count FROM service GROUP BY category"
                 cursor.execute(sql_query)
                 categories_data = cursor.fetchall()
 
@@ -223,16 +176,16 @@ def get_service_data():
                 cursor.execute("SELECT * FROM service")
                 all_users_data = cursor.fetchall()
 
-                # Convert bytes to Base64 string if necessary
+                # Update photo path to include the full HTTP URL
                 for user in all_users_data:
-                    for key, value in user.items():
-                        if isinstance(value, bytes):
-                            user[key] = base64.b64encode(value).decode()
+                    if 'photo' in user and user['photo']:
+                        user['photo'] = f"{HTTP_BASE_URL}/{user['photo']}"
 
             # Prepare category count data
             sep_category_count = []
             for category in categories_data:
-                sep_category_count.append({"name": category['category'], "count": category['count']})
+                category['photo'] = f"{HTTP_BASE_URL}/{category['photo']}"
+                sep_category_count.append({"name": category['category'], "count": category['count'],'photo':category['photo']})
 
             return jsonify({'category_count': sep_category_count, 'service_information': all_users_data})
 
@@ -259,7 +212,7 @@ def get_shops_data():
             connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 # Fetch categories and their counts
-                sql_query = "SELECT category, COUNT(*) AS count FROM shops GROUP BY category"
+                sql_query = "SELECT category,MIN(photo) AS photo, COUNT(*) AS count FROM shops GROUP BY category"
                 cursor.execute(sql_query)
                 categories_data = cursor.fetchall()
 
@@ -275,7 +228,8 @@ def get_shops_data():
             # Prepare category count data
             sep_category_count = []
             for category in categories_data:
-                sep_category_count.append({"name": category['category'], "count": category['count']})
+                category['photo'] = f"{HTTP_BASE_URL}/{category['photo']}"
+                sep_category_count.append({"name": category['category'], "count": category['count'],'photo':category['photo']})
 
             return jsonify({'category_count': sep_category_count, 'service_information': all_users_data})
 
@@ -331,13 +285,14 @@ def get_category_and_counts_all_info():
 
 @app.route('/get_combined_data', methods=['GET'])
 def get_combined_data():
+    HTTP_BASE_URL = "http://aarambd.com/photo" 
     if request.method == 'GET':
         connection = None
         try:
             connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 # Fetch categories and their counts from service table
-                sql_query_service = "SELECT category, COUNT(*) AS count FROM service GROUP BY category"
+                sql_query_service = "SELECT category,MIN(photo) AS photo, COUNT(*) AS count FROM service GROUP BY category"
                 cursor.execute(sql_query_service)
                 service_categories_data = cursor.fetchall()
 
@@ -346,7 +301,7 @@ def get_combined_data():
                 all_service_data = cursor.fetchall()
 
                 # Fetch categories and their counts from shops table
-                sql_query_shops = "SELECT category, COUNT(*) AS count FROM shops GROUP BY category"
+                sql_query_shops = "SELECT category,MIN(photo) AS photo, COUNT(*) AS count FROM shops GROUP BY category"
                 cursor.execute(sql_query_shops)
                 shops_categories_data = cursor.fetchall()
 
@@ -355,15 +310,13 @@ def get_combined_data():
                 all_shops_data = cursor.fetchall()
 
                 # Convert bytes to Base64 string if necessary
-                for user in all_service_data:
-                    for key, value in user.items():
-                        if isinstance(value, bytes):
-                            user[key] = base64.b64encode(value).decode()
-
-                for user in all_shops_data:
-                    for key, value in user.items():
-                        if isinstance(value, bytes):
-                            user[key] = base64.b64encode(value).decode()
+            for user in all_service_data:
+                    if 'photo' in user and user['photo']:
+                        user['photo'] = f"{HTTP_BASE_URL}/{user['photo']}"
+            
+            for user in all_shops_data:
+                    if 'photo' in user and user['photo']:
+                        user['photo'] = f"{HTTP_BASE_URL}/{user['photo']}"
 
             # Interleave the service and shops data
             combined_data = []

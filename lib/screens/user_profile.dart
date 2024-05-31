@@ -31,12 +31,6 @@ class _UserProfileState extends State<UserProfile> {
                 children: [
                   SizedBox(
                     height: 220,
-                    child: FanCarouselImageSlider(
-                      sliderHeight: 200,
-                      autoPlay: true,
-                      imagesLink: images,
-                      isAssets: true,
-                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),

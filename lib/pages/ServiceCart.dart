@@ -12,17 +12,18 @@ import 'package:http/http.dart' as http;
 class CategoryCount {
   final int categoryCount;
   final String categoryName;
+  final photo;
 
-  CategoryCount({
-    required this.categoryCount,
-    required this.categoryName,
-  });
+  CategoryCount(
+      {required this.categoryCount,
+      required this.categoryName,
+      required this.photo});
 
   factory CategoryCount.fromJson(Map<String, dynamic> json) {
     return CategoryCount(
-      categoryCount: json['count'],
-      categoryName: json['name'],
-    );
+        categoryCount: json['count'],
+        categoryName: json['name'],
+        photo: json['photo']);
   }
 }
 
@@ -34,6 +35,8 @@ class UserDetail {
   final int phone;
   final String photo;
   final int service_id;
+  final int shop_id;
+  final bool isService;
 
   UserDetail({
     required this.address,
@@ -42,6 +45,8 @@ class UserDetail {
     required this.phone,
     required this.photo,
     required this.service_id,
+    required this.shop_id,
+    required this.isService,
   });
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
@@ -51,7 +56,9 @@ class UserDetail {
       business_name: json['business_name'],
       phone: json['phone'],
       service_id: json['service_id'],
+      shop_id: json['service_id'] ?? 0,
       photo: json['photo'],
+      isService: true,
     );
   }
 }
@@ -145,7 +152,7 @@ class ServiceCart extends StatelessWidget {
                       flex: 2,
                       child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
+                          crossAxisCount: 2,
                           mainAxisSpacing: 1,
                           crossAxisSpacing: 1,
                           childAspectRatio: 0.92,
@@ -164,7 +171,7 @@ class ServiceCart extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => FavoriteScreen(
+                                    builder: (context) => ServiceFavorite(
                                       categoryName: category.categoryName,
                                     ),
                                   ),
@@ -173,6 +180,23 @@ class ServiceCart extends StatelessWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 2, color: Colors.lightGreen),
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(60),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(60),
+                                      child: Image.network(
+                                        category.photo,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
                                   Center(
                                     child: Text(
                                       '${category.categoryName}  ${category.categoryCount}',
@@ -208,7 +232,23 @@ class ServiceCart extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ServiceHomepage()),
+                                      builder: (context) => AdvertScreen(
+                                            userId: user.service_id.toString(),
+                                            isService: user.isService,
+                                            advertData: AdvertData(
+                                              userId:
+                                                  user.service_id.toString(),
+                                              isService: user.isService,
+                                              additionalData: user.isService
+                                                  ? {
+                                                      'service_id':
+                                                          user.service_id,
+                                                    } // Replace with actual service details
+                                                  : {
+                                                      'shop_id': user.shop_id,
+                                                    },
+                                            ),
+                                          )),
                                 );
                               },
                               child: Container(
@@ -254,8 +294,8 @@ class ServiceCart extends StatelessWidget {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             60),
-                                                    child: Image.memory(
-                                                      base64Decode(user.photo),
+                                                    child: Image.network(
+                                                      user.photo,
                                                       fit: BoxFit.cover,
                                                     )),
                                               ),

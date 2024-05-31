@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/pages/ServiceCart.dart';
 import 'package:aaram_bd/pages/ShopsCart.dart';
+import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +14,19 @@ import 'package:http/http.dart' as http;
 class CategoryCount {
   final int categoryCount;
   final String categoryName;
+  final photo;
 
   CategoryCount({
     required this.categoryCount,
     required this.categoryName,
+    required this.photo,
   });
 
   factory CategoryCount.fromJson(Map<String, dynamic> json) {
     return CategoryCount(
-      categoryCount: json['count'],
-      categoryName: json['category'],
-    );
+        categoryCount: json['count'],
+        categoryName: json['category'],
+        photo: json['photo']);
   }
 }
 
@@ -32,27 +35,37 @@ class UserDetail {
   final String address;
   final String business_name;
   final String category;
+  final photo;
   final int phone;
   final int shop_id;
   final int service_id;
+  final int userId;
+  final bool isservice;
 
-  UserDetail({
-    required this.address,
-    required this.business_name,
-    required this.category,
-    required this.phone,
-    required this.shop_id,
-    required this.service_id,
-  });
+  UserDetail(
+      {required this.address,
+      required this.business_name,
+      required this.category,
+      required this.photo,
+      required this.phone,
+      required this.userId,
+      required this.shop_id,
+      required this.service_id,
+      required this.isservice});
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
+    int serviceId = json['service_id'] ?? 0;
+    int shopId = json['shop_id'] ?? 0;
     return UserDetail(
       address: json['address'] ?? '',
       category: json['category'] ?? '',
       business_name: json['business_name'] ?? '',
+      photo: json['photo'],
       phone: json['phone'] ?? 0,
-      service_id: json['service_id'] ?? 0,
-      shop_id: json['shop_id'] ?? 0,
+      userId: serviceId != 0 ? serviceId : shopId,
+      service_id: serviceId,
+      shop_id: shopId,
+      isservice: serviceId != 0,
     );
   }
 }
@@ -220,7 +233,7 @@ class _CartPageState extends State<CartPage> {
                       flex: 2,
                       child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
+                          crossAxisCount: 2,
                           mainAxisSpacing: 1,
                           crossAxisSpacing: 1,
                           childAspectRatio: 0.92,
@@ -248,6 +261,23 @@ class _CartPageState extends State<CartPage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 2, color: Colors.lightGreen),
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(60),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(60),
+                                      child: Image.network(
+                                        "http://aarambd.com/photo/${category.photo}",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
                                   Center(
                                     child: Text(
                                       '${category.categoryName}  ${category.categoryCount}',
@@ -283,7 +313,22 @@ class _CartPageState extends State<CartPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Homepage()),
+                                      builder: (context) => AdvertScreen(
+                                            userId: user.userId.toString(),
+                                            isService: user.isservice,
+                                            advertData: AdvertData(
+                                              userId: user.userId.toString(),
+                                              isService: user.isservice,
+                                              additionalData: user.isservice
+                                                  ? {
+                                                      'service_id':
+                                                          user.service_id,
+                                                    } // Replace with actual service details
+                                                  : {
+                                                      'shop_id': user.shop_id,
+                                                    },
+                                            ),
+                                          )),
                                 );
                               },
                               child: Container(
@@ -330,10 +375,9 @@ class _CartPageState extends State<CartPage> {
                                                       BorderRadius.circular(60),
                                                 ),
                                                 child: Center(
-                                                  child: Icon(
-                                                    Icons.person,
-                                                    size: 50,
-                                                    color: Colors.grey[600],
+                                                  child: Image.network(
+                                                    user.photo,
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
                                               ),

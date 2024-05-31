@@ -36,14 +36,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
         titleSpacing: 2,
         title: Row(
           children: [
-            // Spacing between home button and logo
-            // AaramBD Logo
-            // Image.asset(
-            //   'assets/aaram_bd_logo.png',
-            //   height: 40,
-            // ),
-            SizedBox(width: 8), // Spacing between logo and text
-            // AaramBD Text
             Text(
               'AaramBD',
               style: TextStyle(

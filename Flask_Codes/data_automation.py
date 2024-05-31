@@ -11,12 +11,45 @@ from pymysql import Error
 # df = pd.read_excel('Assorted.xlsx', sheet_name='shops')
 
 # MySQL database connection
-mydb = mysql.connector.connect(
+def mydb():
+   connection =  mysql.connector.connect(
     host="localhost",
     user="root",
     password="",
     database="registration"
 )
+   if connection.is_connected():
+       return connection,connection.cursor()
+
+def update_image_paths(cursor, connection):
+    try:
+        # Fetch all shop IDs from the shops table
+        cursor.execute("SELECT service_id FROM service")
+        rows = cursor.fetchall()
+
+        # Update each shop with a unique photo path
+        for index, row in enumerate(rows):
+            service_id = row[0]
+            image_file_name = f'photo-{index + 1}.png'
+            sql_update_query = """UPDATE service SET photo = %s WHERE service_id = %s"""
+            update_tuple = (image_file_name, service_id)
+            cursor.execute(sql_update_query, update_tuple)
+            print(f"Image path {image_file_name} for shop ID {service_id} updated successfully")
+
+        # Commit the updates to the database
+        connection.commit()
+
+    except Error as error:
+        print(f"Failed to update data in MySQL table {error}")
+
+connection,cursor = mydb()
+
+if connection and cursor:
+    update_image_paths(cursor,connection)
+    cursor.close()
+    connection.close()
+
+
 
 # cursor = mydb.cursor()
 # for filename in os.listdir('downloaded_images'):
@@ -88,54 +121,54 @@ mydb = mysql.connector.connect(
 #         print(f"{new_name} file name rename") 
 
 # update 
-import mysql.connector
-from mysql.connector import Error
-from ftplib import FTP
+# import mysql.connector
+# from mysql.connector import Error
+# from ftplib import FTP
 
-def update_image_path(cursor, shop_id, image_file_name):
-    try:
-        # Update shop details with image file path in the database
-        sql_update_query = """UPDATE shops SET photo = %s WHERE shop_id = %s"""
-        update_tuple = (image_file_name, shop_id)
-        cursor.execute(sql_update_query, update_tuple)
-        print(f"Image path {image_file_name} for shop ID {shop_id} updated successfully")
-    except Error as error:
-        print(f"Failed to update data in MySQL table {error}")
+# def update_image_path(cursor, shop_id, image_file_name):
+#     try:
+#         # Update shop details with image file path in the database
+#         sql_update_query = """UPDATE shops SET photo = %s WHERE shop_id = %s"""
+#         update_tuple = (image_file_name, shop_id)
+#         cursor.execute(sql_update_query, update_tuple)
+#         print(f"Image path {image_file_name} for shop ID {shop_id} updated successfully")
+#     except Error as error:
+#         print(f"Failed to update data in MySQL table {error}")
 
-def list_ftp_images(ftp, directory):
-    ftp.cwd(directory)
-    files = ftp.nlst()
-    return [f for f in files if f.endswith(('.jpg', '.jpeg', '.png'))]
+# def list_ftp_images(ftp, directory):
+#     ftp.cwd(directory)
+#     files = ftp.nlst()
+#     return [f for f in files if f.endswith(('.jpg', '.jpeg', '.png'))]
 
-def process_images(ftp_host, ftp_user, ftp_password, ftp_directory):
-    try:
-        # Connect to FTP server
-        ftp = FTP(ftp_host)
-        ftp.login(ftp_user, ftp_password)
-        cursor = mydb.cursor()
+# def process_images(ftp_host, ftp_user, ftp_password, ftp_directory):
+#     try:
+#         # Connect to FTP server
+#         ftp = FTP(ftp_host)
+#         ftp.login(ftp_user, ftp_password)
+#         cursor = mydb.cursor()
         
-        image_files = list_ftp_images(ftp, ftp_directory)
+#         image_files = list_ftp_images(ftp, ftp_directory)
         
-        for image_file in image_files:
-            try:
-                # Extract shop ID from filename
-                shop_id = int(image_file.split('-')[1].split('.')[0])
-                update_image_path(cursor, shop_id, image_file)
-            except ValueError:
-                print(f"Skipping file {image_file}, unable to extract shop ID")
+#         for image_file in image_files:
+#             try:
+#                 # Extract shop ID from filename
+#                 shop_id = int(image_file.split('-')[1].split('.')[0])
+#                 update_image_path(cursor, shop_id, image_file)
+#             except ValueError:
+#                 print(f"Skipping file {image_file}, unable to extract shop ID")
         
-        mydb.commit()
-        cursor.close()
-        mydb.close()
-        ftp.quit()
-        print("All updates completed and connections closed successfully")
-    except Exception as e:
-        print(f"Error processing images: {e}")
+#         mydb.commit()
+#         cursor.close()
+#         mydb.close()
+#         ftp.quit()
+#         print("All updates completed and connections closed successfully")
+#     except Exception as e:
+#         print(f"Error processing images: {e}")
 
-# Example usage
-ftp_host = '89.117.27.223'
-ftp_user = 'u790304855'
-ftp_password = 'Badhon12345'
-ftp_directory = '/domains/aarambd.com/public_html/photo'  # Update this to your directory
+# # Example usage
+# ftp_host = '89.117.27.223'
+# ftp_user = 'u790304855'
+# ftp_password = 'Badhon12345'
+# ftp_directory = '/domains/aarambd.com/public_html/photo'  # Update this to your directory
 
-process_images(ftp_host, ftp_user, ftp_password, ftp_directory)
+# process_images(ftp_host, ftp_user, ftp_password, ftp_directory)
