@@ -360,11 +360,8 @@ def get_service_data_by_category():
                 cursor.execute("SELECT * FROM service")
                 all_users_data = cursor.fetchall()
 
-            # Convert bytes to Base64 string if necessary
-            for user in all_users_data:
-                for key, value in user.items():
-                    if isinstance(value, bytes):
-                        user[key] = base64.b64encode(value).decode()
+           
+            
 
             return jsonify({'service_information': all_users_data})
 

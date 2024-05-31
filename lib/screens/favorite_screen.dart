@@ -13,6 +13,7 @@ class UserDetail {
   final String business_name;
   final String category;
   final int phone;
+  final photo;
   final int shop_id;
   final int service_id;
   final int userId;
@@ -23,6 +24,7 @@ class UserDetail {
       required this.business_name,
       required this.category,
       required this.phone,
+      required this.photo,
       required this.userId,
       required this.shop_id,
       required this.service_id,
@@ -35,6 +37,7 @@ class UserDetail {
       address: json['address'] ?? '',
       category: json['category'] ?? '',
       business_name: json['business_name'] ?? '',
+      photo: json['photo'],
       phone: json['phone'] ?? 0,
       userId: serviceId != 0 ? serviceId : shopId,
       service_id: serviceId,
@@ -158,10 +161,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 border: Border.all(
                                     width: 3, color: Colors.greenAccent),
                               ),
-                              // child: Image.memory(
-                              //   base64Decode(user.photo),
-                              //   fit: BoxFit.cover,
-                              // ),
+                              child: Image.network(
+                                "http://aarambd.com/photo/${user.photo}",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             Expanded(
                               child: Column(

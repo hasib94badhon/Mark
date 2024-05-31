@@ -21,7 +21,7 @@ class UserDetail {
   final String business_name;
   final String category;
   final int? phone;
-  // final String photo;
+  final photo;
   final int shop_id;
   final int service_id;
   final bool is_service;
@@ -31,7 +31,7 @@ class UserDetail {
       required this.business_name,
       required this.category,
       required this.phone,
-      // required this.photo,
+      required this.photo,
       required this.shop_id,
       required this.is_service,
       required this.service_id});
@@ -45,7 +45,7 @@ class UserDetail {
         business_name:
             json['business_name'] ?? "No Name", // Provide default value if null
         phone: json['phone'] as int?, // Cast as nullable int
-        // photo: json['photo'] ?? "No Photo", // Provide default value if null
+        photo: json['photo'], // Provide default value if null
         shop_id: json['shop_id'],
         service_id: json['service_id'] ?? 0,
         is_service: false // Assuming service_id will always be provided
@@ -108,7 +108,8 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
         centerTitle: true,
         backgroundColor: Colors.purple[100],
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          iconSize: 40,
+          icon: Icon(Icons.arrow_back_ios_rounded),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -154,11 +155,11 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
                             EdgeInsets.symmetric(vertical: 3, horizontal: 8),
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.purple[100],
+                          color: Colors.white,
                           border: Border.all(
                               width: 1,
-                              color: Color.fromARGB(255, 252, 122, 213)),
-                          borderRadius: BorderRadius.circular(20),
+                              color: Color.fromARGB(255, 133, 199, 136)),
+                          borderRadius: BorderRadius.circular(40),
                         ),
                         child: Row(
                           children: [
@@ -168,16 +169,14 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
                               margin: EdgeInsets.only(right: 20),
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(60),
                                 border: Border.all(
-                                    width: 3,
-                                    color: const Color.fromARGB(
-                                        255, 232, 141, 248)),
+                                    width: 3, color: Colors.greenAccent),
                               ),
-                              // child: Image.memory(
-                              //   base64Decode(user.photo),
-                              //   fit: BoxFit.cover,
-                              // ),
+                              child: Image.network(
+                                "http://aarambd.com/photo/${user.photo}",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             Expanded(
                               child: Column(
@@ -187,10 +186,10 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
                                     user.business_name,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                      fontSize: 20,
                                     ),
                                   ),
-                                  SizedBox(height: 5),
+                                  SizedBox(height: 3),
                                   Text(
                                     user.address,
                                     maxLines: 2,

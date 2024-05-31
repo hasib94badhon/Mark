@@ -13,6 +13,7 @@ class UserDetail {
   final String business_name;
   final String category;
   final int? phone;
+  final photo;
   final bool isService;
   // final String photo;
   final int service_id;
@@ -23,7 +24,7 @@ class UserDetail {
     required this.business_name,
     required this.category,
     required this.phone,
-    // required this.photo,
+    required this.photo,
     required this.service_id,
     required this.isService,
     required this.shop_id,
@@ -35,8 +36,9 @@ class UserDetail {
             json['address'] ?? "No Address", // Provide default value if null
         category:
             json['category'] ?? "No Category", // Provide default value if null
-        business_name:
-            json['business_name'] ?? "No Name", // Provide default value if null
+        business_name: json['business_name'] ?? "No Name",
+        photo: json['photo'],
+        // Provide default value if null
         phone: json['phone'] as int?, // Cast as nullable int
         // photo: json['photo'] ?? "No Photo", // Provide default value if null
         service_id: json['service_id'],
@@ -160,10 +162,10 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
                                 border: Border.all(
                                     width: 3, color: Colors.greenAccent),
                               ),
-                              // child: Image.memory(
-                              //   base64Decode(user.photo),
-                              //   fit: BoxFit.cover,
-                              // ),
+                              child: Image.network(
+                                "http://aarambd.com/photo/${user.photo}",
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             Expanded(
                               child: Column(
