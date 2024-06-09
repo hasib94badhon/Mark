@@ -5,14 +5,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-
-
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUpScreen> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -20,19 +19,20 @@ class _SignUpState extends State<SignUpScreen> {
     final String apiUrl = 'http://192.168.0.103:5000/add';
 
     final Map<String, dynamic> requestData = {
+      'name': _nameController.text,
       'phone': _phoneController.text,
       'password': _passwordController.text,
     };
-     
-     // Convert the data to raw JSON format
+
+    // Convert the data to raw JSON format
     String jsonData = jsonEncode(requestData);
     print('Raw JSON Data: $jsonData');
 
     final response = await http.post(
       Uri.parse(apiUrl),
       headers: <String, String>{
-        'Content-Type': 'application/json;charset=UTF-8' ,// Set the Content-Type to 'application/json'
-        
+        'Content-Type':
+            'application/json;charset=UTF-8', // Set the Content-Type to 'application/json'
       },
       body: jsonData,
     );
@@ -44,9 +44,6 @@ class _SignUpState extends State<SignUpScreen> {
     }
   }
 
-   
-  
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -55,18 +52,32 @@ class _SignUpState extends State<SignUpScreen> {
               child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(
+            height: 10,
+          ),
           Image.asset(
             'images/call1.png',
             height: 150,
           ),
           SizedBox(
-            height: 0,
+            height: 15,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: [
-                
+                TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Enter Name',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(14))),
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 TextField(
                   controller: _phoneController,
                   decoration: InputDecoration(
@@ -93,7 +104,6 @@ class _SignUpState extends State<SignUpScreen> {
                 SizedBox(
                   height: 10,
                 ),
-              
                 ElevatedButton(
                   onPressed: () {
                     addDataToDB();
@@ -113,11 +123,9 @@ class _SignUpState extends State<SignUpScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8))),
                 ),
-
                 SizedBox(
                   height: 28,
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -128,7 +136,6 @@ class _SignUpState extends State<SignUpScreen> {
                             fontSize: 18)),
                     TextButton(
                         onPressed: () {
-                          
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -152,7 +159,6 @@ class _SignUpState extends State<SignUpScreen> {
     );
   }
 }
-
 
 void main() {
   runApp(SignUpScreen());

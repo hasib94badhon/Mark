@@ -67,6 +67,7 @@ def add_data_to_db():
         try:
             data = request.get_json()
             print("Received Data:", data)  # Print the received data for debugging
+            name = data['name']
             phone = data['phone']
             password = data['password']
         except Exception as e:
@@ -76,10 +77,10 @@ def add_data_to_db():
         connection = db_connector.connect()
         cursor = connection.cursor()
         try:
-            cursor.execute("INSERT INTO reg (phone, password) VALUES (%s, %s)", (phone, password))
+            cursor.execute("INSERT INTO reg (name,phone, password) VALUES (%s,%s, %s)", (name,phone,password))
             connection.commit()
             reg_id = cursor.lastrowid  # Get the auto-generated reg_id
-            cursor.execute("INSERT INTO users (reg_id, phone) VALUES (%s, %s)", (reg_id, phone))
+            cursor.execute("INSERT INTO users (reg_id,name,phone) VALUES (%s,%s, %s)", (reg_id,name, phone))
             connection.commit()
             return jsonify({"reg_id": reg_id, "message": "Data added successfully"})
         except Exception as e:

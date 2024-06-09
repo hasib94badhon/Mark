@@ -269,7 +269,7 @@ class _CartPageState extends State<CartPage> {
                                         border: Border.all(
                                             width: 2, color: Colors.lightGreen),
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.circular(60),
+                                        borderRadius: BorderRadius.circular(45),
                                         image: DecorationImage(
                                             image: NetworkImage(
                                               "http://aarambd.com/photo/${category.photo}",
@@ -297,8 +297,9 @@ class _CartPageState extends State<CartPage> {
                                           border: Border.all(width: 1),
                                           borderRadius:
                                               BorderRadius.circular(35),
-                                          color: Color.fromARGB(
-                                              255, 255, 255, 255),
+                                          color:
+                                              Color.fromARGB(255, 255, 255, 255)
+                                                  .withOpacity(0.6),
                                         ),
                                         child: Text(
                                           "${category.categoryName} (${category.categoryCount})",
