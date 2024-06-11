@@ -26,6 +26,7 @@ dependencies:
   http: ^1.2.1
   floating_text: ^0.2.0
   flutter_speed_dial: ^7.0.0
+  font_awesome_flutter: ^9.0.0
   
 
 dev_dependencies:
