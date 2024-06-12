@@ -627,27 +627,6 @@ class _AdvertScreenState extends State<AdvertScreen> {
                                         ],
                                       ),
                                     ),
-                                    // Positioned(
-                                    //   top: 5,
-                                    //   right: 5,
-                                    //   child: Container(
-                                    //     margin:
-                                    //         EdgeInsets.only(right: 15, top: 15),
-                                    //     padding: EdgeInsets.all(8),
-                                    //     decoration: BoxDecoration(
-                                    //       color: Colors.black.withOpacity(0.5),
-                                    //       borderRadius:
-                                    //           BorderRadius.circular(20),
-                                    //     ),
-                                    //     child: Text(
-                                    //       "2 min",
-                                    //       style: TextStyle(
-                                    //         color: Colors.white,
-                                    //         fontSize: 12,
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
                                   ],
                                 );
                               },

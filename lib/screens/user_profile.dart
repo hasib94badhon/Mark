@@ -1,3 +1,5 @@
+import 'package:aaram_bd/screens/editprofile_screen.dart';
+import 'package:aaram_bd/widgets/ExpendableText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
@@ -25,6 +27,12 @@ class _UserProfileState extends State<UserProfile> {
     "images/image4.png",
     "images/image5.png",
   ];
+
+  final String userName = "User Name";
+  final String userCategory = "Electrician";
+  final String userDescription =
+      "Skilled electrician with 10 years of experience in both residential and commercial settings. Dedicated to ensuring safety and compliance with industry standards.";
+  final String userAddress = "123 Main St, City";
 
   @override
   Widget build(BuildContext context) {
@@ -244,7 +252,7 @@ class _UserProfileState extends State<UserProfile> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 1,
-                            crossAxisSpacing: 8,
+                            crossAxisSpacing: 15,
                             mainAxisSpacing: 6,
                           ),
                           itemCount: images.length,
@@ -280,51 +288,70 @@ class _UserProfileState extends State<UserProfile> {
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.favorite_border,
-                                                  color: Colors.black,
-                                                ),
-                                                SizedBox(width: 5),
-                                                Text(
-                                                  "100", // Likes count
-                                                  style: TextStyle(
+                                      Container(
+                                        color: Colors.blue[100],
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.favorite_border,
                                                     color: Colors.black,
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.share,
-                                                  color: Colors.black,
-                                                ),
-                                                SizedBox(width: 5),
-                                                Text(
-                                                  "50", // Shares count
-                                                  style: TextStyle(
+                                                  SizedBox(width: 5),
+                                                  Text(
+                                                    "100", // Likes count
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.comment_rounded,
+                                                    color: Colors.black,
+                                                    size: 22,
+                                                  ),
+                                                  SizedBox(width: 5),
+                                                  Text(
+                                                    "50", // Shares count
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.share,
                                                     color: Colors.black,
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                                  SizedBox(width: 5),
+                                                  Text(
+                                                    "50", // Shares count
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Positioned(
-                                  top: 5,
-                                  right: 5,
+                                  top: 15,
+                                  right: 15,
                                   child: Container(
                                     padding: EdgeInsets.all(4),
                                     decoration: BoxDecoration(
@@ -358,7 +385,18 @@ class _UserProfileState extends State<UserProfile> {
         children: [
           FloatingActionButton(
             onPressed: () {
-              // Handle Edit Profile button pressed
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditProfileScreen(
+                    userName: userName,
+                    userPhone: widget.userPhone,
+                    userCategory: userCategory,
+                    userDescription: userDescription,
+                    userAddress: userAddress,
+                  ),
+                ),
+              );
             },
             heroTag: "editProfile",
             backgroundColor: Colors.amber,
