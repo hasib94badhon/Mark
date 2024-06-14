@@ -109,18 +109,44 @@ def login_user():
             user = cursor.fetchone()
             if user:
                 # User found, return success message
-                # phone = user[1]
-                # print(phone)
-                return jsonify({"message": "Login successful", "user": {"phone": user[1]}})
+                user_phone = user[2]  # Assuming the phone number is the second element in the tuple
+                return jsonify({"message": "Login successful", "user": {"phone": user_phone}})
             else:
                 # User not found, return error message
                 return jsonify({"error": "Invalid phone number or password"}), 401
         except Exception as e:
             return jsonify({"error": str(e)}), 500
         finally:
-            
             cursor.close()
             connection.close()
+
+
+@app.route('/check_phone', methods=['POST'])
+def check_phone():
+    if request.method == 'POST':
+        try:
+            data = request.get_json()
+            phone = data['phone']
+            # You can ignore the password or set any necessary value
+        except Exception as e:
+            return jsonify({"error": f"Failed to parse JSON data: {str(e)}"}), 400
+
+        connection = db_connector.connect()
+        cursor = connection.cursor()
+        try:
+            cursor.execute("SELECT * FROM reg WHERE phone = %s", (phone,))
+            user = cursor.fetchone()
+            if user:
+                return jsonify({"exists": True})
+            else:
+                return jsonify({"exists": False})
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
+
         
 
 @app.route('/get_users_data', methods=['GET'])

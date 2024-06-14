@@ -1,43 +1,45 @@
 import 'package:aaram_bd/pages/cartPage.dart';
 import 'package:aaram_bd/screens/navigation_screen.dart';
 import 'package:aaram_bd/screens/user_profile.dart';
+import 'package:aaram_bd/widgets/ExpandableText.dart';
 import 'package:aaram_bd/widgets/ExpendableText.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:aaram_bd/widgets/ExpendableText.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class UserDetail {
   final String address;
-  final String business_name;
+  final String businessName;
   final String category;
   final int phone;
-  final photo;
-  final int service_id;
-  final int shop_id;
+  final String photo;
+  final int serviceId;
+  final int shopId;
 
-  UserDetail(
-      {required this.address,
-      required this.business_name,
-      required this.category,
-      required this.phone,
-      required this.photo,
-      required this.service_id,
-      required this.shop_id});
+  UserDetail({
+    required this.address,
+    required this.businessName,
+    required this.category,
+    required this.phone,
+    required this.photo,
+    required this.serviceId,
+    required this.shopId,
+  });
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
-        address: json['address'] ?? '',
-        category: json['category'] ?? '',
-        business_name: json['business_name'] ?? '',
-        phone: json['phone'] ?? 0,
-        photo: json['photo'],
-        service_id: json['service_id'] ?? 0,
-        shop_id: json['shop_id'] ?? 0);
+      address: json['address'] ?? '',
+      category: json['category'] ?? '',
+      businessName: json['business_name'] ?? '',
+      phone: json['phone'] ?? 0,
+      photo: json['photo'] ?? '',
+      serviceId: json['service_id'] ?? 0,
+      shopId: json['shop_id'] ?? 0,
+    );
   }
 }
 
@@ -45,23 +47,27 @@ class AdvertData {
   final String userId;
   final bool isService;
   final Map<String, dynamic> additionalData;
-  AdvertData(
-      {required this.userId,
-      required this.isService,
-      required this.additionalData});
+
+  AdvertData({
+    required this.userId,
+    required this.isService,
+    required this.additionalData,
+  });
 }
 
 class AdvertScreen extends StatefulWidget {
   final AdvertData advertData;
   final String userId;
   final bool isService;
-  AdvertScreen(
-      {required this.advertData,
-      required this.userId,
-      required this.isService});
+
+  AdvertScreen({
+    required this.advertData,
+    required this.userId,
+    required this.isService,
+  });
 
   @override
-  State<AdvertScreen> createState() => _AdvertScreenState();
+  _AdvertScreenState createState() => _AdvertScreenState();
 }
 
 class TimelineWidget extends StatelessWidget {
@@ -98,13 +104,15 @@ class TimelineWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(
+                Container(
+                  height: 140, // Set fixed height for the image container
                   child: ClipRRect(
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(15)),
                     child: Image.asset(
-                      post['image'],
-                      fit: BoxFit.contain,
+                      post['image']!,
+                      fit: BoxFit
+                          .cover, // Cover to ensure it fills the container
                     ),
                   ),
                 ),
@@ -114,14 +122,16 @@ class TimelineWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post['businessName'],
+                        post['businessName']!,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                       SizedBox(height: 5),
-                      Text(post['category']),
+                      Text(post['category']!),
                       SizedBox(height: 5),
-                      Text(post['location']),
+                      Text(post['location']!),
                     ],
                   ),
                 ),
@@ -168,24 +178,18 @@ class _AdvertScreenState extends State<AdvertScreen> {
     }
   }
 
-  // ////////////////////////////////////////////
-
-  int pageIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'AaramBD',
-        ),
+        title: Text('AaramBD'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.person_search_outlined),
             iconSize: 35,
             onPressed: () {},
-          )
+          ),
         ],
         backgroundColor: Colors.blue[100],
         leading: IconButton(
@@ -197,25 +201,25 @@ class _AdvertScreenState extends State<AdvertScreen> {
           },
         ),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(25),
+            bottomRight: Radius.circular(25),
+          ),
+        ),
       ),
       body: FutureBuilder<List<UserDetail>>(
-          future: data,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return Center(child: Text("Error: ${snapshot.error}"));
-              } else if (snapshot.hasData) {
-                final users = snapshot.data!;
-                if (users.isEmpty) {
-                  return Center(
-                    child: Text("No data available"),
-                  );
-                }
+        future: data,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (snapshot.hasData) {
+              final users = snapshot.data!;
+              if (users.isEmpty) {
+                return Center(child: Text("No data available"));
+              }
 
-                return Container(
+              return Container(
                   margin: EdgeInsets.all(8),
                   padding: EdgeInsets.all(6),
                   decoration: BoxDecoration(
@@ -232,227 +236,216 @@ class _AdvertScreenState extends State<AdvertScreen> {
                   ),
                   child: SingleChildScrollView(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Sliding Picture Show
-                        Column(
-                          //crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.location_on,
-                                  color: Colors.green,
-                                  size: 20,
-                                ),
-                                SizedBox(width: 5),
-                                Expanded(
-                                  child: Text(
-                                    users.isNotEmpty
-                                        ? users[0].address
-                                        : 'Unknown',
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-
-                        Container(
-                          color: Colors.white,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Column(
                             children: [
-                              Container(
-                                width: 130,
-                                height: 130,
-                                margin: EdgeInsets.only(
-                                    right: 20, top: 15, bottom: 8),
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(60),
-                                  border: Border.all(
-                                      width: 3, color: Colors.greenAccent),
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: Colors.green,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 5),
+                                  Expanded(
+                                    child: Text(
+                                      users.isNotEmpty
+                                          ? users[0].address
+                                          : 'Unknown',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Container(
+                            color: Colors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 130,
+                                  height: 130,
+                                  margin: EdgeInsets.only(
+                                      right: 20, top: 15, bottom: 8),
+                                  padding: EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(60)),
-                                  child: Image.network(
-                                    "http://aarambd.com/photo/${users[0].photo}",
-                                    fit: BoxFit.cover,
+                                    borderRadius: BorderRadius.circular(60),
+                                    border: Border.all(
+                                        width: 3, color: Colors.greenAccent),
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(60),
+                                    ),
+                                    child: Image.network(
+                                      "http://aarambd.com/photo/${users[0].photo}",
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.only(left: 8, right: 8),
-                                padding: EdgeInsets.only(left: 8, right: 8),
-                                decoration: BoxDecoration(
+                                Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(left: 8, right: 8),
+                                  padding: EdgeInsets.only(left: 8, right: 8),
+                                  decoration: BoxDecoration(
                                     color: Colors.white,
-                                    //border: Border.all(width: 1),
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: Column(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        users[0].businessName,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 26,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5, bottom: 10),
+                                  padding: EdgeInsets.only(left: 8, right: 8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  child: Text(
+                                    users[0].category,
+                                    style: TextStyle(
+                                      color: Colors.brown,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                RatingBar.builder(
+                                  initialRating: 3.5,
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemSize: 22,
+                                  itemPadding:
+                                      EdgeInsets.symmetric(horizontal: 2.0),
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating) {
+                                    print("Rating is $rating");
+                                  },
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text(
-                                      users[0]
-                                          .business_name, // Placeholder for the electrician's name
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 26,
-                                        fontWeight: FontWeight.bold,
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.phone,
+                                        color: Colors.green,
+                                        size: 40,
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.message,
+                                        color: Colors.blue,
+                                        size: 40,
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.comment,
+                                        color: Colors.orange,
+                                        size: 40,
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.facebook,
+                                        color: Colors.blue[800],
+                                        size: 40,
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.south_america_sharp,
+                                        color: Colors.green[800],
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                                Divider(
+                                  color: Colors.black,
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        // Handle Related items
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.blue),
+                                        shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                          ),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "Related items",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-
-                              Container(
-                                margin: EdgeInsets.only(top: 5, bottom: 10),
-                                padding: EdgeInsets.only(left: 8, right: 8),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    //border: Border.all(width: 1),
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: Text(
-                                  users[0].category,
-                                  style: TextStyle(
-                                    color: Colors.brown,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                Divider(
+                                  color: Colors.black,
+                                  height: 10,
                                 ),
-                              ),
-
-                              RatingBar.builder(
-                                initialRating: 3.5,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize: 22,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 2.0),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (rating) {
-                                  print("Rating is $rating");
-                                },
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.phone,
-                                      color: Colors.green,
-                                      size: 40,
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.message,
-                                      color: Colors.blue,
-                                      size: 40,
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.comment,
-                                      color: Colors.orange,
-                                      size: 40,
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.facebook,
-                                      color: Colors.blue[800],
-                                      size: 40,
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.south_america_sharp,
-                                        color: Colors.green[800]),
-                                    onPressed: () {},
-                                  ),
-                                ],
-                              ),
-
-                              // After Review and Comments Row and before Gallery Section
-                              Divider(
-                                color: Colors.black,
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Handle Give Review
-                                    },
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Colors.blue),
-                                      shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0))),
-                                    ),
-                                    child: Text("Related items",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20)),
-                                  ),
-                                ],
-                              ),
-                              Divider(
-                                color: Colors.black,
-                                height: 10,
-                              ),
-
-                              TimelineWidget(
-                                posts: List.generate(
+                                TimelineWidget(
+                                  posts: List.generate(
                                     12,
                                     (index) => {
-                                          "businessName": "Business $index",
-                                          "category": "Category $index",
-                                          "location": "Location $index",
-                                          "image":
-                                              "images/image${index % 5 + 1}.png",
-                                        }),
-                              ),
-                              // Continue with Gallery section
-                            ],
-                          ),
-                        ),
-                        Divider(
-                          color: Colors.black,
-                          height: 10,
-                        ),
-
-                        // Gallery
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
+                                      "businessName": "Business $index",
+                                      "category": "Category $index",
+                                      "location": "Location $index",
+                                      "image":
+                                          "images/image${index % 5 + 1}.png",
+                                    },
+                                  ),
+                                ),
+                                Divider(
+                                  color: Colors.black,
+                                  height: 10,
+                                ),
                                 TextButton(
                                   onPressed: () {
                                     // Handle Upload and Post button pressed
@@ -505,142 +498,146 @@ class _AdvertScreenState extends State<AdvertScreen> {
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                            Divider(
-                              color: Colors.black,
-                              height: 10,
-                            ),
-                            GridView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 1,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 6,
-                              ),
-                              //itemCount: images.length,
-                              itemBuilder: (context, index) {
-                                return Stack(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.all(10),
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.2),
-                                            spreadRadius: 4,
-                                            blurRadius: 6,
-                                            offset: Offset(0, 3),
+                                Divider(
+                                  color: Colors.black,
+                                  height: 10,
+                                ),
+                                GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 1,
+                                    crossAxisSpacing: 8,
+                                    mainAxisSpacing: 6,
+                                  ),
+                                  itemCount: 5, // Adjust item count accordingly
+                                  itemBuilder: (context, index) {
+                                    return Stack(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.all(10),
+                                          padding: EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.2),
+                                                spreadRadius: 4,
+                                                blurRadius: 6,
+                                                offset: Offset(0, 3),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            color: Colors.blue,
-                                            child: Stack(
-                                              children: [
-                                                Positioned(
-                                                  bottom: 5,
-                                                  left: 5,
-                                                  right: 5,
-                                                  child: Container(
-                                                    color: Colors.green,
-                                                    margin: EdgeInsets.all(10),
-                                                    child: ExpandableText(
-                                                      text:
-                                                          "fgnsuhfasdfndicvuhsdbfgalekrjbgadkufvhsdkbnaeklrgaeiovfhuadfnvalekrgtaenrgmadfuvihadfngaerwkj gaedfivuadlcvafgaeirug afdsv",
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Row(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                color: Colors.blue,
+                                                child: Stack(
                                                   children: [
-                                                    Icon(
-                                                      Icons.favorite_border,
-                                                      color: Colors.black,
-                                                      size: 22,
-                                                    ),
-                                                    SizedBox(width: 8),
-                                                    Text(
-                                                      "100",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 18,
+                                                    Positioned(
+                                                      bottom: 5,
+                                                      left: 5,
+                                                      right: 5,
+                                                      child: Container(
+                                                        color: Colors.green,
+                                                        margin:
+                                                            EdgeInsets.all(10),
+                                                        child: ExpandableText(
+                                                          text:
+                                                              "Description of the post.",
+                                                        ),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                                Row(
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
                                                   children: [
-                                                    Icon(
-                                                      Icons.comment_rounded,
-                                                      color: Colors.black,
-                                                      size: 22,
-                                                    ),
-                                                    SizedBox(width: 8),
-                                                    Text(
-                                                      "8",
-                                                      style: TextStyle(
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.favorite_border,
                                                           color: Colors.black,
-                                                          fontSize: 18),
+                                                          size: 22,
+                                                        ),
+                                                        SizedBox(width: 8),
+                                                        Text(
+                                                          "100",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 18,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.comment_rounded,
+                                                          color: Colors.black,
+                                                          size: 22,
+                                                        ),
+                                                        SizedBox(width: 8),
+                                                        Text(
+                                                          "8",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 18,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.share,
+                                                          color: Colors.black,
+                                                          size: 22,
+                                                        ),
+                                                        SizedBox(width: 8),
+                                                        Text(
+                                                          "50",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 18,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.share,
-                                                      color: Colors.black,
-                                                      size: 22,
-                                                    ),
-                                                    SizedBox(width: 8),
-                                                    Text(
-                                                      "50",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }
+                          ),
+                        ]),
+                  ));
             }
-            return Center(child: CircularProgressIndicator());
-          }),
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }

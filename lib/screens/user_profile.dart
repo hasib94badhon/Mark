@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 import 'package:aaram_bd/widgets/ExpandableText.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // Add this package for social media icons
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// Add this package for social media icons
 
 class UserProfile extends StatefulWidget {
   final String userPhone;
@@ -253,7 +254,9 @@ class _UserProfileState extends State<UserProfile> {
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 1,
                             crossAxisSpacing: 15,
-                            mainAxisSpacing: 6,
+                            mainAxisSpacing: 15,
+                            childAspectRatio: 3 /
+                                2, // Adjust the aspect ratio to resize the container
                           ),
                           itemCount: images.length,
                           itemBuilder: (context, index) {
@@ -262,7 +265,7 @@ class _UserProfileState extends State<UserProfile> {
                                 Container(
                                   decoration: BoxDecoration(
                                     color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(15),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black.withOpacity(0.2),
@@ -272,81 +275,106 @@ class _UserProfileState extends State<UserProfile> {
                                       ),
                                     ],
                                   ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10),
-                                          ),
-                                          child: Image.asset(
-                                            images[index],
-                                            fit: BoxFit.cover,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Stack(
+                                      children: [
+                                        Image.asset(
+                                          images[index],
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        Positioned(
+                                          bottom: 0,
+                                          left: 0,
+                                          right: 0,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Colors.transparent,
+                                                  Colors.black54
+                                                ],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                              ),
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(15),
+                                                bottomRight:
+                                                    Radius.circular(15),
+                                              ),
+                                            ),
+                                            padding: EdgeInsets.all(10),
+                                            //
                                           ),
                                         ),
-                                      ),
-                                      Container(
-                                        color: Colors.blue[100],
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.favorite_border,
-                                                    color: Colors.black,
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  Text(
-                                                    "100", // Likes count
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ],
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 50,
+                                  left: 15,
+                                  right: 15,
+                                  child: Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.5),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.favorite_border,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "100", // Likes count
+                                              style: TextStyle(
+                                                color: Colors.white,
                                               ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.comment_rounded,
-                                                    color: Colors.black,
-                                                    size: 22,
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  Text(
-                                                    "50", // Shares count
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.share,
-                                                    color: Colors.black,
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  Text(
-                                                    "50", // Shares count
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.comment_rounded,
+                                              color: Colors.white,
+                                              size: 22,
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "50", // Comments count
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.share,
+                                              color: Colors.white,
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              "50", // Shares count
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Positioned(
