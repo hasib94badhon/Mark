@@ -1,11 +1,9 @@
-import 'package:aaram_bd/screens/editprofile_screen.dart';
-import 'package:aaram_bd/widgets/ExpendableText.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:aaram_bd/screens/editprofile_screen.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
-import 'package:aaram_bd/widgets/ExpandableText.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// Add this package for social media icons
 
 class UserProfile extends StatefulWidget {
   final String userPhone;
@@ -29,11 +27,39 @@ class _UserProfileState extends State<UserProfile> {
     "images/image5.png",
   ];
 
-  final String userName = "User Name";
-  final String userCategory = "Electrician";
-  final String userDescription =
-      "Skilled electrician with 10 years of experience in both residential and commercial settings. Dedicated to ensuring safety and compliance with industry standards.";
-  final String userAddress = "123 Main St, City";
+  String userName = "User Name";
+  String userCategory = "Category";
+  String userDescription = "User Description";
+  String userAddress = "User Address";
+
+  bool _needsReload = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    print("Fetching user data for phone: $userPhone");
+    final response = await http.get(
+      Uri.parse('http://192.168.0.103:5000/get_user_by_phone?phone=$userPhone'),
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      print("Fetched data: $data");
+      setState(() {
+        userName = data[0] ?? "User Name";
+        userCategory = data[2] ?? "Category";
+        userDescription = "${data[3] ?? "User Description"}";
+        userAddress = data[4] ?? "User Address";
+      });
+    } else {
+      // Handle the error
+      print("Failed to fetch user data: ${response.statusCode}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +111,7 @@ class _UserProfileState extends State<UserProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "User Name",
+                          userName,
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -121,7 +147,7 @@ class _UserProfileState extends State<UserProfile> {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              "Electrician", // Category
+                              userCategory,
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -140,7 +166,7 @@ class _UserProfileState extends State<UserProfile> {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              "123 Main St, City", // Address
+                              userAddress,
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -151,7 +177,7 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          "Description: Skilled electrician with 10 years of experience in both residential and commercial settings. Dedicated to ensuring safety and compliance with industry standards.",
+                          userDescription,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -412,8 +438,8 @@ class _UserProfileState extends State<UserProfile> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => EditProfileScreen(
@@ -425,6 +451,10 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
               );
+
+              if (result == true) {
+                fetchUserData(); // Fetch updated data
+              }
             },
             heroTag: "editProfile",
             backgroundColor: Colors.amber,

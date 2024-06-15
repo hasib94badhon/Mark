@@ -7,6 +7,7 @@ import re
 import pymysql
 from flask_cors import CORS
 import time
+from mysql.connector import Error
 
 import pymysql.cursors
 
@@ -89,7 +90,6 @@ def add_data_to_db():
         finally:
             cursor.close()
             connection.close()
-
 @app.route('/login', methods=['POST'])
 def login_user():
     if request.method == 'POST':
@@ -107,10 +107,28 @@ def login_user():
         try:
             cursor.execute("SELECT * FROM reg WHERE phone = %s AND password = %s", (phone, password))
             user = cursor.fetchone()
+            print(user)
             if user:
-                # User found, return success message
-                user_phone = user[2]  # Assuming the phone number is the second element in the tuple
-                return jsonify({"message": "Login successful", "user": {"phone": user_phone}})
+                # User found, get the necessary details
+                reg_id = user[0]  # Assuming reg_id is the first element in the tuple
+                name = user[1]    # Assuming name is the second element in the tuple
+                user_phone = user[2]  # Assuming phone is the third element in the tuple
+
+                # Check if the user already exists in the users table
+                cursor.execute("SELECT * FROM users WHERE phone = %s", (user_phone,))
+                existing_user = cursor.fetchone()
+                if existing_user:
+                    print("User already exists in users table.")
+                else:
+                    # User does not exist in users table, insert the data
+                    try:
+                        cursor.execute("INSERT INTO users (reg_id, name, phone) VALUES (%s, %s, %s)", (reg_id, name, user_phone))
+                        connection.commit()  # Commit the transaction
+                        print("User inserted into users table.")
+                    except Exception as insert_error:
+                        return jsonify({"error": f"Failed to insert user into users table: {str(insert_error)}"}), 500
+
+                return jsonify({"message": "Login successful", "user": {"reg_id": reg_id, "name": name, "phone": user_phone}})
             else:
                 # User not found, return error message
                 return jsonify({"error": "Invalid phone number or password"}), 401
@@ -147,7 +165,82 @@ def check_phone():
             connection.close()
 
 
-        
+@app.route('/get_user_by_phone', methods=['GET'])
+def get_user_by_phone():
+    try:
+        phone = request.args.get('phone')
+        if not phone:
+            return jsonify({"error": "Phone number is required"}), 400
+    except Exception as e:
+        return jsonify({"error": f"Failed to parse request: {str(e)}"}), 400
+
+    connection = db_connector.connect()
+    if connection is None:
+        return jsonify({"error": "Failed to connect to the database"}), 500
+    
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT name, phone, category,description, location FROM users WHERE phone = %s", (phone,))
+        user = cursor.fetchone()
+        if user:
+            return jsonify(user)
+        else:
+            return jsonify({"error": "User not found"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        connection.close()
+
+@app.route('/update_user_profile', methods=['POST'])
+def update_user_profile():
+    data = request.get_json()
+    name = data.get('name')
+    phone = data.get('phone')
+    category = data.get('category')
+    description = data.get('description')
+    location = data.get('location')
+
+    connection = db_connector.connect()
+    if connection is None:
+        return jsonify({"success": False, "message": "Failed to connect to the database"}), 500
+
+    cursor = connection.cursor()
+    try:
+        query = """
+        UPDATE users
+        SET name = %s, category = %s, description = %s, location = %s
+        WHERE phone = %s
+        """
+        cursor.execute(query, (name, category, description, location, phone))
+        connection.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        connection.rollback()
+        print(f"Error: {str(e)}")
+        return jsonify({"success": False, "message": str(e)}), 500
+    finally:
+        cursor.close()
+        connection.close()
+
+
+
+
+@app.route('/get_categories_name',methods=['GET'])    
+def get_categories():
+    try:
+        connection = db_connector.connect()
+        cursor = connection.cursor()
+        cursor.execute("SELECT cat_name FROM cat ORDER BY cat_name")
+        categories = cursor.fetchall()
+        return jsonify({'categories':[category[0] for category in categories]})  
+    except Error as e:
+        return ({'error':str(e)}),500
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
 
 @app.route('/get_users_data', methods=['GET'])
 def get_user_data():

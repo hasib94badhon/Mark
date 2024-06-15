@@ -11,43 +11,156 @@ from pymysql import Error
 # df = pd.read_excel('Assorted.xlsx', sheet_name='shops')
 
 # MySQL database connection
-def mydb():
-   connection =  mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="registration"
-)
-   if connection.is_connected():
-       return connection,connection.cursor()
 
-def update_image_paths(cursor, connection):
+
+   
+def fetch_phone_numbers(cursor):
     try:
-        # Fetch all shop IDs from the shops table
-        cursor.execute("SELECT service_id FROM service")
-        rows = cursor.fetchall()
+        cursor.execute("SELECT phone FROM shops")
+        phone_numbers = cursor.fetchall()
+        print(f"Fetched phone numbers: {phone_numbers}")
+        return phone_numbers
+    except Error as error:
+        print(f"Error fetching phone numbers: {error}")
+        return []
 
-        # Update each shop with a unique photo path
-        for index, row in enumerate(rows):
-            service_id = row[0]
-            image_file_name = f'photo-{index + 1}.png'
-            sql_update_query = """UPDATE service SET photo = %s WHERE service_id = %s"""
-            update_tuple = (image_file_name, service_id)
-            cursor.execute(sql_update_query, update_tuple)
-            print(f"Image path {image_file_name} for shop ID {service_id} updated successfully")
+def insert_into_reg(cursor, phone):
+    try:
+        sql_insert_query = """INSERT INTO reg (phone, password) VALUES (%s, %s)"""
+        cursor.execute(sql_insert_query, (phone, '12345'))
+        print(f"Inserted phone number {phone} into reg")
+    except Error as error:
+        print(f"Error inserting phone number {phone} into reg: {error}")
 
-        # Commit the updates to the database
-        connection.commit()
+
+def fetch_unique_service_categories(cursor):
+    try:
+        cursor.execute("SELECT DISTINCT category FROM service")
+        return cursor.fetchall()
+    except Error as error:
+        print(f"Error fetching categories: {error}")
+        return []
+
+def fetch_unique_shops_categories(cursor):
+    try:
+        cursor.execute("SELECT DISTINCT category FROM shops")
+        return cursor.fetchall()
+    except Error as error:
+        print(f"Error fetching categories: {error}")
+        return []
+
+def insert_into_cat(cursor, category):
+    try:
+        sql_insert_query = """INSERT INTO cat (cat_name) VALUES (%s)"""
+        cursor.execute(sql_insert_query, (category,))
+        print(cursor)
+    except Error as error:
+        print(f"Error inserting category {category} into cat: {error}")
+
+def main():
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="registration"
+        )
+        if connection.is_connected():
+            cursor = connection.cursor()
+            shop_categories = fetch_unique_shops_categories(cursor)
+            service_categories = fetch_unique_service_categories(cursor)
+
+            for category in shop_categories:
+                insert_into_cat(cursor, category[0].lower())
+            
+            for category in service_categories:
+                insert_into_cat(cursor, category[0].lower())
+
+            connection.commit() # Commit all insertions
+            print("Categories inserted successfully.")
 
     except Error as error:
-        print(f"Failed to update data in MySQL table {error}")
+        print(f"Database connection error: {error}")
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 
-connection,cursor = mydb()
 
-if connection and cursor:
-    update_image_paths(cursor,connection)
-    cursor.close()
-    connection.close()
+
+
+
+
+
+
+
+
+
+
+
+
+    #         phone_numbers = fetch_phone_numbers(cursor)
+
+    #         for phone in phone_numbers:
+    #             phone_number = phone[0]
+    #             phone_number = str(phone_number)
+    #             if len(phone_number) == 10:
+    #                 formatted_phone = f"0{phone_number}"
+    #                 insert_into_reg(cursor, formatted_phone)
+
+    #         connection.commit() # Commit all insertions
+    #         print("Phone numbers inserted successfully.")
+
+    # except Error as error:
+    #     print(f"Database connection error: {error}")
+    # finally:
+    #     if connection.is_connected():
+    #         cursor.close()
+    #         connection.close()
+
+if __name__ == "__main__":
+    main()
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+# def update_image_paths(cursor, connection):
+#     try:
+#         # Fetch all shop IDs from the shops table
+#         cursor.execute("SELECT service_id FROM service")
+#         rows = cursor.fetchall()
+
+#         # Update each shop with a unique photo path
+#         for index, row in enumerate(rows):
+#             service_id = row[0]
+#             image_file_name = f'photo-{index + 1}.png'
+#             sql_update_query = """UPDATE service SET photo = %s WHERE service_id = %s"""
+#             update_tuple = (image_file_name, service_id)
+#             cursor.execute(sql_update_query, update_tuple)
+#             print(f"Image path {image_file_name} for shop ID {service_id} updated successfully")
+
+#         # Commit the updates to the database
+#         connection.commit()
+
+#     except Error as error:
+#         print(f"Failed to update data in MySQL table {error}")
+
+# connection,cursor = mydb()
+
+# if connection and cursor:
+#     update_image_paths(cursor,connection)
+#     cursor.close()
+#     connection.close()
 
 
 
