@@ -18,12 +18,12 @@ class FloatingPage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: 1,
                 crossAxisSpacing: 10.0,
                 mainAxisSpacing: 10.0,
                 childAspectRatio: 3 / 2,
               ),
-              itemCount: 10, // Number of items in the grid
+              itemCount: 20, // Number of items in the grid
               itemBuilder: (context, index) {
                 return Container(
                   decoration: BoxDecoration(
@@ -45,7 +45,7 @@ class FloatingPage extends StatelessWidget {
                   child: Stack(
                     children: [
                       Positioned(
-                        bottom: 40,
+                        bottom: 60,
                         left: 10,
                         child: Text(
                           'Title ${index + 1}',
@@ -64,7 +64,7 @@ class FloatingPage extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        bottom: 20,
+                        bottom: 40,
                         left: 10,
                         child: Text(
                           'Subtitle ${index + 1}',
@@ -82,7 +82,7 @@ class FloatingPage extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        bottom: 0,
+                        bottom: 10,
                         left: 10,
                         child: Text(
                           'Description ${index + 1}',
@@ -102,20 +102,6 @@ class FloatingPage extends StatelessWidget {
                     ],
                   ),
                 );
-              },
-            ),
-          ),
-          Positioned(
-            right: 10,
-            top: MediaQuery.of(context).size.height / 2 - 20,
-            child: IconButton(
-              icon: Icon(
-                Icons.swap_vert_circle_outlined,
-                size: 60,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                // Implement scroll action if needed
               },
             ),
           ),
