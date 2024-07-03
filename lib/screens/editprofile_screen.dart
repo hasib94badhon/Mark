@@ -137,110 +137,169 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TextField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: _phoneController,
-                decoration: InputDecoration(labelText: 'Phone'),
-                keyboardType: TextInputType.phone,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Radio<String>(
-                    value: 'Service',
-                    groupValue: _selectedType,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedType = value!;
-                      });
-                    },
-                  ),
-                  Text('Service'),
-                  Radio<String>(
-                    value: 'Shops',
-                    groupValue: _selectedType,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedType = value!;
-                      });
-                    },
-                  ),
-                  Text('Shops'),
-                ],
-              ),
-              _isLoading
-                  ? CircularProgressIndicator()
-                  : DropdownButtonFormField<String>(
-                      value: _selectedCategory,
-                      items: _categories.map((String category) {
-                        return DropdownMenuItem<String>(
-                          value: category,
-                          child: Text(category),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedCategory = newValue;
-                          _categoryController.text = newValue ?? '';
-                        });
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Select Category',
-                        contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-                        border: OutlineInputBorder(),
+              Card(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(labelText: 'Name'),
                       ),
-                    ),
-              TextField(
-                controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
-                maxLines: 3,
-              ),
-              TextField(
-                controller: _addressController,
-                decoration: InputDecoration(labelText: 'Address'),
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _pickImages,
-                child: Text('Upload Images'),
-              ),
-              Container(
-                height: 200,
-                child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: _currentPosition,
-                    zoom: 14.0,
+                      SizedBox(height: 10),
+                      TextField(
+                        controller: _phoneController,
+                        decoration: InputDecoration(labelText: 'Phone'),
+                        keyboardType: TextInputType.phone,
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Radio<String>(
+                            value: 'Service',
+                            groupValue: _selectedType,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedType = value!;
+                              });
+                            },
+                          ),
+                          Text('Service'),
+                          SizedBox(width: 20),
+                          Radio<String>(
+                            value: 'Shops',
+                            groupValue: _selectedType,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedType = value!;
+                              });
+                            },
+                          ),
+                          Text('Shops'),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      _isLoading
+                          ? CircularProgressIndicator()
+                          : DropdownButtonFormField<String>(
+                              value: _selectedCategory,
+                              items: _categories.map((String category) {
+                                return DropdownMenuItem<String>(
+                                  value: category,
+                                  child: Text(category),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _selectedCategory = newValue;
+                                  _categoryController.text = newValue ?? '';
+                                });
+                              },
+                              decoration: InputDecoration(
+                                labelText: 'Select Category',
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(12, 12, 0, 0),
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                      SizedBox(height: 10),
+                      TextField(
+                        controller: _descriptionController,
+                        decoration: InputDecoration(labelText: 'Description'),
+                        maxLines: 3,
+                      ),
+                      SizedBox(height: 10),
+                      TextField(
+                        controller: _addressController,
+                        decoration: InputDecoration(labelText: 'Address'),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: GoogleMap(
+                            onMapCreated: _onMapCreated,
+                            initialCameraPosition: CameraPosition(
+                              target: _currentPosition,
+                              zoom: 14.0,
+                            ),
+                            markers: {
+                              Marker(
+                                markerId: MarkerId("current_location"),
+                                position: _currentPosition,
+                                draggable: true,
+                                onDragEnd: (newPosition) {
+                                  setState(() {
+                                    _currentPosition = newPosition;
+                                    _addressController.text =
+                                        "${newPosition.latitude}, ${newPosition.longitude}";
+                                  });
+                                },
+                              ),
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: updateProfile,
+                        child: Text(
+                          'Upload photo',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueGrey,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  markers: {
-                    Marker(
-                      markerId: MarkerId("current_location"),
-                      position: _currentPosition,
-                      draggable: true,
-                      onDragEnd: (newPosition) {
-                        setState(() {
-                          _currentPosition = newPosition;
-                          _addressController.text =
-                              "${newPosition.latitude}, ${newPosition.longitude}";
-                        });
-                      },
-                    ),
-                  },
                 ),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: updateProfile,
-                child: Text('Update Profile'),
+                child: Text(
+                  'Update Profile',
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
               ),
               SizedBox(height: 20),
               _images.isNotEmpty
                   ? Column(
                       children: _images.map((image) {
-                        return Image.file(File(image.path));
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Image.file(File(image.path)),
+                        );
                       }).toList(),
                     )
                   : Container(),
@@ -250,4 +309,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: EditProfileScreen(
+      userName: "John Doe",
+      userPhone: "123456789",
+      userCategory: "Service",
+      userDescription: "A professional service provider.",
+      userAddress: "123 Street, City",
+    ),
+  ));
 }
