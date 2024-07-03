@@ -37,7 +37,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
   void initState() {
     super.initState();
     pages = [
-      CartPage(),
+      CartPage(
+        userPhone: userPhone,
+      ),
       ServiceCart(), // Assuming this screen doesn't need the phone number
       ShopsCart(), // Assuming this screen doesn't need the phone number
       UserProfile(userPhone: userPhone),

@@ -1,15 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:convert';
-import 'package:aaram_bd/pages/Homepage.dart';
-import 'package:aaram_bd/pages/ServiceCart.dart';
-import 'package:aaram_bd/pages/ShopsCart.dart';
+import 'dart:io';
 import 'package:aaram_bd/screens/advert_screen.dart';
 import 'package:aaram_bd/screens/favorite_screen.dart';
-import 'package:aaram_bd/screens/login_screen.dart';
-import 'package:aaram_bd/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+// Import FavoriteScreen
 
 // Data model for category counts
 class CategoryCount {
@@ -25,9 +21,10 @@ class CategoryCount {
 
   factory CategoryCount.fromJson(Map<String, dynamic> json) {
     return CategoryCount(
-        categoryCount: json['count'],
-        categoryName: json['category'],
-        photo: json['photo']);
+      categoryCount: json['count'],
+      categoryName: json['category'],
+      photo: json['photo'],
+    );
   }
 }
 
@@ -43,16 +40,17 @@ class UserDetail {
   final int userId;
   final bool isservice;
 
-  UserDetail(
-      {required this.address,
-      required this.business_name,
-      required this.category,
-      required this.photo,
-      required this.phone,
-      required this.userId,
-      required this.shop_id,
-      required this.service_id,
-      required this.isservice});
+  UserDetail({
+    required this.address,
+    required this.business_name,
+    required this.category,
+    required this.photo,
+    required this.phone,
+    required this.userId,
+    required this.shop_id,
+    required this.service_id,
+    required this.isservice,
+  });
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     int serviceId = json['service_id'] ?? 0;
@@ -72,21 +70,57 @@ class UserDetail {
 }
 
 class CartPage extends StatefulWidget {
+  final String userPhone;
+
+  CartPage({required this.userPhone});
+
   @override
-  _CartPageState createState() => _CartPageState();
+  _CartPageState createState() => _CartPageState(userPhone: userPhone);
 }
 
 class _CartPageState extends State<CartPage> {
+  final String userPhone;
+  List<String> categories = [];
+  List<String> filteredCategories = [];
+  final TextEditingController searchController = TextEditingController();
+  late SearchController searchBarController;
+
+  _CartPageState({required this.userPhone});
   late Future<Map<String, List<dynamic>>> data;
-  String categoryName = "Auto painting"; // Example category name
 
   @override
   void initState() {
     super.initState();
     data = fetchData();
+    fetchCategories();
+    searchBarController = SearchController();
   }
 
-  // Modified fetchData function to return both categories and user details
+  Future<void> fetchCategories() async {
+    final response = await http.get(
+      Uri.parse('http://192.168.0.103:5000/get_categories_name'),
+    );
+
+    if (response.statusCode == 200) {
+      final category_data = json.decode(response.body);
+      setState(() {
+        categories = List<String>.from(category_data['categories']);
+        filteredCategories = categories;
+      });
+    } else {
+      print("Failed to fetch categories: ${response.statusCode}");
+    }
+  }
+
+  void filterCategories(String query) {
+    setState(() {
+      filteredCategories = categories
+          .where((category) =>
+              category.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
   Future<Map<String, List<dynamic>>> fetchData() async {
     final url = 'http://192.168.0.103:5000/get_combined_data';
     int retries = 3;
@@ -102,7 +136,6 @@ class _CartPageState extends State<CartPage> {
                   .map((data) => CategoryCount.fromJson(data))
                   .toList()
               : <CategoryCount>[];
-          print(categoryCounts);
           final userDetails = jsonResponse['combined_information'] != null
               ? (jsonResponse['combined_information'] as List)
                   .map((data) => UserDetail.fromJson(data))
@@ -160,38 +193,49 @@ class _CartPageState extends State<CartPage> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 1),
-                          borderRadius: BorderRadius.circular(15)),
+                        color: Colors.white,
+                        border: Border.all(width: 1),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                       margin: EdgeInsets.all(6),
-                      child: SearchAnchor(builder:
-                          (BuildContext context, SearchController controller) {
-                        return SearchBar(
-                          controller: controller,
-                          padding: const MaterialStatePropertyAll<EdgeInsets>(
-                              EdgeInsets.symmetric(horizontal: 16.0)),
-                          onTap: () {
-                            controller.openView();
-                          },
-                          onChanged: (_) {
-                            controller.openView();
-                          },
-                          leading: const Icon(Icons.search),
-                        );
-                      }, suggestionsBuilder:
-                          (BuildContext context, SearchController controller) {
-                        return List<ListTile>.generate(5, (int index) {
-                          final String item = 'item $index';
-                          return ListTile(
-                            title: Text(item),
+                      child: SearchAnchor(
+                        builder: (BuildContext context,
+                            SearchController controller) {
+                          return SearchBar(
+                            controller: searchBarController,
+                            padding: const MaterialStatePropertyAll<EdgeInsets>(
+                                EdgeInsets.symmetric(horizontal: 16.0)),
                             onTap: () {
-                              setState(() {
-                                controller.closeView(item);
-                              });
+                              controller.openView();
                             },
+                            onChanged: (query) {
+                              filterCategories(query);
+                              controller.openView();
+                            },
+                            leading: const Icon(Icons.search),
                           );
-                        });
-                      }),
+                        },
+                        suggestionsBuilder: (BuildContext context,
+                            SearchController controller) {
+                          return List<ListTile>.generate(
+                              filteredCategories.length, (int index) {
+                            final String item = filteredCategories[index];
+                            return ListTile(
+                              title: Text(item),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FavoriteScreen(
+                                      categoryName: item,
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          });
+                        },
+                      ),
                     ),
                     Expanded(
                       flex: 2,
@@ -210,7 +254,6 @@ class _CartPageState extends State<CartPage> {
                                 borderRadius: BorderRadius.circular(45)),
                             elevation: 10.0,
                             color: Colors.white,
-                            //margin: EdgeInsets.all(3),
                             child: InkWell(
                               onTap: () {
                                 Navigator.push(
@@ -248,9 +291,7 @@ class _CartPageState extends State<CartPage> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.only(
                                             bottomLeft: Radius.circular(10),
-                                            bottomRight: Radius.circular(
-                                              10,
-                                            ))),
+                                            bottomRight: Radius.circular(10))),
                                     child: Center(
                                       child: Container(
                                         margin: EdgeInsets.all(8),
@@ -258,10 +299,8 @@ class _CartPageState extends State<CartPage> {
                                         decoration: BoxDecoration(
                                           border: Border.all(width: 1),
                                           borderRadius:
-                                              BorderRadius.circular(35),
-                                          color:
-                                              Color.fromARGB(255, 255, 255, 255)
-                                                  .withOpacity(0.6),
+                                              BorderRadius.circular(15),
+                                          color: Colors.black.withOpacity(0.5),
                                         ),
                                         child: Text(
                                           "${category.categoryName} (${category.categoryCount})",
@@ -309,7 +348,7 @@ class _CartPageState extends State<CartPage> {
                                                   ? {
                                                       'service_id':
                                                           user.service_id,
-                                                    } // Replace with actual service details
+                                                    }
                                                   : {
                                                       'shop_id': user.shop_id,
                                                     },
@@ -462,6 +501,8 @@ class _CartPageState extends State<CartPage> {
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: CartPage(),
+    home: CartPage(
+      userPhone: "",
+    ),
   ));
 }
