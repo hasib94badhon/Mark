@@ -76,23 +76,48 @@ class _UserProfileState extends State<UserProfile> {
                 ],
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Stack(
+                    alignment: Alignment.center,
                     children: [
-                      images.isNotEmpty
-                          ? Image.network(
-                              images[
-                                  0], // Display the first image as cover picture
-                              // height: 200,
-                              // width: double.infinity,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(
-                              height: 200,
-                              width: double.infinity,
-                              color: Colors.grey,
+                      Container(
+                        height: 200,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue.shade100,
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                              offset: Offset(0, 5),
                             ),
+                          ],
+                        ),
+                        child: ClipOval(
+                          child: images.isNotEmpty
+                              ? Image.network(
+                                  images[
+                                      0], // Display the first image as cover picture
+                                  height: 200,
+                                  width: 200,
+                                  fit: BoxFit.fill,
+                                )
+                              : Container(
+                                  height: 200,
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                  ),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 100,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                        ),
+                      ),
                     ],
                   ),
                   Padding(
@@ -208,43 +233,51 @@ class _UserProfileState extends State<UserProfile> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Social Media",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                        Center(
+                          child: Text(
+                            "Social Media",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                         SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            IconButton(
-                              icon: FaIcon(FontAwesomeIcons.facebook),
-                              onPressed: () {
-                                // Open Facebook profile
-                              },
-                            ),
-                            IconButton(
-                              icon: FaIcon(FontAwesomeIcons.twitter),
-                              onPressed: () {
-                                // Open Twitter profile
-                              },
-                            ),
-                            IconButton(
-                              icon: FaIcon(FontAwesomeIcons.instagram),
-                              onPressed: () {
-                                // Open Instagram profile
-                              },
-                            ),
-                            IconButton(
-                              icon: FaIcon(FontAwesomeIcons.linkedin),
-                              onPressed: () {
-                                // Open LinkedIn profile
-                              },
-                            ),
-                          ],
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black12,
+                              border: Border.all(width: 1, color: Colors.black),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              IconButton(
+                                icon: FaIcon(FontAwesomeIcons.facebook),
+                                onPressed: () {
+                                  // Open Facebook profile
+                                },
+                              ),
+                              IconButton(
+                                icon: FaIcon(FontAwesomeIcons.twitter),
+                                onPressed: () {
+                                  // Open Twitter profile
+                                },
+                              ),
+                              IconButton(
+                                icon: FaIcon(FontAwesomeIcons.instagram),
+                                onPressed: () {
+                                  // Open Instagram profile
+                                },
+                              ),
+                              IconButton(
+                                icon: FaIcon(FontAwesomeIcons.linkedin),
+                                onPressed: () {
+                                  // Open LinkedIn profile
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
