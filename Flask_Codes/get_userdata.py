@@ -10,6 +10,8 @@ import time
 from mysql.connector import Error
 
 import pymysql.cursors
+import requests
+from ftplib import FTP
 
 class MySQLConnector:
     def __init__(self, host, user, password, database):
@@ -180,41 +182,94 @@ def get_user_by_phone():
     
     cursor = connection.cursor()
     try:
-        cursor.execute("SELECT name, phone, category,description, location FROM users WHERE phone = %s", (phone,))
-        user = cursor.fetchone()
-        if user:
-            return jsonify(user)
+        query = "SELECT name, category, description, location, photo FROM users WHERE phone = %s"
+        cursor.execute(query, (phone,))
+        result = cursor.fetchone()
+        print(result)
+        if result:
+            photos = result[4].split(',') if result[4] else []
+            return jsonify({
+                "name": result[0],
+                "category": result[1],
+                "description": result[2],
+                "location": result[3],
+                "photo": photos
+            })
         else:
-            return jsonify({"error": "User not found"}), 404
+            return jsonify({"success": False, "message": "User not found"}), 404
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        print(f"Error: {str(e)}")
+        return jsonify({"success": False, "message": str(e)}), 500
     finally:
         cursor.close()
         connection.close()
 
+
+FTP_HOST = '89.117.27.223'
+FTP_USER = 'u790304855'
+FTP_PASS = 'Abra!!@@12'
+FTP_DIRECTORY = '/domains/aarambd.com/public_html/upload'
 @app.route('/update_user_profile', methods=['POST'])
 def update_user_profile():
-    data = request.get_json()
-    name = data.get('name')
-    phone = data.get('phone')
-    category = data.get('category')
-    description = data.get('description')
-    location = data.get('location')
+    name = request.form.get('name')
+    phone = request.form.get('phone')
+    category = request.form.get('category')
+    description = request.form.get('description')
+    location = request.form.get('location')
+    images = request.files.getlist('images')
 
     connection = db_connector.connect()
     if connection is None:
         return jsonify({"success": False, "message": "Failed to connect to the database"}), 500
 
+
+
+
     cursor = connection.cursor()
     try:
+        # Fetch current user data
+        cursor.execute("SELECT name, category, description, location, photo FROM users WHERE phone = %s", (phone,))
+        user = cursor.fetchone()
+        if not user:
+            return jsonify({"success": False, "message": "User not found"}), 404
+
+        # Update fields if provided, otherwise retain current values
+        updated_name = name if name else user[0]
+        updated_category = category if category else user[1]
+        updated_description = description if description else user[2]
+        updated_location = location if location else user[3]
+
+        # Handle image URLs
+        existing_image_urls = user[4].split(',') if user[4] else []
+        new_image_urls = []
+
+        # Establish FTP connection
+        ftp = FTP(FTP_HOST, FTP_USER, FTP_PASS)
+        ftp.cwd(FTP_DIRECTORY)  # Change directory on the FTP server
+
+        for image in images:
+            image_filename = f"{phone}_{image.filename}"
+            image_url = f"https://aarambd.com/upload/{image_filename}"  # Assuming this is how you will access the image
+
+            # Upload image to FTP server
+            with image.stream as file:
+                ftp.storbinary(f'STOR {image_filename}', file)
+
+            new_image_urls.insert(0,image_url)
+
+        # Combine existing and new image URLs
+        updated_image_urls = new_image_urls + existing_image_urls
+        updated_image_urls_str = ','.join(updated_image_urls)
+
+        # Update user data in the database
         query = """
         UPDATE users
-        SET name = %s, category = %s, description = %s, location = %s
+        SET name = %s, category = %s, description = %s, location = %s, photo = %s
         WHERE phone = %s
         """
-        cursor.execute(query, (name, category, description, location, phone))
+        cursor.execute(query, (updated_name, updated_category, updated_description, updated_location, updated_image_urls_str, phone))
         connection.commit()
-        return jsonify({"success": True})
+        return jsonify({"success": True, "image_urls": updated_image_urls})
     except Exception as e:
         connection.rollback()
         print(f"Error: {str(e)}")
@@ -222,7 +277,6 @@ def update_user_profile():
     finally:
         cursor.close()
         connection.close()
-
 
 
 
@@ -612,13 +666,6 @@ def get_data_by_category():
     finally:
         if connection:
             connection.close()
-
-
-
-
-
-    
-  
 
 
 if __name__ == '__main__':

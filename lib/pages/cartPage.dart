@@ -134,44 +134,6 @@ class _CartPageState extends State<CartPage> {
     throw Exception("Failed to connect to API after $retries attempts");
   }
 
-  // void _onItemTapped(int index) {
-  //   switch (index) {
-  //     case 0:
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => CartPage(),
-  //         ),
-  //       );
-  //       break;
-  //     case 1:
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => ServiceCart(),
-  //         ),
-  //       );
-  //       break;
-  //     case 2:
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => ShopsCart(),
-  //         ),
-  //       );
-  //       break;
-  //     case 3:
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-
-  //           builder: (context) => UserProfile('user Phone: $userPhone' ,),
-  //         ),
-  //       );
-  //       break;
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

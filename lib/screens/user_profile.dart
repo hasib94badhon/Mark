@@ -19,20 +19,12 @@ class _UserProfileState extends State<UserProfile> {
 
   _UserProfileState({required this.userPhone});
 
-  List<String> images = [
-    "images/image1.png",
-    "images/image2.png",
-    "images/image3.png",
-    "images/image4.png",
-    "images/image5.png",
-  ];
+  List<String> images = [];
 
   String userName = "User Name";
   String userCategory = "Category";
   String userDescription = "User Description";
   String userAddress = "User Address";
-
-  bool _needsReload = false;
 
   @override
   void initState() {
@@ -50,10 +42,11 @@ class _UserProfileState extends State<UserProfile> {
       final data = json.decode(response.body);
       print("Fetched data: $data");
       setState(() {
-        userName = data[0] ?? "User Name";
-        userCategory = data[2] ?? "Category";
-        userDescription = "${data[3] ?? "User Description"}";
-        userAddress = data[4] ?? "User Address";
+        userName = data['name'] ?? "User Name";
+        userCategory = data['category'] ?? "Category";
+        userDescription = data['description'] ?? "User Description";
+        userAddress = data['location'] ?? "User Address";
+        images = List<String>.from(data['photo'] ?? []);
       });
     } else {
       // Handle the error
@@ -87,21 +80,19 @@ class _UserProfileState extends State<UserProfile> {
                 children: [
                   Stack(
                     children: [
-                      Image.asset(
-                        'images/cover.jpg', // Cover picture
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        top: 140,
-                        left: 20,
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage(
-                              'images/profile.jpg'), // Profile picture
-                        ),
-                      ),
+                      images.isNotEmpty
+                          ? Image.network(
+                              images[
+                                  0], // Display the first image as cover picture
+                              // height: 200,
+                              // width: double.infinity,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              height: 200,
+                              width: double.infinity,
+                              color: Colors.grey,
+                            ),
                     ],
                   ),
                   Padding(
@@ -278,7 +269,7 @@ class _UserProfileState extends State<UserProfile> {
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 1,
+                            crossAxisCount: 1, // Display 2 images per row
                             crossAxisSpacing: 15,
                             mainAxisSpacing: 15,
                             childAspectRatio: 3 /
@@ -305,7 +296,7 @@ class _UserProfileState extends State<UserProfile> {
                                     borderRadius: BorderRadius.circular(15),
                                     child: Stack(
                                       children: [
-                                        Image.asset(
+                                        Image.network(
                                           images[index],
                                           width: double.infinity,
                                           height: double.infinity,

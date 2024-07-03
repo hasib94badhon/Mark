@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final String userName;
@@ -36,6 +38,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   List<String> _categories = [];
   String? _selectedCategory;
   bool _isLoading = true;
+  List<XFile> _images = [];
 
   @override
   void initState() {
@@ -74,20 +77,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> updateProfile() async {
     final url = 'http://192.168.0.103:5000/update_user_profile';
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'name': _nameController.text,
-        'phone': _phoneController.text,
-        'category': _categoryController.text,
-        'description': _descriptionController.text,
-        'location': _addressController.text,
-      }),
-    );
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.fields['name'] = _nameController.text;
+    request.fields['phone'] = _phoneController.text;
+    request.fields['category'] = _categoryController.text;
+    request.fields['description'] = _descriptionController.text;
+    request.fields['location'] = _addressController.text;
 
+    for (var image in _images) {
+      request.files
+          .add(await http.MultipartFile.fromPath('images', image.path));
+    }
+
+    var response = await request.send();
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
+      final responseData = await http.Response.fromStream(response);
+      final data = json.decode(responseData.body);
       if (data['success']) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Profile updated successfully')),
@@ -101,13 +106,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating profile: ${response.body}')),
+        SnackBar(
+            content: Text('Error updating profile: ${response.reasonPhrase}')),
       );
     }
   }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+  Future<void> _pickImages() async {
+    final picker = ImagePicker();
+    final pickedFiles = await picker.pickMultiImage();
+    if (pickedFiles != null) {
+      setState(() {
+        _images = pickedFiles;
+      });
+    }
   }
 
   @override
@@ -187,6 +203,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 decoration: InputDecoration(labelText: 'Address'),
               ),
               SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: _pickImages,
+                child: Text('Upload Images'),
+              ),
               Container(
                 height: 200,
                 child: GoogleMap(
@@ -216,6 +236,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 onPressed: updateProfile,
                 child: Text('Update Profile'),
               ),
+              SizedBox(height: 20),
+              _images.isNotEmpty
+                  ? Column(
+                      children: _images.map((image) {
+                        return Image.file(File(image.path));
+                      }).toList(),
+                    )
+                  : Container(),
             ],
           ),
         ),
