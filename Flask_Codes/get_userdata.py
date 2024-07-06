@@ -12,6 +12,7 @@ from mysql.connector import Error
 import pymysql.cursors
 import requests
 from ftplib import FTP
+import datetime
 
 class MySQLConnector:
     def __init__(self, host, user, password, database):
@@ -35,15 +36,16 @@ class DataRetriever:
         connection.close()
         return data
   
+DB_HOST = 'localhost'
+DB_USER = 'root'
+DB_PASSWORD = ''
+DB_DATABASE = 'registration'
 
    
 app = Flask(__name__)
 CORS(app)
 # MySQL database configuration
-DB_HOST = 'localhost'
-DB_USER = 'root'
-DB_PASSWORD = ''
-DB_DATABASE = 'registration'
+
 
 # Create an instance of MySQLConnector
 db_connector = MySQLConnector(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE)
@@ -222,9 +224,6 @@ def update_user_profile():
     if connection is None:
         return jsonify({"success": False, "message": "Failed to connect to the database"}), 500
 
-
-
-
     cursor = connection.cursor()
     try:
         # Fetch current user data
@@ -277,6 +276,119 @@ def update_user_profile():
     finally:
         cursor.close()
         connection.close()
+
+# Set up logging
+
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+
+@app.route('/post_data', methods=['POST'])
+def post_data():
+    try:
+        logging.debug("Received request: %s", request.data)
+
+        # Parse form data
+        post_phone = request.form.get('post_phone')
+        post_cat = request.form.get('post_cat')
+        description = request.form.get('description')
+        media_files = request.files.getlist('media')
+
+        logging.debug("Parsed form data: post_phone=%s, post_cat=%s, description=%s, media_files=%s", post_phone, post_cat, description, media_files)
+
+        if not post_phone or not post_cat or not description:
+            return jsonify({"success": False, "message": "Missing required fields"}), 400
+
+        media_urls = []
+        post_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        # FTP upload
+        try:
+            ftp = FTP(FTP_HOST)
+            ftp.login(FTP_USER, FTP_PASS)
+            ftp.cwd(FTP_DIRECTORY)
+
+            for media in media_files:
+                filename = f"{post_phone}_{media.filename}"
+                media_url = f"https://aarambd.com/upload/{filename}"
+
+                with media.stream as file:
+                    ftp.storbinary(f'STOR {filename}', file)
+
+                media_urls.append(media_url)
+
+            ftp.quit()
+            logging.debug("FTP upload successful: media_urls=%s", media_urls)
+        except Exception as e:
+            logging.error("FTP error: %s", str(e))
+            return jsonify({"success": False, "message": f"FTP error: {str(e)}"}), 500
+
+        # Update user photo data
+        try:
+            # Fetch current user data
+            connection = db_connector.connect()
+            cursor = connection.cursor()
+
+            cursor.execute("SELECT photo FROM users WHERE phone = %s", (post_phone,))
+            user = cursor.fetchone()
+            if not user:
+                cursor.close()
+                connection.close()
+                return jsonify({"success": False, "message": "User not found"}), 404
+
+            # Combine existing and new image URLs
+            existing_photo_urls = user[0].split(',') if user[0] else []
+            updated_photo_urls = existing_photo_urls + media_urls
+            updated_photo_str = ','.join(updated_photo_urls)
+
+            # Update user data in the database
+            update_query = """
+            UPDATE users
+            SET photo = %s
+            WHERE phone = %s
+            """
+            cursor.execute(update_query, (updated_photo_str, post_phone))
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+            logging.debug("User photo update successful: phone=%s", post_phone)
+        except Exception as e:
+            logging.error("Database error: %s", str(e))
+            return jsonify({"success": False, "message": f"Database error: {str(e)}"}), 500
+
+        # Database insertion for post data
+        try:
+            connection = db_connector.connect()
+            cursor = connection.cursor()
+
+            insert_query = """
+            INSERT INTO post (post_phone, post_cat, description, media, post_time)
+            VALUES (%s, %s, %s, %s, %s)
+            """
+            cursor.execute(insert_query, (post_phone, post_cat, description, ','.join(media_urls), post_time))
+            connection.commit()
+
+            post_id = cursor.lastrowid
+
+            cursor.close()
+            connection.close()
+
+            logging.debug("Database insertion successful: post_id=%s", post_id)
+            return jsonify({"success": True, "message": "Post created successfully", "post_id": post_id})
+        except Exception as e:
+            logging.error("Database error: %s", str(e))
+            return jsonify({"success": False, "message": f"Database error: {str(e)}"}), 500
+
+    except Exception as e:
+        logging.error("Unexpected error: %s", str(e))
+        return jsonify({"success": False, "message": f"Unexpected error: {str(e)}"}), 500
+
+
+
+
 
 
 

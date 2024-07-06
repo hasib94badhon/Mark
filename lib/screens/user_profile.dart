@@ -5,6 +5,8 @@ import 'package:aaram_bd/screens/editprofile_screen.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:aaram_bd/screens/post_upload.dart';
+
 class UserProfile extends StatefulWidget {
   final String userPhone;
 
@@ -486,9 +488,26 @@ class _UserProfileState extends State<UserProfile> {
           ),
           SizedBox(height: 10),
           FloatingActionButton(
-            onPressed: () {
-              // Handle Upload Post button pressed
-            },
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PostUpload(
+                    postName: userName,
+                    postPhone: widget.userPhone,
+                    postCategory: userCategory,
+                    postDescription: userDescription,
+                  ),
+                ),
+              );
+
+              if (result == true) {
+                fetchUserData(); // Fetch updated data
+              }
+            }
+
+            // Handle Upload Post button pressed
+            ,
             heroTag: "uploadPost",
             backgroundColor: Colors.blue,
             child: Icon(Icons.add, color: Colors.white),

@@ -32,20 +32,55 @@ class _AppDrawerState extends State<AppDrawer> {
             padding: const EdgeInsets.all(8.0),
             child: UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.black26),
-              accountName: Text(
-                "Rafiq",
-                style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
+              accountName: Column(
+                children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: ClipOval(
+                      child: Image.network(
+                        'https://www.example.com/profile_picture.jpg', // Replace with your image URL
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                      height:
+                          10), // Adds spacing between the profile picture and the name
+                  Text(
+                    "Rafiq",
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                      height: 5), // Adds spacing between the name and the email
+                  Text(
+                    "dhfvbdyufvad@gmail.com",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-              accountEmail: Text(
-                "dhfvbdyufvad@gmail.com",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              ),
+              accountEmail: SizedBox
+                  .shrink(), // Hide the default email text as we included it in the column
             ),
           ),
           _createDrawerItem(
