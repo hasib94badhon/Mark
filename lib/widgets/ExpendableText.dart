@@ -19,11 +19,10 @@ class _ExpandableTextState extends State<ExpandableText> {
       children: [
         Text(
           widget.text,
-          maxLines: isExpanded ? null : 3,
+          maxLines: isExpanded ? null : 2,
           overflow: isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
           style: TextStyle(
-            color: Colors.grey,
-            fontWeight: FontWeight.bold,
+            color: Colors.black,
             fontSize: 16,
           ),
         ),

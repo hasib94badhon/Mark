@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aaram_bd/widgets/ExpendableText.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:aaram_bd/screens/editprofile_screen.dart';
@@ -366,67 +367,72 @@ class _UserProfileState extends State<UserProfile> {
                                   ),
                                 ),
                                 Positioned(
-                                  bottom: 50,
+                                  bottom: 10,
                                   left: 15,
                                   right: 15,
-                                  child: Container(
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Row(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.5),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
-                                            Icon(
-                                              Icons.favorite_border,
-                                              color: Colors.white,
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.favorite_border,
+                                                  color: Colors.white,
+                                                ),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  "100", // Likes count
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(width: 5),
-                                            Text(
-                                              "100", // Likes count
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.comment_rounded,
+                                                  color: Colors.white,
+                                                  size: 22,
+                                                ),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  "50", // Comments count
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.share,
+                                                  color: Colors.white,
+                                                ),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  "50", // Shares count
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.comment_rounded,
-                                              color: Colors.white,
-                                              size: 22,
-                                            ),
-                                            SizedBox(width: 5),
-                                            Text(
-                                              "50", // Comments count
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.share,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(width: 5),
-                                            Text(
-                                              "50", // Shares count
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 Positioned(
