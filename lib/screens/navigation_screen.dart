@@ -74,7 +74,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
           ],
         ),
       ),
-      drawer: AppDrawer(),
+      drawer: AppDrawer(userPhone: userPhone),
       body: IndexedStack(
         index: pageIndex,
         children: pages,

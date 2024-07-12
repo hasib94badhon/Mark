@@ -14,6 +14,7 @@ class UserDetail {
   final String address;
   final String businessName;
   final String category;
+  final String description;
   final int phone;
   final String photo;
   final int serviceId;
@@ -23,6 +24,7 @@ class UserDetail {
     required this.address,
     required this.businessName,
     required this.category,
+    required this.description,
     required this.phone,
     required this.photo,
     required this.serviceId,
@@ -31,9 +33,10 @@ class UserDetail {
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
-      address: json['address'] ?? '',
+      address: json['location'] ?? '',
       category: json['category'] ?? '',
-      businessName: json['business_name'] ?? '',
+      description: json['description'] ?? '',
+      businessName: json['name'] ?? '',
       phone: json['phone'] ?? 0,
       photo: json['photo'] ?? '',
       serviceId: json['service_id'] ?? 0,

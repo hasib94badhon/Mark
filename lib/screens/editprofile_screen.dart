@@ -83,6 +83,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     request.fields['category'] = _categoryController.text;
     request.fields['description'] = _descriptionController.text;
     request.fields['location'] = _addressController.text;
+    request.fields['type'] = _selectedType;
 
     for (var image in _images) {
       request.files

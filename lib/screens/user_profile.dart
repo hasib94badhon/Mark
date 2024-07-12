@@ -46,7 +46,7 @@ class _UserProfileState extends State<UserProfile> {
       print("Fetched data: $data");
       setState(() {
         userName = data['name'] ?? "User Name";
-        userCategory = data['category'] ?? "Category";
+        userCategory = data['cat_id'] ?? "Category";
         userDescription = data['description'] ?? "User Description";
         userAddress = data['location'] ?? "User Address";
         images = List<String>.from(data['photo'] ?? []);

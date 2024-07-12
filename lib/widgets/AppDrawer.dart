@@ -1,13 +1,49 @@
 import 'package:aaram_bd/widgets/FloatingPage.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class AppDrawer extends StatefulWidget {
+  final String userPhone;
+
+  AppDrawer({required this.userPhone});
   @override
-  _AppDrawerState createState() => _AppDrawerState();
+  _AppDrawerState createState() => _AppDrawerState(userPhone: userPhone);
 }
 
 class _AppDrawerState extends State<AppDrawer> {
+  final String userPhone;
   int _selectedIndex = -1;
+  String userName = "";
+  String userPhotoUrl = 'https://www.example.com/profile_picture.jpg';
+  String userMobile = "+880123456789";
+
+  _AppDrawerState({required this.userPhone});
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    final response = await http.get(
+      Uri.parse('http://192.168.0.103:5000/get_user_by_phone?phone=$userPhone'),
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        userName = data['name'] ?? "User Name";
+        userPhotoUrl = data['photo']?.isNotEmpty == true
+            ? data['photo'][0]
+            : 'https://www.example.com/profile_picture.jpg';
+        userMobile = userPhone; // Or fetch from data if available
+      });
+    } else {
+      // Handle the error
+      print("Failed to fetch user data: ${response.statusCode}");
+    }
+  }
 
   void _onItemTap(int index, String title, String content) {
     setState(() {
@@ -53,9 +89,8 @@ class _AppDrawerState extends State<AppDrawer> {
                   ),
                   child: ClipOval(
                     child: Image.network(
-                      'https://www.example.com/profile_picture.jpg', // Replace with your image URL
-                      height: 100,
-                      width: 100,
+                      userPhotoUrl, // Replace with your image URL
+
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -64,7 +99,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     height:
                         10), // Adds spacing between the profile picture and the name
                 Text(
-                  "Rafiq",
+                  userName,
                   style: TextStyle(
                     fontSize: 22,
                     color: Colors.white,
@@ -75,7 +110,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     height:
                         5), // Adds spacing between the name and the contact number
                 Text(
-                  "+880123456789", // Replace with the actual contact number
+                  userPhone, // Replace with the actual contact number
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.white,

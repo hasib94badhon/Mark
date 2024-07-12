@@ -35,9 +35,9 @@ class UserDetail {
     int serviceId = json['service_id'] ?? 0;
     int shopId = json['shop_id'] ?? 0;
     return UserDetail(
-      address: json['address'] ?? '',
+      address: json['location'] ?? '',
       category: json['category'] ?? '',
-      business_name: json['business_name'] ?? '',
+      business_name: json['name'] ?? '',
       photo: json['photo'] ?? '',
       phone: json['phone'] ?? 0,
       userId: serviceId != 0 ? serviceId : shopId,

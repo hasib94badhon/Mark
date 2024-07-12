@@ -54,8 +54,8 @@ class UserDetail {
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
-        address: json['address'],
-        business_name: json['business_name'],
+        address: json['location'],
+        business_name: json['name'],
         category: json['category'],
         phone: json['phone'],
         photo: json['photo'],

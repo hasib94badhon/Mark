@@ -184,17 +184,21 @@ def get_user_by_phone():
     
     cursor = connection.cursor()
     try:
-        query = "SELECT name, category, description, location, photo FROM users WHERE phone = %s"
+        query = """SELECT users.name, users.category, users.description, users.location, cat.cat_name, users.photo 
+            FROM users
+            LEFT JOIN cat ON users.cat_id = cat.cat_id
+            WHERE users.phone = %s"""
         cursor.execute(query, (phone,))
         result = cursor.fetchone()
         print(result)
         if result:
-            photos = result[4].split(',') if result[4] else []
+            photos = result[5].split(',') if result[4] else []
             return jsonify({
                 "name": result[0],
                 "category": result[1],
                 "description": result[2],
                 "location": result[3],
+                "cat_id":result[4],
                 "photo": photos
             })
         else:
@@ -218,6 +222,7 @@ def update_user_profile():
     category = request.form.get('category')
     description = request.form.get('description')
     location = request.form.get('location')
+    type = request.form.get('type')
     images = request.files.getlist('images')
 
     connection = db_connector.connect()
@@ -227,19 +232,20 @@ def update_user_profile():
     cursor = connection.cursor()
     try:
         # Fetch current user data
-        cursor.execute("SELECT name, category, description, location, photo FROM users WHERE phone = %s", (phone,))
+        cursor.execute("SELECT user_id, name, category, description, location, photo FROM users WHERE phone = %s", (phone,))
         user = cursor.fetchone()
         if not user:
             return jsonify({"success": False, "message": "User not found"}), 404
 
+        user_id = user[0]
         # Update fields if provided, otherwise retain current values
-        updated_name = name if name else user[0]
-        updated_category = category if category else user[1]
-        updated_description = description if description else user[2]
-        updated_location = location if location else user[3]
+        updated_name = name if name else user[1]
+        updated_category = category if category else user[2]
+        updated_description = description if description else user[3]
+        updated_location = location if location else user[4]
 
         # Handle image URLs
-        existing_image_urls = user[4].split(',') if user[4] else []
+        existing_image_urls = user[5].split(',') if user[5] else []
         new_image_urls = []
 
         # Establish FTP connection
@@ -254,7 +260,7 @@ def update_user_profile():
             with image.stream as file:
                 ftp.storbinary(f'STOR {image_filename}', file)
 
-            new_image_urls.insert(0,image_url)
+            new_image_urls.insert(0, image_url)
 
         # Combine existing and new image URLs
         updated_image_urls = new_image_urls + existing_image_urls
@@ -268,7 +274,44 @@ def update_user_profile():
         """
         cursor.execute(query, (updated_name, updated_category, updated_description, updated_location, updated_image_urls_str, phone))
         connection.commit()
-        return jsonify({"success": True, "image_urls": updated_image_urls})
+
+        # Check and update/insert data into the service or shops table
+        if type == 'Service':
+            check_query = "SELECT COUNT(*) FROM service WHERE user_id = %s"
+            update_query = """
+            UPDATE service
+            SET name = %s, phone = %s, category = %s, description = %s, location = %s, photo = %s
+            WHERE user_id = %s
+            """
+            insert_query = """
+            INSERT INTO service (user_id, name, phone, category, description, location, photo)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """
+        elif type == 'Shops':
+            check_query = "SELECT COUNT(*) FROM shops WHERE user_id = %s"
+            update_query = """
+            UPDATE shops
+            SET name = %s, phone = %s, category = %s, description = %s, location = %s, photo = %s
+            WHERE user_id = %s
+            """
+            insert_query = """
+            INSERT INTO shops (user_id, name, phone, category, description, location, photo)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """
+        else:
+            return jsonify({"error": "Invalid type provided"}), 400
+
+        cursor.execute(check_query, (user_id,))
+        if cursor.fetchone()[0] > 0:
+            # Update existing record
+            cursor.execute(update_query, (updated_name, phone, updated_category, updated_description, updated_location, updated_image_urls_str, user_id))
+        else:
+            # Insert new record
+            cursor.execute(insert_query, (user_id, updated_name, phone, updated_category, updated_description, updated_location, updated_image_urls_str))
+        
+        connection.commit()
+
+        return jsonify({"success": True, "image_urls": updated_image_urls_str})
     except Exception as e:
         connection.rollback()
         print(f"Error: {str(e)}")
@@ -467,12 +510,12 @@ def get_service_data():
                 # Update photo path to include the full HTTP URL
                 for user in all_users_data:
                     if 'photo' in user and user['photo']:
-                        user['photo'] = f"{HTTP_BASE_URL}/{user['photo']}"
+                        user['photo'] = user['photo']
 
             # Prepare category count data
             sep_category_count = []
             for category in categories_data:
-                category['photo'] = f"{HTTP_BASE_URL}/{category['photo']}"
+                category['photo'] = category['photo']
                 sep_category_count.append({"name": category['category'], "count": category['count'],'photo':category['photo']})
 
             return jsonify({'category_count': sep_category_count, 'service_information': all_users_data})
@@ -511,12 +554,12 @@ def get_shops_data():
                 # Update photo path to include the full HTTP URL
                 for user in all_users_data:
                     if 'photo' in user and user['photo']:
-                        user['photo'] = f"{HTTP_BASE_URL}/{user['photo']}"
+                        user['photo'] = user['photo'].split(",")
 
             # Prepare category count data
             sep_category_count = []
             for category in categories_data:
-                category['photo'] = f"{HTTP_BASE_URL}/{category['photo']}"
+                category['photo'] = category['photo']
                 sep_category_count.append({"name": category['category'], "count": category['count'],'photo':category['photo']})
 
             return jsonify({'category_count': sep_category_count, 'service_information': all_users_data})
@@ -600,11 +643,11 @@ def get_combined_data():
                 # Convert bytes to Base64 string if necessary
             for user in all_service_data:
                     if 'photo' in user and user['photo']:
-                        user['photo'] = f"{HTTP_BASE_URL}/{user['photo']}"
+                        user['photo'] = user['photo']
             
             for user in all_shops_data:
                     if 'photo' in user and user['photo']:
-                        user['photo'] = f"{HTTP_BASE_URL}/{user['photo']}"
+                        user['photo'] = user['photo']
 
             # Interleave the service and shops data
             combined_data = []
@@ -701,7 +744,7 @@ def get_shop_data_by_category():
 
     
 
-@app.route('/get_service_or_shop_data',methods =["GET"])
+@app.route('/get_service_or_shop_data', methods=["GET"])
 def get_service_or_shop_data():
     service_id = request.args.get('service_id', None)
     shop_id = request.args.get('shop_id', None)
@@ -742,6 +785,7 @@ def get_service_or_shop_data():
     finally:
         if connection:
             connection.close()
+
 
 #  used in advert_screen on flutter
 @app.route('/get_data_by_category', methods=['GET'])

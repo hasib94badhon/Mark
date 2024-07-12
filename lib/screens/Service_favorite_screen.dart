@@ -33,10 +33,10 @@ class UserDetail {
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
         address:
-            json['address'] ?? "No Address", // Provide default value if null
+            json['location'] ?? "No Address", // Provide default value if null
         category:
             json['category'] ?? "No Category", // Provide default value if null
-        business_name: json['business_name'] ?? "No Name",
+        business_name: json['name'] ?? "No Name",
         photo: json['photo'],
         // Provide default value if null
         phone: json['phone'] as int?, // Cast as nullable int

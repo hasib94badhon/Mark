@@ -21,7 +21,7 @@ class UserDetail {
   final String business_name;
   final String category;
   final int? phone;
-  final photo;
+  final String images;
   final int shop_id;
   final int service_id;
   final bool is_service;
@@ -31,7 +31,7 @@ class UserDetail {
       required this.business_name,
       required this.category,
       required this.phone,
-      required this.photo,
+      required this.images,
       required this.shop_id,
       required this.is_service,
       required this.service_id});
@@ -39,13 +39,13 @@ class UserDetail {
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
         address:
-            json['address'] ?? "No Address", // Provide default value if null
+            json['location'] ?? "No Address", // Provide default value if null
         category:
             json['category'] ?? "No Category", // Provide default value if null
         business_name:
-            json['business_name'] ?? "No Name", // Provide default value if null
+            json['name'] ?? "No Name", // Provide default value if null
         phone: json['phone'] as int?, // Cast as nullable int
-        photo: json['photo'], // Provide default value if null
+        images: json['photo'], // Provide default value if null
         shop_id: json['shop_id'],
         service_id: json['service_id'] ?? 0,
         is_service: false // Assuming service_id will always be provided
@@ -62,6 +62,7 @@ class ShopsFavorite extends StatefulWidget {
 
 class _ShopsFavoriteState extends State<ShopsFavorite> {
   late Future<List<UserDetail>> data;
+  List<String> images = [];
 
   @override
   void initState() {
@@ -74,6 +75,7 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
         'http://192.168.0.103:5000/get_shop_data_by_category?category=$category';
     try {
       final response = await http.get(Uri.parse(url));
+
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         final userDetails = jsonResponse['shop_information'] != null
@@ -180,7 +182,7 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(60)),
                                 child: Image.network(
-                                  "http://aarambd.com/photo/${user.photo}",
+                                  user.images,
                                   fit: BoxFit.cover,
                                 ),
                               ),
