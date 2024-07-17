@@ -13,10 +13,12 @@ class CategoryCount {
   final int categoryCount;
   final String categoryName;
   final photo;
+  final String cat_id;
 
   CategoryCount({
     required this.categoryCount,
     required this.categoryName,
+    required this.cat_id,
     required this.photo,
   });
 
@@ -24,6 +26,7 @@ class CategoryCount {
     return CategoryCount(
       categoryCount: json['count'],
       categoryName: json['name'],
+      cat_id: json['cat_id'],
       photo: json['photo'],
     );
   }
@@ -56,7 +59,7 @@ class UserDetail {
     return UserDetail(
         address: json['location'],
         business_name: json['name'],
-        category: json['category'],
+        category: json['cat_name'],
         phone: json['phone'],
         photo: json['photo'],
         shop_id: json['shop_id'],
@@ -75,7 +78,7 @@ Future<Map<String, List<dynamic>>> fetchData() async {
     final categoryCounts = (jsonResponse['category_count'] as List)
         .map((data) => CategoryCount.fromJson(data))
         .toList();
-    final userDetails = (jsonResponse['service_information'] as List)
+    final userDetails = (jsonResponse['shops_information'] as List)
         .map((data) => UserDetail.fromJson(data))
         .toList();
 
@@ -173,7 +176,9 @@ class ShopsCart extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => ShopsFavorite(
-                                          categoryName: category.categoryName)),
+                                            cat_id: category.cat_id,
+                                            categoryName: category.categoryName,
+                                          )),
                                 );
                               },
                               child: Stack(children: [
@@ -304,13 +309,13 @@ class ShopsCart extends StatelessWidget {
                                               child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(60),
-                                                child: Container(
-                                                  padding: EdgeInsets.all(16),
-                                                  child: Image.network(
-                                                    user.photo,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
+                                                // child: Container(
+                                                //   padding: EdgeInsets.all(16),
+                                                //   child: Image.network(
+                                                //     user.photo,
+                                                //     fit: BoxFit.cover,
+                                                //   ),
+                                                // ),
                                               ),
                                             ),
                                             Expanded(

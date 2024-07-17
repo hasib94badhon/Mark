@@ -492,19 +492,23 @@ def get_user_data():
 
 @app.route('/get_service_data', methods=['GET'])
 def get_service_data():
-    HTTP_BASE_URL = "http://aarambd.com/photo" 
+    HTTP_BASE_URL = "http://aarambd.com/cat logo" 
     if request.method == 'GET':
         connection = None
         try:
             connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 # Fetch categories and their counts
-                sql_query = "SELECT category,MIN(photo) AS photo, COUNT(*) AS count FROM service GROUP BY category"
+                sql_query = '''SELECT c.cat_id,c.cat_name, c.cat_logo,s.cat_id, COUNT(s.service_id) AS count FROM service s
+                JOIN cat c ON s.cat_id = c.cat_id GROUP BY c.cat_name, c.cat_logo'''
                 cursor.execute(sql_query)
                 categories_data = cursor.fetchall()
 
                 # Fetch all service information
-                cursor.execute("SELECT * FROM service")
+                cursor.execute('''SELECT s.service_id, c.cat_name, u.user_id,u.name,u.phone,u.location,u.photo
+                FROM service s
+                JOIN cat c ON s.cat_id = c.cat_id
+                JOIN users u ON s.user_id = u.user_id''')
                 all_users_data = cursor.fetchall()
 
                 # Update photo path to include the full HTTP URL
@@ -515,8 +519,9 @@ def get_service_data():
             # Prepare category count data
             sep_category_count = []
             for category in categories_data:
-                category['photo'] = category['photo']
-                sep_category_count.append({"name": category['category'], "count": category['count'],'photo':category['photo']})
+                category['cat_logo'] = f"{HTTP_BASE_URL}/{category['cat_logo']}" if category['cat_logo'] else None
+                sep_category_count.append(
+                    {"cat_id": str(category['cat_id']),"name": category['cat_name'], "count": category['count'],'photo':category['cat_logo']})
 
             return jsonify({'category_count': sep_category_count, 'service_information': all_users_data})
 
@@ -536,19 +541,25 @@ def get_service_data():
 # Define your HTTP base URL
  # Adjust this to match the actual URL structu
 def get_shops_data():
-    HTTP_BASE_URL = "http://aarambd.com/photo" 
+    HTTP_BASE_URL = "http://aarambd.com/cat logo" 
     if request.method == 'GET':
         connection = None
         try:
             connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 # Fetch categories and their counts
-                sql_query = "SELECT category,MIN(photo) AS photo, COUNT(*) AS count FROM shops GROUP BY category"
+                sql_query = '''SELECT c.cat_id,c.cat_name, c.cat_logo, COUNT(s.shop_id) AS count 
+                               FROM shops s
+                               JOIN cat c ON s.cat_id = c.cat_id 
+                               GROUP BY c.cat_name, c.cat_logo'''
                 cursor.execute(sql_query)
                 categories_data = cursor.fetchall()
 
                 # Fetch all service information
-                cursor.execute("SELECT * FROM shops")
+                cursor.execute('''SELECT s.shop_id, c.cat_name, c.cat_logo, u.user_id, u.name, u.phone, u.location, u.photo
+                                  FROM shops s
+                                  JOIN cat c ON s.cat_id = c.cat_id
+                                  JOIN users u ON s.user_id = u.user_id''')
                 all_users_data = cursor.fetchall()
 
                 # Update photo path to include the full HTTP URL
@@ -559,10 +570,11 @@ def get_shops_data():
             # Prepare category count data
             sep_category_count = []
             for category in categories_data:
-                category['photo'] = category['photo']
-                sep_category_count.append({"name": category['category'], "count": category['count'],'photo':category['photo']})
+                category['cat_logo'] = f"{HTTP_BASE_URL}/{category['cat_logo']}" if category['cat_logo'] else None
+                sep_category_count.append(
+                    {"cat_id": str(category['cat_id']),"name": category['cat_name'], "count": category['count'], 'photo': category['cat_logo']})
 
-            return jsonify({'category_count': sep_category_count, 'service_information': all_users_data})
+            return jsonify({'category_count': sep_category_count, 'shops_information': all_users_data})
 
         except pymysql.MySQLError as e:
             print(f"Database error: {e}")
@@ -573,6 +585,7 @@ def get_shops_data():
         finally:
             if connection:
                 connection.close()
+
 
 
 
@@ -676,23 +689,32 @@ def get_combined_data():
 
 @app.route('/get_service_data_by_category', methods=['GET'])
 def get_service_data_by_category():
-    category = request.args.get('category', None)
+    cat_id = request.args.get('cat_id', None)
     connection = None
     try:
         connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-            if category:
+            if cat_id:
                 # Fetch data for a specific category
-                sql_query = "SELECT * FROM service WHERE category = %s"
-                cursor.execute(sql_query, (category,))
+                sql_query = '''
+                SELECT s.service_id, c.cat_name, c.cat_logo,u.*
+                FROM service s
+                JOIN cat c ON s.cat_id = c.cat_id
+                JOIN users u ON s.user_id = u.user_id
+                WHERE s.cat_id = %s
+                '''
+                cursor.execute(sql_query, (cat_id,))
                 all_users_data = cursor.fetchall()
             else:
                 # Fetch all service information
-                cursor.execute("SELECT * FROM service")
+                
+                cursor.execute('''
+                SELECT s.service_id, c.cat_name, c.cat_logo, u.user_id,u.name,u.phone,u.location,u.photo
+                FROM service s
+                JOIN cat c ON s.cat_id = c.cat_id
+                JOIN users u ON s.user_id = u.user_id
+                ''')
                 all_users_data = cursor.fetchall()
-
-           
-            
 
             return jsonify({'service_information': all_users_data})
 
@@ -707,30 +729,37 @@ def get_service_data_by_category():
             connection.close()
 
 
+
 @app.route('/get_shop_data_by_category',methods=['GET'])
 def get_shop_data_by_category():
-    category = request.args.get('category', None)
+    cat_id = request.args.get('cat_id', None)
     connection = None
     try:
         connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-            if category:
+            if cat_id:
                 # Fetch data for a specific category
-                sql_query = "SELECT * FROM shops WHERE category = %s"
-                cursor.execute(sql_query, (category,))
+                sql_query = '''
+                SELECT s.shop_id, c.cat_name, c.cat_logo,u.*
+                FROM shops s
+                JOIN cat c ON s.cat_id = c.cat_id
+                JOIN users u ON s.user_id = u.user_id
+                WHERE s.cat_id = %s
+                '''
+                cursor.execute(sql_query, (cat_id,))
                 all_users_data = cursor.fetchall()
             else:
                 # Fetch all service information
-                cursor.execute("SELECT * FROM shops")
+                
+                cursor.execute('''
+                SELECT s.shop_id, c.cat_name, c.cat_logo, u.user_id,u.name,u.phone,u.location,u.photo
+                FROM shops s
+                JOIN cat c ON s.cat_id = c.cat_id
+                JOIN users u ON s.user_id = u.user_id
+                ''')
                 all_users_data = cursor.fetchall()
 
-            # Convert bytes to Base64 string if necessary
-            for user in all_users_data:
-                for key, value in user.items():
-                    if isinstance(value, bytes):
-                        user[key] = base64.b64encode(value).decode()
-
-            return jsonify({'shop_information': all_users_data})
+            return jsonify({'shops_information': all_users_data})
 
     except pymysql.MySQLError as e:
         print(f"Database error: {e}")

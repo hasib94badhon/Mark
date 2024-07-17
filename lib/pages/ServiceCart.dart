@@ -12,16 +12,19 @@ import 'package:http/http.dart' as http;
 class CategoryCount {
   final int categoryCount;
   final String categoryName;
+  final String cat_id;
   final photo;
 
   CategoryCount(
       {required this.categoryCount,
       required this.categoryName,
+      required this.cat_id,
       required this.photo});
 
   factory CategoryCount.fromJson(Map<String, dynamic> json) {
     return CategoryCount(
         categoryCount: json['count'],
+        cat_id: json['cat_id'],
         categoryName: json['name'],
         photo: json['photo']);
   }
@@ -51,7 +54,7 @@ class UserDetail {
 
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
-      category: json['category'],
+      category: json['cat_name'],
       address: json['location'],
       business_name: json['name'],
       phone: json['phone'],
@@ -172,7 +175,8 @@ class ServiceCart extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ServiceFavorite(
-                                      categoryName: category.categoryName,
+                                      cat_id: category.cat_id,
+                                      category_name: category.categoryName,
                                     ),
                                   ),
                                 );

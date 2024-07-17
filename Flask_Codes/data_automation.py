@@ -1,92 +1,178 @@
-import pandas as pd
 import os
 import mysql.connector
-import openpyxl
-from datetime import datetime
-import re
 
-from openpyxl_image_loader import SheetImageLoader
-from pymysql import Error
-# path = os.path.dirname(excel_path)
-# df = pd.read_excel('Assorted.xlsx', sheet_name='shops')
+# MySQL database connection configuration
+connection = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="registration"
+)
 
-# MySQL database connection
+# List of categories and corresponding image URLs assuming cat_name matches the image name
+# 
+categories = [
+    "Gift shops", "Restaurant", "Flower shops", "Furniture shops", "ISP provider",
+    "Hardware store", "Gas cylinders shops", "Sanitary Store", "Sweet Shops",
+    "Money-Exchange", "Sporting store", "Clothing shops", "Tiles store", "Cosmetics store",
+    "parlour", "Tree/Plant garden", "Saloon", "Exercise equipment store", "Pharmacy",
+    "Interior Decorator", "Grocery store", "Glass & mirror shops", "Electronics store",
+    "Appliance store", "Bedding store", "Bike & Car", "Books shops", "Kacha-bazar",
+    "kids stuff", "land and property", "Pet & Birds store",'AC repair service','Ambulance service','Appliance repair','Bike service',
+    'Car wash','Cleaning service','Clock and watch maker','Computer service','Courier Service','Driving school','Event management','House Shifting','Key/lock mechanic',
+    'Laundry','Mobile Repair','Pest control','Refrigerator repair service','Rent a car','Sound system','Transportation','Trips and travels',
+    'Water/Waste tank cleaning service'
+]
+
+# Directory where the images are stored on your domain
+
+image_directory = "https://aarambd.com/cat_logo"
+
+# Function to upload images to the database
+def upload_images_to_database(connection, categories):
+    cursor = connection.cursor()
+    try:
+        for category in categories:
+            # Construct the full image URL
+            image_url = f"{category}.jpg"# Adjust file extension as necessary
+
+            # SQL query to update the cat_logo column for each category
+            sql = "UPDATE cat SET cat_logo = %s WHERE cat_name = %s"
+            cursor.execute(sql, (image_url, category))
+            connection.commit()
+            print(f"Uploaded {category} image to database.")
+    
+    except Exception as e:
+        print(f"Error uploading images to database: {str(e)}")
+    
+    finally:
+        cursor.close()
+
+# Call the function to upload images
+upload_images_to_database(connection, categories)
+# Close the database connection
+connection.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import pandas as pd
+# import os
+# import mysql.connector
+# import openpyxl
+# from datetime import datetime
+# import re
+
+# from openpyxl_image_loader import SheetImageLoader
+# from pymysql import Error
+# # path = os.path.dirnameexcel_path
+# # df = pd.read_excel'Assorted.xlsx', sheet_name='shops'
+
+# # MySQL database connection
 
 
    
-def fetch_phone_numbers(cursor):
-    try:
-        cursor.execute("SELECT phone FROM shops")
-        phone_numbers = cursor.fetchall()
-        print(f"Fetched phone numbers: {phone_numbers}")
-        return phone_numbers
-    except Error as error:
-        print(f"Error fetching phone numbers: {error}")
-        return []
+# def fetch_phone_numberscursor:
+#     try:
+#         cursor.execute"SELECT phone FROM shops"
+#         phone_numbers = cursor.fetchall
+#         printf"Fetched phone numbers: {phone_numbers}"
+#         return phone_numbers
+#     except Error as error:
+#         printf"Error fetching phone numbers: {error}"
+#         return []
 
-def insert_into_reg(cursor, phone):
-    try:
-        sql_insert_query = """INSERT INTO reg (phone, password) VALUES (%s, %s)"""
-        cursor.execute(sql_insert_query, (phone, '12345'))
-        print(f"Inserted phone number {phone} into reg")
-    except Error as error:
-        print(f"Error inserting phone number {phone} into reg: {error}")
+# def insert_into_regcursor, phone:
+#     try:
+#         sql_insert_query = """INSERT INTO reg phone, password VALUES %s, %s"""
+#         cursor.executesql_insert_query, phone, '12345'
+#         printf"Inserted phone number {phone} into reg"
+#     except Error as error:
+#         printf"Error inserting phone number {phone} into reg: {error}"
 
 
-def fetch_unique_service_categories(cursor):
-    try:
-        cursor.execute("SELECT DISTINCT category FROM service")
-        return cursor.fetchall()
-    except Error as error:
-        print(f"Error fetching categories: {error}")
-        return []
+# def fetch_unique_service_categoriescursor:
+#     try:
+#         cursor.execute"SELECT DISTINCT category FROM service"
+#         return cursor.fetchall
+#     except Error as error:
+#         printf"Error fetching categories: {error}"
+#         return []
 
-def fetch_unique_shops_categories(cursor):
-    try:
-        cursor.execute("SELECT DISTINCT category FROM shops")
-        return cursor.fetchall()
-    except Error as error:
-        print(f"Error fetching categories: {error}")
-        return []
+# def fetch_unique_shops_categoriescursor:
+#     try:
+#         cursor.execute"SELECT DISTINCT category FROM shops"
+#         return cursor.fetchall
+#     except Error as error:
+#         printf"Error fetching categories: {error}"
+#         return []
 
-def insert_into_cat(cursor, category):
-    try:
-        sql_insert_query = """INSERT INTO cat (cat_name) VALUES (%s)"""
-        cursor.execute(sql_insert_query, (category,))
-        print(cursor)
-    except Error as error:
-        print(f"Error inserting category {category} into cat: {error}")
+# def insert_into_catcursor, category:
+#     try:
+#         sql_insert_query = """INSERT INTO cat cat_name VALUES %s"""
+#         cursor.executesql_insert_query, category,
+#         printcursor
+#     except Error as error:
+#         printf"Error inserting category {category} into cat: {error}"
 
-def main():
-    try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
-            database="registration"
-        )
-        if connection.is_connected():
-            cursor = connection.cursor()
-            shop_categories = fetch_unique_shops_categories(cursor)
-            service_categories = fetch_unique_service_categories(cursor)
+# def main:
+#     try:
+#         connection = mysql.connector.connect
+#             host="localhost",
+#             user="root",
+#             password="",
+#             database="registration"
+#         
+#         if connection.is_connected:
+#             cursor = connection.cursor
+#             shop_categories = fetch_unique_shops_categoriescursor
+#             service_categories = fetch_unique_service_categoriescursor
 
-            for category in shop_categories:
-                insert_into_cat(cursor, category[0].lower())
+#             for category in shop_categories:
+#                 insert_into_catcursor, category[0].lower
             
-            for category in service_categories:
-                insert_into_cat(cursor, category[0].lower())
+#             for category in service_categories:
+#                 insert_into_catcursor, category[0].lower
 
-            connection.commit() # Commit all insertions
-            print("Categories inserted successfully.")
+#             connection.commit # Commit all insertions
+#             print"Categories inserted successfully."
 
-    except Error as error:
-        print(f"Database connection error: {error}")
-    finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
-
-
+#     except Error as error:
+#         printf"Database connection error: {error}"
+#     finally:
+#         if connection.is_connected:
+#             cursor.close
+#             connection.close
 
 
 
@@ -99,27 +185,27 @@ def main():
 
 
 
-    #         phone_numbers = fetch_phone_numbers(cursor)
+
+
+    #         phone_numbers = fetch_phone_numberscursor
 
     #         for phone in phone_numbers:
     #             phone_number = phone[0]
-    #             phone_number = str(phone_number)
-    #             if len(phone_number) == 10:
+    #             phone_number = strphone_number
+    #             if lenphone_number == 10:
     #                 formatted_phone = f"0{phone_number}"
-    #                 insert_into_reg(cursor, formatted_phone)
+    #                 insert_into_regcursor, formatted_phone
 
-    #         connection.commit() # Commit all insertions
-    #         print("Phone numbers inserted successfully.")
+    #         connection.commit # Commit all insertions
+    #         print"Phone numbers inserted successfully."
 
     # except Error as error:
-    #     print(f"Database connection error: {error}")
+    #     printf"Database connection error: {error}"
     # finally:
-    #     if connection.is_connected():
-    #         cursor.close()
-    #         connection.close()
+    #     if connection.is_connected:
+    #         cursor.close
+    #         connection.close
 
-if __name__ == "__main__":
-    main()
 
       
 
@@ -134,52 +220,52 @@ if __name__ == "__main__":
 
 
 
-# def update_image_paths(cursor, connection):
+# def update_image_pathscursor, connection:
 #     try:
 #         # Fetch all shop IDs from the shops table
-#         cursor.execute("SELECT service_id FROM service")
-#         rows = cursor.fetchall()
+#         cursor.execute"SELECT service_id FROM service"
+#         rows = cursor.fetchall
 
 #         # Update each shop with a unique photo path
-#         for index, row in enumerate(rows):
+#         for index, row in enumeraterows:
 #             service_id = row[0]
 #             image_file_name = f'photo-{index + 1}.png'
 #             sql_update_query = """UPDATE service SET photo = %s WHERE service_id = %s"""
-#             update_tuple = (image_file_name, service_id)
-#             cursor.execute(sql_update_query, update_tuple)
-#             print(f"Image path {image_file_name} for shop ID {service_id} updated successfully")
+#             update_tuple = image_file_name, service_id
+#             cursor.executesql_update_query, update_tuple
+#             printf"Image path {image_file_name} for shop ID {service_id} updated successfully"
 
 #         # Commit the updates to the database
-#         connection.commit()
+#         connection.commit
 
 #     except Error as error:
-#         print(f"Failed to update data in MySQL table {error}")
+#         printf"Failed to update data in MySQL table {error}"
 
-# connection,cursor = mydb()
+# connection,cursor = mydb
 
 # if connection and cursor:
-#     update_image_paths(cursor,connection)
-#     cursor.close()
-#     connection.close()
+#     update_image_pathscursor,connection
+#     cursor.close
+#     connection.close
 
 
 
-# cursor = mydb.cursor()
-# for filename in os.listdir('downloaded_images'):
-#         if filename.endswith(".png"):  # Check if the file is a JPEG image
-#             user_id = filename.split('_')[1].split('.')[0]  # Extract user_id from filename (e.g., '1' from 'image_1.jpg')
-#             filepath = os.path.join('downloaded_images', filename)
+# cursor = mydb.cursor
+# for filename in os.listdir'downloaded_images':
+#         if filename.endswith".png":  # Check if the file is a JPEG image
+#             user_id = filename.split'_'[1].split'.'[0]  # Extract user_id from filename e.g., '1' from 'image_1.jpg'
+#             filepath = os.path.join'downloaded_images', filename
             
-#             if int(user_id) < 11:
-#                 with open(filepath, 'rb') as file:
-#                     binary_data = file.read()
+#             if intuser_id < 11:
+#                 with openfilepath, 'rb' as file:
+#                     binary_data = file.read
             
 #             # SQL Query to update the image data in the service table where user_id matches
 #             query = "UPDATE service SET photo = %s WHERE service_id = %s"
             
 #             # Execute the query
-#             cursor.execute(query, (binary_data, user_id))
-#             print(f"Image {filename} updated in the database for user_id {user_id}.")
+#             cursor.executequery, binary_data, user_id
+#             printf"Image {filename} updated in the database for user_id {user_id}."
 #         else:
 #              break
 
@@ -190,93 +276,93 @@ if __name__ == "__main__":
 
 
 # SQL query to insert data
-# SQL query to insert data, excluding shop_id (auto-increment) and using NOW() for the current timestamp
-# sql = "INSERT INTO shops (category, business_name, address, phone, date_time) VALUES ( %s, %s, %s, %s, NOW())"
+# SQL query to insert data, excluding shop_id auto-increment and using NOW for the current timestamp
+# sql = "INSERT INTO shops category, business_name, address, phone, date_time VALUES  %s, %s, %s, %s, NOW"
 # DEFAULT_PHONE = "0000000000"  # Replace with an appropriate default value
 
 # # Loop through the data and insert into the database
-# for index, row in df.iterrows():
+# for index, row in df.iterrows:
 #     try:
 #         # Check and clean the phone number
-#         phone = str(row['phone']) if pd.notna(row['phone']) else DEFAULT_PHONE
-#         phone = re.sub(r'[^0-9]', '   ', phone)  # Remove all non-numeric characters
+#         phone = strrow['phone'] if pd.notnarow['phone'] else DEFAULT_PHONE
+#         phone = re.subr'[^0-9]', '   ', phone  # Remove all non-numeric characters
         
-#         if not phone.isdigit() or phone == "":
+#         if not phone.isdigit or phone == "":
 #             phone = DEFAULT_PHONE  # Set phone to default if non-numeric or empty
 
 #         # Insert data into the database
-#         cursor.execute(sql, (
-#             row['category'] if pd.notna(row['category']) else None,
-#             row['business_name'] if pd.notna(row['business_name']) else None,
-#             row['address'] if pd.notna(row['address']) else None,
+#         cursor.executesql, 
+#             row['category'] if pd.notnarow['category'] else None,
+#             row['business_name'] if pd.notnarow['business_name'] else None,
+#             row['address'] if pd.notnarow['address'] else None,
 #             phone,
            
-#         ))
+#         
 #     except Exception as e:
-#         print(f"Error inserting row {index}: {e}")
+#         printf"Error inserting row {index}: {e}"
 
 # # Commit changes and close connection
-# mydb.commit()
-# cursor.close()
-# mydb.close()
+# mydb.commit
+# cursor.close
+# mydb.close
 
-# print("Data successfully inserted into the database.")
+# print"Data successfully inserted into the database."
 
 # path = "C:\\Users\\user\\Downloads\\photo\\die"
 # counter = 1
-# for filename in os.listdir(path):
-#     if filename.endswith('png') or filename.endswith('jpg') or filename.endswith('jpeg'):
-#         old_file_path = os.path.join(path,filename)
+# for filename in os.listdirpath:
+#     if filename.endswith'png' or filename.endswith'jpg' or filename.endswith'jpeg':
+#         old_file_path = os.path.joinpath,filename
 #         new_name = f'photo-{counter}.png'
-#         new_file_path = os.path.join(path,new_name)
-#         os.rename(old_file_path,new_file_path)
+#         new_file_path = os.path.joinpath,new_name
+#         os.renameold_file_path,new_file_path
 #         counter += 1
-#         print(f"{new_name} file name rename") 
+#         printf"{new_name} file name rename" 
 
 # update 
 # import mysql.connector
 # from mysql.connector import Error
 # from ftplib import FTP
 
-# def update_image_path(cursor, shop_id, image_file_name):
+# def update_image_pathcursor, shop_id, image_file_name:
 #     try:
 #         # Update shop details with image file path in the database
 #         sql_update_query = """UPDATE shops SET photo = %s WHERE shop_id = %s"""
-#         update_tuple = (image_file_name, shop_id)
-#         cursor.execute(sql_update_query, update_tuple)
-#         print(f"Image path {image_file_name} for shop ID {shop_id} updated successfully")
+#         update_tuple = image_file_name, shop_id
+#         cursor.executesql_update_query, update_tuple
+#         printf"Image path {image_file_name} for shop ID {shop_id} updated successfully"
 #     except Error as error:
-#         print(f"Failed to update data in MySQL table {error}")
+#         printf"Failed to update data in MySQL table {error}"
 
-# def list_ftp_images(ftp, directory):
-#     ftp.cwd(directory)
-#     files = ftp.nlst()
-#     return [f for f in files if f.endswith(('.jpg', '.jpeg', '.png'))]
+# def list_ftp_imagesftp, directory:
+#     ftp.cwddirectory
+#     files = ftp.nlst
+#     return [f for f in files if f.endswith'.jpg', '.jpeg', '.png']
 
-# def process_images(ftp_host, ftp_user, ftp_password, ftp_directory):
+# def process_imagesftp_host, ftp_user, ftp_password, ftp_directory:
 #     try:
 #         # Connect to FTP server
-#         ftp = FTP(ftp_host)
-#         ftp.login(ftp_user, ftp_password)
-#         cursor = mydb.cursor()
+#         ftp = FTPftp_host
+#         ftp.loginftp_user, ftp_password
+#         cursor = mydb.cursor
         
-#         image_files = list_ftp_images(ftp, ftp_directory)
+#         image_files = list_ftp_imagesftp, ftp_directory
         
 #         for image_file in image_files:
 #             try:
 #                 # Extract shop ID from filename
-#                 shop_id = int(image_file.split('-')[1].split('.')[0])
-#                 update_image_path(cursor, shop_id, image_file)
+#                 shop_id = intimage_file.split'-'[1].split'.'[0]
+#                 update_image_pathcursor, shop_id, image_file
 #             except ValueError:
-#                 print(f"Skipping file {image_file}, unable to extract shop ID")
+#                 printf"Skipping file {image_file}, unable to extract shop ID"
         
-#         mydb.commit()
-#         cursor.close()
-#         mydb.close()
-#         ftp.quit()
-#         print("All updates completed and connections closed successfully")
+#         mydb.commit
+#         cursor.close
+#         mydb.close
+#         ftp.quit
+#         print"All updates completed and connections closed successfully"
 #     except Exception as e:
-#         print(f"Error processing images: {e}")
+#         printf"Error processing images: {e}"
 
 # # Example usage
 # ftp_host = '89.117.27.223'
@@ -284,4 +370,4 @@ if __name__ == "__main__":
 # ftp_password = 'Badhon12345'
 # ftp_directory = '/domains/aarambd.com/public_html/photo'  # Update this to your directory
 
-# process_images(ftp_host, ftp_user, ftp_password, ftp_directory)
+# process_imagesftp_host, ftp_user, ftp_password, ftp_directory

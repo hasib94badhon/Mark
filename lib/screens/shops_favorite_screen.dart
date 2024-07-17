@@ -41,7 +41,7 @@ class UserDetail {
         address:
             json['location'] ?? "No Address", // Provide default value if null
         category:
-            json['category'] ?? "No Category", // Provide default value if null
+            json['cat_name'] ?? "No Category", // Provide default value if null
         business_name:
             json['name'] ?? "No Name", // Provide default value if null
         phone: json['phone'] as int?, // Cast as nullable int
@@ -54,8 +54,10 @@ class UserDetail {
 }
 
 class ShopsFavorite extends StatefulWidget {
+  final String cat_id;
   final String categoryName;
-  ShopsFavorite({required this.categoryName});
+
+  ShopsFavorite({required this.cat_id, required this.categoryName});
   @override
   _ShopsFavoriteState createState() => _ShopsFavoriteState();
 }
@@ -67,19 +69,19 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
   @override
   void initState() {
     super.initState();
-    data = fetchUserDetails(widget.categoryName);
+    data = fetchUserDetails(widget.cat_id);
   }
 
-  Future<List<UserDetail>> fetchUserDetails(String category) async {
+  Future<List<UserDetail>> fetchUserDetails(String cat_id) async {
     final url =
-        'http://192.168.0.103:5000/get_shop_data_by_category?category=$category';
+        'http://192.168.0.103:5000/get_shop_data_by_category?cat_id=$cat_id';
     try {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        final userDetails = jsonResponse['shop_information'] != null
-            ? (jsonResponse['shop_information'] as List)
+        final userDetails = jsonResponse['shops_information'] != null
+            ? (jsonResponse['shops_information'] as List)
                 .map((data) => UserDetail.fromJson(data))
                 .toList()
             : <UserDetail>[];
@@ -182,7 +184,7 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(60)),
                                 child: Image.network(
-                                  user.images,
+                                  "http://aarambd.com/cat logo/${user.images}",
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -192,7 +194,7 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    user.business_name,
+                                    "0${user.phone.toString()}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
@@ -231,6 +233,9 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: ShopsFavorite(categoryName: "Auto painting"),
+    home: ShopsFavorite(
+      categoryName: "Auto painting",
+      cat_id: "auto",
+    ),
   ));
 }

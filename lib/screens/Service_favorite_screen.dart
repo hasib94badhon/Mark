@@ -29,15 +29,14 @@ class UserDetail {
     required this.isService,
     required this.shop_id,
   });
-
   factory UserDetail.fromJson(Map<String, dynamic> json) {
     return UserDetail(
         address:
             json['location'] ?? "No Address", // Provide default value if null
         category:
-            json['category'] ?? "No Category", // Provide default value if null
+            json['cat_name'] ?? "No Category", // Provide default value if null
         business_name: json['name'] ?? "No Name",
-        photo: json['photo'],
+        photo: json['cat_logo'],
         // Provide default value if null
         phone: json['phone'] as int?, // Cast as nullable int
         // photo: json['photo'] ?? "No Photo", // Provide default value if null
@@ -49,9 +48,10 @@ class UserDetail {
 }
 
 class ServiceFavorite extends StatefulWidget {
-  final String categoryName;
+  final String cat_id;
+  final String category_name;
 
-  ServiceFavorite({required this.categoryName});
+  ServiceFavorite({required this.cat_id, required this.category_name});
 
   @override
   _ServiceFavoriteState createState() => _ServiceFavoriteState();
@@ -63,12 +63,12 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
   @override
   void initState() {
     super.initState();
-    data = fetchUserDetails(widget.categoryName);
+    data = fetchUserDetails(widget.cat_id);
   }
 
-  Future<List<UserDetail>> fetchUserDetails(String category) async {
+  Future<List<UserDetail>> fetchUserDetails(String cat_id) async {
     final url =
-        'http://192.168.0.103:5000/get_service_data_by_category?category=$category';
+        'http://192.168.0.103:5000/get_service_data_by_category?cat_id=$cat_id';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -92,7 +92,7 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AaramBD - ${widget.categoryName}'),
+        title: Text('AaramBD - ${widget.category_name}'),
         centerTitle: true,
         backgroundColor: Colors.green[100],
         leading: IconButton(
@@ -116,6 +116,9 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
                 itemCount: users.length,
                 itemBuilder: (context, index) {
                   final user = users[index];
+
+                  final String pp = user.photo;
+
                   return Center(
                     child: InkWell(
                       onTap: () {
@@ -176,7 +179,7 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(60)),
                                 child: Image.network(
-                                  "http://aarambd.com/photo/${user.photo}",
+                                  "http://aarambd.com/cat logo/${user.photo}",
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -221,6 +224,6 @@ class _ServiceFavoriteState extends State<ServiceFavorite> {
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: ServiceFavorite(categoryName: "Auto painting"),
+    home: ServiceFavorite(cat_id: "hello", category_name: "mello"),
   ));
 }
