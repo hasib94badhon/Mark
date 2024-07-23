@@ -36,7 +36,7 @@ class UserDetail {
     int shopId = json['shop_id'] ?? 0;
     return UserDetail(
       address: json['location'] ?? '',
-      category: json['category'] ?? '',
+      category: json['cat_id'] ?? '',
       business_name: json['name'] ?? '',
       photo: json['photo'] ?? '',
       phone: json['phone'] ?? 0,
@@ -69,9 +69,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 
   Future<List<UserDetail>> fetchUserDetails(
-      String category, String dataType) async {
+      String cat_id, String dataType) async {
     final url =
-        'http://192.168.0.103:5000/get_data_by_category?category=$category&data_type=$dataType';
+        'http://192.168.0.103:5000/get_data_by_category?category=$cat_id&data_type=$dataType';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -226,6 +226,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: FavoriteScreen(categoryName: "Auto painting"),
+    home: FavoriteScreen(
+      categoryName: "Auto painting",
+    ),
   ));
 }

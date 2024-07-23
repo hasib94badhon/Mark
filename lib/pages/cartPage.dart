@@ -22,8 +22,8 @@ class CategoryCount {
   factory CategoryCount.fromJson(Map<String, dynamic> json) {
     return CategoryCount(
       categoryCount: json['count'],
-      categoryName: json['category'],
-      photo: json['photo'],
+      categoryName: json['cat_name'],
+      photo: json['cat_logo'],
     );
   }
 }
@@ -57,7 +57,7 @@ class UserDetail {
     int shopId = json['shop_id'] ?? 0;
     return UserDetail(
       address: json['location'] ?? '',
-      category: json['category'] ?? '',
+      category: json['cat_name'] ?? '',
       business_name: json['name'] ?? '',
       photo: json['photo'],
       phone: json['phone'] ?? 0,

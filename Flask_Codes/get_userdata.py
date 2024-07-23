@@ -184,7 +184,7 @@ def get_user_by_phone():
     
     cursor = connection.cursor()
     try:
-        query = """SELECT users.name, users.category, users.description, users.location, cat.cat_name, users.photo 
+        query = """SELECT users.name, users.cat_id, users.description, users.location, cat.cat_name, users.photo 
             FROM users
             LEFT JOIN cat ON users.cat_id = cat.cat_id
             WHERE users.phone = %s"""
@@ -589,14 +589,15 @@ def get_shops_data():
 
 
 
-@app.route('/get_category_and_counts_all_info', methods=['GET'])
+@app.route('/get_category_and_counts_all_info', methods=['GET','POST'])
 def get_category_and_counts_all_info():
-    if request.method == 'GET':
+    if request.method == 'GET' or request.method == 'POST':
         # Fetch unique categories and their counts from the users table
         connection = db_connector.connect()
         cursor = connection.cursor()
         try:
-            cursor.execute("SELECT category, COUNT(*) AS count FROM users GROUP BY category")
+            cursor.execute('''SELECT c.cat_id,c.cat_name,COUNT(u.cat_id) AS count FROM users u
+                JOIN cat c ON u.cat_id = c.cat_id GROUP BY c.cat_name''')
             category_counts = cursor.fetchall()
         except Exception as e:
             return jsonify({"error": str(e)}), 500
@@ -606,8 +607,19 @@ def get_category_and_counts_all_info():
 
         # Separate category name and count
         separated_category_counts = []
-        for category, count in category_counts:
-            separated_category_counts.append({"category_name": category, "category_count": count})
+        for cat_id, cat_name,count in category_counts:
+            connection = db_connector.connect()
+            cursor = connection.cursor()
+            update_query = """
+                UPDATE cat SET user_count = %s WHERE cat_id = %s
+                """
+            cursor.execute(update_query, (count, cat_id))
+            connection.commit()
+
+
+            separated_category_counts.append({"cat_id": cat_id, "cat_name": cat_name,"count":count})
+        
+        print(separated_category_counts)
             
 
 
@@ -636,21 +648,34 @@ def get_combined_data():
             connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
             with connection.cursor(pymysql.cursors.DictCursor) as cursor:
                 # Fetch categories and their counts from service table
-                sql_query_service = "SELECT category,MIN(photo) AS photo, COUNT(*) AS count FROM service GROUP BY category"
+                sql_query_service = '''SELECT c.cat_id,c.cat_name, c.cat_logo,s.cat_id, COUNT(s.service_id) AS count FROM service s
+                JOIN cat c ON s.cat_id = c.cat_id GROUP BY c.cat_name, c.cat_logo'''
                 cursor.execute(sql_query_service)
+                service_count = cursor.fetchall()
+                
                 service_categories_data = cursor.fetchall()
-
                 # Fetch all service information
-                cursor.execute("SELECT * FROM service")
+                cursor.execute('''SELECT s.service_id, c.cat_name, u.user_id,u.name,u.phone,u.location,u.photo
+                FROM service s
+                JOIN cat c ON s.cat_id = c.cat_id
+                JOIN users u ON s.user_id = u.user_id''')
+                
                 all_service_data = cursor.fetchall()
 
                 # Fetch categories and their counts from shops table
-                sql_query_shops = "SELECT category,MIN(photo) AS photo, COUNT(*) AS count FROM shops GROUP BY category"
+                sql_query_shops ='''SELECT c.cat_id,c.cat_name, c.cat_logo, COUNT(s.shop_id) AS count 
+                               FROM shops s
+                               JOIN cat c ON s.cat_id = c.cat_id 
+                               GROUP BY c.cat_name, c.cat_logo'''
                 cursor.execute(sql_query_shops)
+                shops_count = cursor.fetchall()
+                
                 shops_categories_data = cursor.fetchall()
-
                 # Fetch all shops information
-                cursor.execute("SELECT * FROM shops")
+                cursor.execute('''SELECT s.shop_id, c.cat_name, c.cat_logo, u.user_id, u.name, u.phone, u.location, u.photo
+                                  FROM shops s
+                                  JOIN cat c ON s.cat_id = c.cat_id
+                                  JOIN users u ON s.user_id = u.user_id''')
                 all_shops_data = cursor.fetchall()
 
                 # Convert bytes to Base64 string if necessary
@@ -664,15 +689,27 @@ def get_combined_data():
 
             # Interleave the service and shops data
             combined_data = []
+            combined_category_count = []
             max_length = max(len(all_service_data), len(all_shops_data))
+            max_cat_length = max(len(service_count),len(shops_count))
+
+            for i in range(max_cat_length):
+                if i < len(service_count):
+                    combined_category_count.append(service_count[i])
+                if i < len(shops_count):
+                    combined_category_count.append(shops_count[i])
+          
+           
             for i in range(max_length):
                 if i < len(all_service_data):
                     combined_data.append(all_service_data[i])
                 if i < len(all_shops_data):
                     combined_data.append(all_shops_data[i])
-
+                    
+            
             # Prepare combined category count data
-            combined_category_count = service_categories_data + shops_categories_data
+            # combined_category_count = service_categories_data + shops_categories_data
+
 
             return jsonify({'category_count': combined_category_count, 'combined_information': combined_data})
 
@@ -770,6 +807,61 @@ def get_shop_data_by_category():
     finally:
         if connection:
             connection.close()
+    
+
+@app.route('/get_data_by_category', methods=['GET'])
+def get_data_by_category():
+    category = request.args.get('cat_id', None)
+    data_type = request.args.get('data_type', None)  # 'service' or 'shop'
+    connection = None
+    
+    if not data_type or data_type not in ['service', 'shops']:
+        return jsonify({"error": "Invalid or missing data_type parameter"}), 400
+
+    try:
+        connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
+        with connection.cursor(pymysql.cursors.DictCursor) as cursor:
+            if category and data_type in ['service']:
+                # Fetch data for a specific category
+                sql_query = ('''
+                SELECT s.service_id, c.cat_id,c.cat_name, c.cat_logo, u.user_id,u.name,u.phone,u.location,u.photo
+                FROM service s
+                JOIN cat c ON s.cat_id = c.cat_id
+                JOIN users u ON s.user_id = u.user_id
+                WHERE s.cat_id = %s
+                ''')
+                cursor.execute(sql_query, (category,))
+            
+            elif category and data_type in ['shops']:
+                # Fetch data for a specific category
+                sql_query = '''
+                SELECT s.shop_id, c.cat_id,c.cat_name, c.cat_logo, u.user_id,u.name,u.phone,u.location,u.photo
+                FROM shops s
+                JOIN cat c ON s.cat_id = c.cat_id
+                JOIN users u ON s.user_id = u.user_id
+                WHERE s.cat_id = %s
+                '''
+                cursor.execute(sql_query, (category,))
+            else:
+                # Fetch all information
+                sql_query = f"SELECT * FROM {data_type}"
+                cursor.execute(sql_query)
+            
+            
+            all_data = cursor.fetchall()
+            
+
+            return jsonify({f'{data_type}_information': all_data})
+
+    except pymysql.MySQLError as e:
+        print(f"Database error: {e}")
+        return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        print(f"General error: {e}")
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection:
+            connection.close()
 
     
 
@@ -816,31 +908,37 @@ def get_service_or_shop_data():
             connection.close()
 
 
-#  used in advert_screen on flutter
-@app.route('/get_data_by_category', methods=['GET'])
-def get_data_by_category():
-    category = request.args.get('category', None)
-    data_type = request.args.get('data_type', None)  # 'service' or 'shop'
+@app.route('/update_cat_data', methods=["GET","POST"])
+def update_cat_data():
+    service_id = request.args.get('service_id', None)
+    shop_id = request.args.get('shop_id', None)
     connection = None
-    
-    if not data_type or data_type not in ['service', 'shops']:
-        return jsonify({"error": "Invalid or missing data_type parameter"}), 400
-
     try:
-        connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
+        connection = db_connector.connect()
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-            if category:
-                # Fetch data for a specific category
-                sql_query = f"SELECT * FROM {data_type} WHERE category = %s"
-                cursor.execute(sql_query, (category,))
+            if service_id:
+                # Fetch data for a service_id
+                sql = "SELECT * FROM service WHERE service_id = %s"
+                cursor.execute(sql, (service_id,))
+                data = cursor.fetchall()
+                data_key = "service_data"
+            elif shop_id:
+                # Fetch data for a shop_id
+                sql = "SELECT * FROM shops WHERE shop_id = %s"
+                cursor.execute(sql, (shop_id,))
+                data = cursor.fetchall()
+                data_key = "shop_data"
             else:
-                # Fetch all information
-                sql_query = f"SELECT * FROM {data_type}"
-                cursor.execute(sql_query)
+                # Return error if no ID is provided
+                return jsonify({"error": "Please provide either a service_id or a shop_id"}), 400
 
-            all_data = cursor.fetchall()
+            # Process data (e.g., encode binary data as base64)
+            # for record in data:
+            #     for key, value in record.items():
+            #         if isinstance(value, bytes):
+            #             record[key] = base64.b64encode(value).decode()
 
-            return jsonify({f'{data_type}_information': all_data})
+            return jsonify({data_key: data})
 
     except pymysql.MySQLError as e:
         print(f"Database error: {e}")
@@ -851,6 +949,154 @@ def get_data_by_category():
     finally:
         if connection:
             connection.close()
+
+
+@app.route('/get_most_viewed_post', methods=['GET'])
+def get_viewed_data():
+    category = request.args.get('cat_id', None)
+    data_type = request.args.get('data_type', None)
+    if request.method == 'GET':
+        # Fetch user data from the users table
+        connection = db_connector.connect()
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        try:
+            cursor.execute("SELECT cat_id,post_viewed,post_liked FROM post GROUP BY post_viewed")
+            view_data = cursor.fetchall()
+            
+            sorted_view_data = []
+            for view in view_data:
+                sorted_view_data.append(view['post_viewed'])
+            
+            sorted_view_data.sort()
+            print(sorted_view_data)
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            connection.close()
+        return jsonify({"viewed_data":view_data})
+
+@app.route('/get_most_liked_post', methods=['GET'])
+def get_liked_data():
+    category = request.args.get('cat_id', None)
+    data_type = request.args.get('data_type', None)
+    if request.method == 'GET':
+        # Fetch user data from the users table
+        connection = db_connector.connect()
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        try:
+            cursor.execute("SELECT cat_id,post_viewed,post_liked,post_time FROM post GROUP BY post_liked desc")
+            view_data = cursor.fetchall()
+            
+            sorted_view_data = []
+            for view in view_data:
+                sorted_view_data.append(view['post_viewed'])
+            
+            sorted_view_data.sort(reverse='True')
+            print(sorted_view_data)
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            connection.close()
+        return jsonify({"viewed_data":view_data})
+
+@app.route('/get_most_updated_post', methods=['GET'])
+def get_updated_data():
+    category = request.args.get('cat_id', None)
+    data_type = request.args.get('data_type', None)
+    if request.method == 'GET':
+        # Fetch user data from the users table
+        connection = db_connector.connect()
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        try:
+            cursor.execute("SELECT post_time,cat_id,post_viewed,post_liked,post_id FROM post GROUP BY post_id desc")
+            view_data = cursor.fetchall()
+            
+            # sorted_view_data = []
+            # total_data =[]
+            # for view in view_data:
+            #         sorted_view_data.append(view['post_time'])
+            
+            # sorted_view_data.sort(reverse=True)
+
+            # for j in sorted_view_data:
+            #     for k in view_data:
+            #         if j == k['post_time']:
+            #             total_data.append({'post_id':k['post_id'],'post_viewed':k['post_viewed'],'post_liked':k['post_liked'],'post_time':j,'cat_id':k['cat_id']})
+           
+
+                
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+            cursor.close()
+            connection.close()
+        return jsonify({"viewed_data":view_data})
+    
+
+
+
+
+
+
+@app.route('/get_total_post_on_users', methods=['GET','POST'])
+def get_total_post_on_users():
+    if request.method == 'GET' or request.method == 'POST':
+        # Fetch unique categories and their counts from the users table
+        connection = db_connector.connect()
+        cursor = connection.cursor()
+        
+        try:
+            cursor.execute('''SELECT p.user_id,COUNT(p.post_id) AS count FROM post p
+                    JOIN users u ON u.user_id = p.user_id GROUP BY u.user_id''')
+            
+            post_counts = cursor.fetchall()
+            seperated_post_counts = []
+            for user_id,counts in post_counts:
+                cursor = connection.cursor()
+                sql = f"""UPDATE users set user_total_post = %s WHERE user_id = %s"""
+                cursor.execute(sql, (counts,user_id))
+                connection.commit()
+                seperated_post_counts.append({'user_id':user_id,'post_counts':counts})
+
+        
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        finally:
+                cursor.close()
+                connection.close()
+        return jsonify({'post_counts':seperated_post_counts})
+
+        # Separate category name and count
+        
+            
+
+
+      
+
+
+        # Fetch data from the reg table based on the foreign key relationship
+        # users_with_phone_data = []
+        # for user in users_data:
+        #     reg_id = user['service_id']
+        #     connection = db_connector.connect()
+        #     cursor = connection.cursor()
+        #     try:
+        #         cursor.execute("SELECT phone FROM reg WHERE reg_id = %s", (reg_id,))
+        #         reg_data = cursor.fetchone()
+        #         if reg_data:
+        #            phone = reg_data[0]  # Extract phone number from the tuple
+        #            user['phone'] = phone
+        #         users_with_phone_data.append(user)
+        #     except Exception as e:
+        #         return jsonify({"error": str(e)}), 500
+        #     finally:
+        #         cursor.close()
+        #         connection.close()
+
+        # return jsonify({"users_data": users_with_phone_data})
+
 
 
 if __name__ == '__main__':

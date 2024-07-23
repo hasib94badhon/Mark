@@ -1,5 +1,6 @@
 import os
 import mysql.connector
+from pymysql import Error
 
 # MySQL database connection configuration
 connection = mysql.connector.connect(
@@ -9,49 +10,134 @@ connection = mysql.connector.connect(
     database="registration"
 )
 
-# List of categories and corresponding image URLs assuming cat_name matches the image name
-# 
-categories = [
-    "Gift shops", "Restaurant", "Flower shops", "Furniture shops", "ISP provider",
-    "Hardware store", "Gas cylinders shops", "Sanitary Store", "Sweet Shops",
-    "Money-Exchange", "Sporting store", "Clothing shops", "Tiles store", "Cosmetics store",
-    "parlour", "Tree/Plant garden", "Saloon", "Exercise equipment store", "Pharmacy",
-    "Interior Decorator", "Grocery store", "Glass & mirror shops", "Electronics store",
-    "Appliance store", "Bedding store", "Bike & Car", "Books shops", "Kacha-bazar",
-    "kids stuff", "land and property", "Pet & Birds store",'AC repair service','Ambulance service','Appliance repair','Bike service',
-    'Car wash','Cleaning service','Clock and watch maker','Computer service','Courier Service','Driving school','Event management','House Shifting','Key/lock mechanic',
-    'Laundry','Mobile Repair','Pest control','Refrigerator repair service','Rent a car','Sound system','Transportation','Trips and travels',
-    'Water/Waste tank cleaning service'
-]
+# def fetch_cat_id_phone():
+#     try:
+#         cursor = connection.cursor()
+#         cursor.execute("SELECT cat_id,phone FROM shops")
+#         service_info = cursor.fetchall()
+#         # print(f"Fetched details: {service_info}")
+#         return service_info
+#     except Error as error:
+#         print(f"Error fetching phone numbers: {error}")
+#         return []
 
-# Directory where the images are stored on your domain
+# fetched_details = fetch_cat_id_phone()
 
-image_directory = "https://aarambd.com/cat_logo"
+# for cat_id,number in fetched_details:
+#     cursor = connection.cursor()
+#     sql = "UPDATE users SET cat_id = %s WHERE phone = %s"
+#     cursor.execute(sql, (cat_id, number))
+#     print(f"Uploaded {cat_id} on the phone number {number}.")
+#     connection.commit()
+    
 
-# Function to upload images to the database
-def upload_images_to_database(connection, categories):
-    cursor = connection.cursor()
+
+
+from random import *
+
+def fetch_cat_id_phone():
     try:
-        for category in categories:
-            # Construct the full image URL
-            image_url = f"{category}.jpg"# Adjust file extension as necessary
+        cursor = connection.cursor()
+        cursor.execute("SELECT post_id FROM users")
+        service_info = cursor.fetchall()
+        # print(f"Fetched details: {service_info}")
+        return service_info
+    except Error as error:
+        print(f"Error fetching phone numbers: {error}")
+        return []
 
-            # SQL query to update the cat_logo column for each category
-            sql = "UPDATE cat SET cat_logo = %s WHERE cat_name = %s"
-            cursor.execute(sql, (image_url, category))
-            connection.commit()
-            print(f"Uploaded {category} image to database.")
-    
-    except Exception as e:
-        print(f"Error uploading images to database: {str(e)}")
-    
-    finally:
-        cursor.close()
+fetched_details = fetch_cat_id_phone()
 
-# Call the function to upload images
-upload_images_to_database(connection, categories)
-# Close the database connection
-connection.close()
+
+des = 5
+called = 10 
+share = 1
+liked = 0
+for post_id in fetched_details:
+    cursor = connection.cursor()
+    liked += 2 
+    share += 1
+    called += 10
+
+    sql = f"""
+            UPDATE users set user_shared ={str(liked)},user_called={str(called)} WHERE user_id = %s
+    """
+    cursor.execute(sql, (post_id))
+    
+    print(f"Upldate user_shared {liked} on the user_id {post_id}.")
+    connection.commit()
+    
+
+
+
+d = [{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"}]
+for i in d:
+    print(i['dept'])
+
+
+
+
+
+
+
+
+
+# def insert_into_regcursor, phone:
+#     try:
+#         sql_insert_query = """INSERT INTO reg phone, password VALUES %s, %s"""
+#         cursor.executesql_insert_query, phone, '12345'
+#         printf"Inserted phone number {phone} into reg"
+#     except Error as error:
+#         printf"Error inserting phone number {phone} into reg: {error}"
+
+
+
+
+
+
+# # List of categories and corresponding image URLs assuming cat_name matches the image name
+# # 
+# categories = [
+#     "Gift shops", "Restaurant", "Flower shops", "Furniture shops", "ISP provider",
+#     "Hardware store", "Gas cylinders shops", "Sanitary Store", "Sweet Shops",
+#     "Money-Exchange", "Sporting store", "Clothing shops", "Tiles store", "Cosmetics store",
+#     "parlour", "Tree/Plant garden", "Saloon", "Exercise equipment store", "Pharmacy",
+#     "Interior Decorator", "Grocery store", "Glass & mirror shops", "Electronics store",
+#     "Appliance store", "Bedding store", "Bike & Car", "Books shops", "Kacha-bazar",
+#     "kids stuff", "land and property", "Pet & Birds store",'AC repair service','Ambulance service','Appliance repair','Bike service',
+#     'Car wash','Cleaning service','Clock and watch maker','Computer service','Courier Service','Driving school','Event management','House Shifting','Key/lock mechanic',
+#     'Laundry','Mobile Repair','Pest control','Refrigerator repair service','Rent a car','Sound system','Transportation','Trips and travels',
+#     'Water/Waste tank cleaning service'
+# ]
+
+# # Directory where the images are stored on your domain
+
+# image_directory = "https://aarambd.com/cat_logo"
+
+# # Function to upload images to the database
+# def upload_images_to_database(connection, categories):
+#     cursor = connection.cursor()
+#     try:
+#         for category in categories:
+#             # Construct the full image URL
+#             image_url = f"{category}.jpg"# Adjust file extension as necessary
+
+#             # SQL query to update the cat_logo column for each category
+#             sql = "UPDATE cat SET cat_logo = %s WHERE cat_name = %s"
+#             cursor.execute(sql, (image_url, category))
+#             connection.commit()
+#             print(f"Uploaded {category} image to database.")
+    
+#     except Exception as e:
+#         print(f"Error uploading images to database: {str(e)}")
+    
+#     finally:
+#         cursor.close()
+
+# # Call the function to upload images
+# upload_images_to_database(connection, categories)
+# # Close the database connection
+# connection.close()
 
 
 
