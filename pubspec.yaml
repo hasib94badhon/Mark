@@ -30,13 +30,8 @@ dependencies:
   shared_preferences: ^2.0.6
   dropdown_search: ^5.0.2
   google_maps_flutter: ^2.1.1
-<<<<<<< HEAD
   image_picker: ^1.1.2
   readmore: ^3.0.0
-=======
-  image_picker: ^0.8.4+4
-  readmore: ^2.1.0
->>>>>>> origin/main
   
 
 dev_dependencies:
