@@ -38,7 +38,11 @@ from random import *
 def fetch_cat_id_phone():
     try:
         cursor = connection.cursor()
+<<<<<<< HEAD
         cursor.execute("SELECT post_id FROM post")
+=======
+        cursor.execute("SELECT post_id FROM users")
+>>>>>>> origin/main
         service_info = cursor.fetchall()
         # print(f"Fetched details: {service_info}")
         return service_info
@@ -49,6 +53,7 @@ def fetch_cat_id_phone():
 fetched_details = fetch_cat_id_phone()
 
 
+<<<<<<< HEAD
 
 for post_id in fetched_details:
     cursor = connection.cursor()
@@ -59,14 +64,38 @@ for post_id in fetched_details:
     cursor.execute(sql, (post_id))
     
     print(f"Upldate user_shared {called} on the user_id {post_id}.")
+=======
+des = 5
+called = 10 
+share = 1
+liked = 0
+for post_id in fetched_details:
+    cursor = connection.cursor()
+    liked += 2 
+    share += 1
+    called += 10
+
+    sql = f"""
+            UPDATE users set user_shared ={str(liked)},user_called={str(called)} WHERE user_id = %s
+    """
+    cursor.execute(sql, (post_id))
+    
+    print(f"Upldate user_shared {liked} on the user_id {post_id}.")
+>>>>>>> origin/main
     connection.commit()
     
 
 
 
+<<<<<<< HEAD
 # d = [{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"}]
 # for i in d:
 #     print(i['dept'])
+=======
+d = [{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"},{"name":'abid',"dept":"cse"}]
+for i in d:
+    print(i['dept'])
+>>>>>>> origin/main
 
 
 

@@ -2,7 +2,10 @@ import 'dart:ui';
 
 import 'package:aaram_bd/widgets/AppDrawer.dart';
 import 'package:flutter/cupertino.dart';
+<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
+=======
+>>>>>>> origin/main
 import 'package:flutter/material.dart';
 import 'package:aaram_bd/pages/Homepage.dart';
 import 'package:aaram_bd/pages/ServiceCart.dart';
@@ -75,9 +78,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
           ],
         ),
       ),
+<<<<<<< HEAD
       drawer: AppDrawer(
         userPhone: userPhone,
       ),
+=======
+      drawer: AppDrawer(userPhone: userPhone),
+>>>>>>> origin/main
       body: IndexedStack(
         index: pageIndex,
         children: pages,

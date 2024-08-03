@@ -158,7 +158,11 @@ class _AdvertScreenState extends State<AdvertScreen> {
   Future<List<UserDetail>> fetchUserDetails(String id, bool isService) async {
     final String idParam = isService ? 'service_id=$id' : 'shop_id=$id';
     final String url =
+<<<<<<< HEAD
         'http://192.168.0.102:5000/get_service_or_shop_data?$idParam';
+=======
+        'http://192.168.0.103:5000/get_service_or_shop_data?$idParam';
+>>>>>>> origin/main
 
     try {
       final response = await http.get(Uri.parse(url));

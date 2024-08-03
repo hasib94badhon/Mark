@@ -65,18 +65,30 @@ class ShopsFavorite extends StatefulWidget {
 class _ShopsFavoriteState extends State<ShopsFavorite> {
   late Future<List<UserDetail>> data;
   List<String> images = [];
+<<<<<<< HEAD
   String sortBy = "";
   String userLocation = '23.8103,90.4125'; // example location (Dhaka)
+=======
+>>>>>>> origin/main
 
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
     data = fetchUserDetails(widget.cat_id, sortBy);
   }
 
   Future<List<UserDetail>> fetchUserDetails(String cat_id, sortBy) async {
     final url =
         'http://192.168.0.102:5000/get_shop_data_by_category?cat_id=$cat_id&sort_by=$sortBy&user_location=$userLocation';
+=======
+    data = fetchUserDetails(widget.cat_id);
+  }
+
+  Future<List<UserDetail>> fetchUserDetails(String cat_id) async {
+    final url =
+        'http://192.168.0.103:5000/get_shop_data_by_category?cat_id=$cat_id';
+>>>>>>> origin/main
     try {
       final response = await http.get(Uri.parse(url));
 
@@ -97,6 +109,7 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
     }
   }
 
+<<<<<<< HEAD
   void _sortData(criteria) {
     setState(() {
       sortBy = criteria;
@@ -104,6 +117,8 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
     });
   }
 
+=======
+>>>>>>> origin/main
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,6 +136,7 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
           },
         ),
       ),
+<<<<<<< HEAD
       body: Column(
         children: [
           Container(
@@ -320,6 +336,117 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
             ),
           ),
         ],
+=======
+      body: FutureBuilder<List<UserDetail>>(
+        future: data,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (snapshot.hasData) {
+              final users = snapshot.data!;
+              return ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  final user = users[index];
+                  return Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdvertScreen(
+                                    userId: user.shop_id.toString(),
+                                    isService: user.is_service,
+                                    advertData: AdvertData(
+                                      userId: user.shop_id.toString(),
+                                      isService: user.is_service,
+                                      additionalData: user.is_service
+                                          ? {
+                                              'service_id': user.service_id,
+                                            } // Replace with actual service details
+                                          : {
+                                              'shop_id': user.shop_id,
+                                            },
+                                    ),
+                                  )),
+                        );
+                      },
+                      child: Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              width: 1,
+                              color: Color.fromARGB(255, 133, 199, 136)),
+                          borderRadius: BorderRadius.circular(60),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 3,
+                              blurRadius: 5,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 130,
+                              height: 130,
+                              margin: EdgeInsets.only(right: 20),
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(60),
+                                border: Border.all(
+                                    width: 3, color: Colors.greenAccent),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(60)),
+                                child: Image.network(
+                                  "http://aarambd.com/cat logo/${user.images}",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "0${user.phone.toString()}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  SizedBox(height: 3),
+                                  Text(
+                                    user.address,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 5),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+>>>>>>> origin/main
       ),
     );
   }

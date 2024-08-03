@@ -11,13 +11,19 @@ import 'package:http/http.dart' as http;
 class CategoryCount {
   final int categoryCount;
   final String categoryName;
+<<<<<<< HEAD
   final String cat_id;
+=======
+>>>>>>> origin/main
   final photo;
 
   CategoryCount({
     required this.categoryCount,
     required this.categoryName,
+<<<<<<< HEAD
     required this.cat_id,
+=======
+>>>>>>> origin/main
     required this.photo,
   });
 
@@ -25,7 +31,10 @@ class CategoryCount {
     return CategoryCount(
       categoryCount: json['count'],
       categoryName: json['cat_name'],
+<<<<<<< HEAD
       cat_id: json['cat_id'],
+=======
+>>>>>>> origin/main
       photo: json['cat_logo'],
     );
   }
@@ -101,7 +110,11 @@ class _CartPageState extends State<CartPage> {
 
   Future<void> fetchCategories() async {
     final response = await http.get(
+<<<<<<< HEAD
       Uri.parse('http://192.168.0.102:5000/get_categories_name'),
+=======
+      Uri.parse('http://192.168.0.103:5000/get_categories_name'),
+>>>>>>> origin/main
     );
 
     if (response.statusCode == 200) {
@@ -125,7 +138,11 @@ class _CartPageState extends State<CartPage> {
   }
 
   Future<Map<String, List<dynamic>>> fetchData() async {
+<<<<<<< HEAD
     final url = 'http://192.168.0.102:5000/get_combined_data';
+=======
+    final url = 'http://192.168.0.103:5000/get_combined_data';
+>>>>>>> origin/main
     int retries = 3;
     for (int i = 0; i < retries; i++) {
       try {
@@ -222,6 +239,7 @@ class _CartPageState extends State<CartPage> {
                             SearchController controller) {
                           return List<ListTile>.generate(
                               filteredCategories.length, (int index) {
+<<<<<<< HEAD
                             final item = filteredCategories[index];
                             return ListTile(
                               title: Text(item),
@@ -235,6 +253,20 @@ class _CartPageState extends State<CartPage> {
                                 //     ),
                                 //   ),
                                 // );
+=======
+                            final String item = filteredCategories[index];
+                            return ListTile(
+                              title: Text(item),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FavoriteScreen(
+                                      categoryName: item,
+                                    ),
+                                  ),
+                                );
+>>>>>>> origin/main
                               },
                             );
                           });
@@ -265,7 +297,10 @@ class _CartPageState extends State<CartPage> {
                                   MaterialPageRoute(
                                     builder: (context) => FavoriteScreen(
                                       categoryName: category.categoryName,
+<<<<<<< HEAD
                                       cat_id: category.cat_id.toString(),
+=======
+>>>>>>> origin/main
                                     ),
                                   ),
                                 );
@@ -282,7 +317,11 @@ class _CartPageState extends State<CartPage> {
                                         borderRadius: BorderRadius.circular(45),
                                         image: DecorationImage(
                                             image: NetworkImage(
+<<<<<<< HEAD
                                               "https://aarambd.com/cat logo/${category.photo}",
+=======
+                                              category.photo,
+>>>>>>> origin/main
                                             ),
                                             fit: BoxFit.cover)),
                                   ),
@@ -304,8 +343,13 @@ class _CartPageState extends State<CartPage> {
                                         decoration: BoxDecoration(
                                           border: Border.all(width: 1),
                                           borderRadius:
+<<<<<<< HEAD
                                               BorderRadius.circular(35),
                                           color: Colors.white.withOpacity(0.5),
+=======
+                                              BorderRadius.circular(15),
+                                          color: Colors.black.withOpacity(0.5),
+>>>>>>> origin/main
                                         ),
                                         child: Text(
                                           "${category.categoryName} (${category.categoryCount})",

@@ -45,7 +45,11 @@ class _PostUploadState extends State<PostUpload> {
   }
 
   Future<void> postAd() async {
+<<<<<<< HEAD
     final url = 'http://192.168.0.102:5000/post_data';
+=======
+    final url = 'http://192.168.0.103:5000/post_data';
+>>>>>>> origin/main
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.fields['post_phone'] = widget.postPhone;
     request.fields['post_cat'] = widget.postCategory;

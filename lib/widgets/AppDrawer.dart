@@ -2,16 +2,23 @@ import 'package:aaram_bd/widgets/FloatingPage.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+<<<<<<< HEAD
 import 'MostUsedCategoriesPage.dart';
 import 'UpdatePost.dart'; // Import the new widget
+=======
+>>>>>>> origin/main
 
 class AppDrawer extends StatefulWidget {
   final String userPhone;
 
+<<<<<<< HEAD
   AppDrawer({
     required this.userPhone,
   });
 
+=======
+  AppDrawer({required this.userPhone});
+>>>>>>> origin/main
   @override
   _AppDrawerState createState() => _AppDrawerState(userPhone: userPhone);
 }
@@ -24,7 +31,10 @@ class _AppDrawerState extends State<AppDrawer> {
   String userMobile = "+880123456789";
 
   _AppDrawerState({required this.userPhone});
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
   @override
   void initState() {
     super.initState();
@@ -33,7 +43,11 @@ class _AppDrawerState extends State<AppDrawer> {
 
   Future<void> fetchUserData() async {
     final response = await http.get(
+<<<<<<< HEAD
       Uri.parse('http://192.168.0.102:5000/get_user_by_phone?phone=$userPhone'),
+=======
+      Uri.parse('http://192.168.0.103:5000/get_user_by_phone?phone=$userPhone'),
+>>>>>>> origin/main
     );
 
     if (response.statusCode == 200) {
@@ -51,6 +65,7 @@ class _AppDrawerState extends State<AppDrawer> {
     }
   }
 
+<<<<<<< HEAD
   Future<void> fetchMostUsedCategory() async {
     final response = await http.get(
       Uri.parse('http://192.168.0.102:5000/get_most_used_category'),
@@ -91,10 +106,13 @@ class _AppDrawerState extends State<AppDrawer> {
     }
   }
 
+=======
+>>>>>>> origin/main
   void _onItemTap(int index, String title, String content) {
     setState(() {
       _selectedIndex = index;
     });
+<<<<<<< HEAD
 
     Navigator.pop(context);
 
@@ -112,6 +130,14 @@ class _AppDrawerState extends State<AppDrawer> {
         ),
       );
     }
+=======
+    Navigator.pop(context);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => FloatingPage(title: title, content: content),
+      ),
+    );
+>>>>>>> origin/main
   }
 
   @override
@@ -147,6 +173,10 @@ class _AppDrawerState extends State<AppDrawer> {
                   child: ClipOval(
                     child: Image.network(
                       userPhotoUrl, // Replace with your image URL
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
                       fit: BoxFit.cover,
                     ),
                   ),

@@ -49,10 +49,16 @@ class UserDetail {
 }
 
 class FavoriteScreen extends StatefulWidget {
+<<<<<<< HEAD
   final String cat_id;
   final String categoryName;
 
   FavoriteScreen({required this.categoryName, required this.cat_id});
+=======
+  final String categoryName;
+
+  FavoriteScreen({required this.categoryName});
+>>>>>>> origin/main
 
   @override
   _FavoriteScreenState createState() => _FavoriteScreenState();
@@ -61,11 +67,15 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   late Future<List<UserDetail>> serviceData;
   late Future<List<UserDetail>> shopData;
+<<<<<<< HEAD
   String sortBy = '';
+=======
+>>>>>>> origin/main
 
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
     fetchData();
   }
 
@@ -78,6 +88,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       String cat_id, String dataType, String sortBy) async {
     final url =
         'http://192.168.0.102:5000/get_data_by_category?cat_id=$cat_id&data_type=$dataType&sort_by=$sortBy';
+=======
+    serviceData = fetchUserDetails(widget.categoryName, 'service');
+    shopData = fetchUserDetails(widget.categoryName, 'shops');
+  }
+
+  Future<List<UserDetail>> fetchUserDetails(
+      String cat_id, String dataType) async {
+    final url =
+        'http://192.168.0.103:5000/get_data_by_category?category=$cat_id&data_type=$dataType';
+>>>>>>> origin/main
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -97,6 +117,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     }
   }
 
+<<<<<<< HEAD
   void updateSorting(String newSortBy) {
     setState(() {
       sortBy = newSortBy;
@@ -104,6 +125,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     });
   }
 
+=======
+>>>>>>> origin/main
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,6 +143,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           },
         ),
       ),
+<<<<<<< HEAD
       body: Column(
         children: [
           Container(
@@ -296,11 +320,46 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                     ),
                                   ),
                                 ],
+=======
+      body: FutureBuilder<List<UserDetail>>(
+        future: Future.wait([serviceData, shopData])
+            .then((results) => results.expand((x) => x).toList()),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (snapshot.hasData) {
+              final users = snapshot.data!;
+              return ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  final user = users[index];
+                  return Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AdvertScreen(
+                              userId: user.userId.toString(),
+                              isService: user.isservice,
+                              advertData: AdvertData(
+                                userId: user.service_id.toString(),
+                                isService: user.isservice,
+                                additionalData: user.isservice
+                                    ? {
+                                        'service_id': user.service_id,
+                                      } // Replace with actual service details
+                                    : {
+                                        'shop_id': user.shop_id,
+                                      },
+>>>>>>> origin/main
                               ),
                             ),
                           ),
                         );
                       },
+<<<<<<< HEAD
                     );
                   }
                 }
@@ -309,11 +368,88 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             ),
           ),
         ],
+=======
+                      child: Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              width: 1,
+                              color: Color.fromARGB(255, 133, 199, 136)),
+                          borderRadius: BorderRadius.circular(60),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 3,
+                              blurRadius: 5,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 130,
+                              height: 130,
+                              margin: EdgeInsets.only(right: 20),
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(60),
+                                border: Border.all(
+                                    width: 3, color: Colors.greenAccent),
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(60)),
+                                child: Image.network(
+                                  "http://aarambd.com/photo/${user.photo}",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    user.business_name,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  SizedBox(height: 3),
+                                  Text(
+                                    user.address,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 5),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+>>>>>>> origin/main
       ),
     );
   }
 }
 
+<<<<<<< HEAD
 // void main() {
 //   runApp(MaterialApp(
 //     debugShowCheckedModeBanner: false,
@@ -322,3 +458,13 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 //     ),
 //   ));
 // }
+=======
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: FavoriteScreen(
+      categoryName: "Auto painting",
+    ),
+  ));
+}
+>>>>>>> origin/main
