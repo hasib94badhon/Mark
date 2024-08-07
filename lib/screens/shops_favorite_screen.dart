@@ -124,76 +124,117 @@ class _ShopsFavoriteState extends State<ShopsFavorite> {
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25))),
+            padding: EdgeInsets.all(8),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          // Implement sorting by location nearby
                           _sortData('nearby');
                         },
-                        icon: Icon(Icons.location_on),
-                        label: Text('Near By'),
+                        icon: Icon(
+                          color: Colors.black,
+                          Icons.location_on,
+                          size: 30,
+                          shadows: <Shadow>[
+                            Shadow(color: Colors.black, blurRadius: 0)
+                          ],
+                        ),
+                        label: Text(
+                          'Near-By',
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.all(7),
                           backgroundColor:
-                              sortBy == 'nearby' ? Colors.green : null,
+                              sortBy == 'most_called' ? Colors.green : null,
                         ),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    SizedBox(width: 5),
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          // Implement sorting by time
                           _sortData('recent');
                         },
-                        icon: Icon(Icons.access_time),
-                        label: Text('Recent'),
+                        icon: Icon(
+                          color: Colors.black,
+                          Icons.access_time,
+                          size: 30,
+                          shadows: <Shadow>[
+                            Shadow(color: Colors.black, blurRadius: 0)
+                          ],
+                        ),
+                        label: Text(
+                          'Recent',
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.all(7),
                           backgroundColor:
-                              sortBy == "recent" ? Colors.green : null,
+                              sortBy == 'most_called' ? Colors.green : null,
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          // Implement sorting by most viewed
                           _sortData('most_viewed');
                         },
-                        icon: Icon(Icons.visibility),
-                        label: Text('Most Viewed'),
+                        icon: Icon(
+                          color: Colors.black,
+                          Icons.visibility,
+                          size: 30,
+                          shadows: <Shadow>[
+                            Shadow(color: Colors.black, blurRadius: 0)
+                          ],
+                        ),
+                        label: Text(
+                          'Viewed',
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.all(7),
                           backgroundColor:
-                              sortBy == 'most_viewed' ? Colors.green : null,
+                              sortBy == 'most_called' ? Colors.green : null,
                         ),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    SizedBox(width: 5),
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          // Implement sorting by most called
                           _sortData('most_called');
                         },
-                        icon: Icon(Icons.phone),
-                        label: Text('Most Called'),
+                        icon: Icon(
+                          color: Colors.black,
+                          Icons.phone,
+                          size: 30,
+                          shadows: <Shadow>[
+                            Shadow(color: Colors.black, blurRadius: 0)
+                          ],
+                        ),
+                        label: Text(
+                          'Called',
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.all(7),
                           backgroundColor:
                               sortBy == 'most_called' ? Colors.green : null,
                         ),
