@@ -68,11 +68,7 @@ class UserDetail {
 
 // Modified fetchData function to return both categories and user details
 Future<Map<String, List<dynamic>>> fetchData() async {
-<<<<<<< HEAD
   final url = 'http://192.168.0.102:5000//get_service_data';
-=======
-  final url = 'http://192.168.0.103:5000//get_service_data';
->>>>>>> origin/main
   final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {

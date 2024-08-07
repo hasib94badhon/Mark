@@ -38,11 +38,7 @@ class _UserProfileState extends State<UserProfile> {
   Future<void> fetchUserData() async {
     print("Fetching user data for phone: $userPhone");
     final response = await http.get(
-<<<<<<< HEAD
       Uri.parse('http://192.168.0.102:5000/get_user_by_phone?phone=$userPhone'),
-=======
-      Uri.parse('http://192.168.0.103:5000/get_user_by_phone?phone=$userPhone'),
->>>>>>> origin/main
     );
 
     if (response.statusCode == 200) {
@@ -50,17 +46,10 @@ class _UserProfileState extends State<UserProfile> {
       print("Fetched data: $data");
       setState(() {
         userName = data['name'] ?? "User Name";
-<<<<<<< HEAD
         userCategory = data['cat_name'] ?? "Category";
         userDescription = data['description'] ?? "User Description";
         userAddress = data['location'] ?? "User Address";
         images = List<String>.from(data['photos'] ?? []);
-=======
-        userCategory = data['cat_id'] ?? "Category";
-        userDescription = data['description'] ?? "User Description";
-        userAddress = data['location'] ?? "User Address";
-        images = List<String>.from(data['photo'] ?? []);
->>>>>>> origin/main
       });
     } else {
       // Handle the error

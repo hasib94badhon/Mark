@@ -75,11 +75,7 @@ class _InitialScreenState extends State<InitialScreen> {
 
   Future<bool> _checkPhoneInDatabase(String phone) async {
     final String apiUrl =
-<<<<<<< HEAD
         'http://192.168.0.102:5000/check_phone'; // Updated API endpoint
-=======
-        'http://192.168.0.103:5000/check_phone'; // Updated API endpoint
->>>>>>> origin/main
     final Map<String, dynamic> requestData = {
       'phone': phone,
       'password': 'dummy_password' // Update as necessary

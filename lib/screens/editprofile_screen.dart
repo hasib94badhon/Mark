@@ -35,11 +35,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   LatLng _currentPosition = LatLng(23.8103, 90.4125); // Default to Dhaka
 
   String _selectedType = 'Service';
-<<<<<<< HEAD
   List<Map<String, dynamic>> _categories = [];
-=======
-  List<String> _categories = [];
->>>>>>> origin/main
   String? _selectedCategory;
   bool _isLoading = true;
   List<XFile> _images = [];
@@ -57,16 +53,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> fetchCategories() async {
     final response = await http
-<<<<<<< HEAD
         .get(Uri.parse('http://192.168.0.102:5000/get_categories_name'));
-=======
-        .get(Uri.parse('http://192.168.0.103:5000/get_categories_name'));
->>>>>>> origin/main
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       final List<dynamic> categoryList = data['categories'];
       setState(() {
-<<<<<<< HEAD
         _categories = categoryList.cast<Map<String, dynamic>>();
         var selectedCategoryMap = _categories.firstWhere(
             (category) => category['cat_name'] == widget.userCategory,
@@ -74,14 +65,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         _selectedCategory = selectedCategoryMap.isNotEmpty
             ? selectedCategoryMap['cat_id'].toString()
             : null;
-=======
-        _categories = categoryList.cast<String>();
-        _selectedCategory = _categories.contains(widget.userCategory)
-            ? widget.userCategory
-            : _categories.isNotEmpty
-                ? _categories[0]
-                : null;
->>>>>>> origin/main
         _categoryController.text = _selectedCategory ?? '';
         _isLoading = false;
       });
@@ -94,11 +77,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> updateProfile() async {
-<<<<<<< HEAD
     final url = 'http://192.168.0.102:5000/update_user_profile';
-=======
-    final url = 'http://192.168.0.103:5000/update_user_profile';
->>>>>>> origin/main
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.fields['name'] = _nameController.text;
     request.fields['phone'] = _phoneController.text;
@@ -198,17 +177,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ? CircularProgressIndicator()
                   : DropdownButtonFormField<String>(
                       value: _selectedCategory,
-<<<<<<< HEAD
                       items: _categories.map((category) {
                         return DropdownMenuItem<String>(
                           value: category['cat_id'].toString(),
                           child: Text(category['cat_name']),
-=======
-                      items: _categories.map((String category) {
-                        return DropdownMenuItem<String>(
-                          value: category,
-                          child: Text(category),
->>>>>>> origin/main
                         );
                       }).toList(),
                       onChanged: (String? newValue) {

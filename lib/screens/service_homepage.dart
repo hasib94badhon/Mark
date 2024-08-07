@@ -42,11 +42,7 @@ class Album {
 
 Future<List<Album>> fetchAlbum() async {
   final response =
-<<<<<<< HEAD
       await http.get(Uri.parse('http://192.168.0.102:5000/get_users_data'));
-=======
-      await http.get(Uri.parse('http://192.168.0.103:5000/get_users_data'));
->>>>>>> origin/main
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> data = jsonDecode(response.body);

@@ -19,11 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   Future<void> loginUser() async {
-<<<<<<< HEAD
     final String apiUrl = 'http://192.168.0.102:5000/login';
-=======
-    final String apiUrl = 'http://192.168.0.103:5000/login';
->>>>>>> origin/main
 
     final Map<String, dynamic> requestData = {
       'phone': _phoneController.text,

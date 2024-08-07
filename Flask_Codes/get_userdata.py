@@ -22,11 +22,7 @@ class MySQLConnector:
         self.database = database
 
     def connect(self):
-<<<<<<< HEAD
-        return pymysql.connect(host=self.host, user=self.user, password=self.password, database=self.database,cursorclass=pymysql.cursors.DictCursor)
-=======
         return pymysql.connect(host=self.host, user=self.user, password=self.password, database=self.database)
->>>>>>> origin/main
 
 class DataRetriever:
     def __init__(self, db_connector):
@@ -61,7 +57,7 @@ data_retriever = DataRetriever(db_connector)
 def get_data():
     # Retrieve data from the database
     data = data_retriever.get_data_from_db()
-    print(data)
+    
     # Return data as JSON
     return jsonify({'data':data})
 
@@ -175,38 +171,6 @@ def check_phone():
 
 @app.route('/get_user_by_phone', methods=['GET'])
 def get_user_by_phone():
-<<<<<<< HEAD
-    phone = request.args.get('phone')
-    if not phone:
-        return jsonify({"success": False, "message": "Phone number is required"}), 400
-
-    connection = db_connector.connect()
-    if connection is None:
-        return jsonify({"success": False, "message": "Failed to connect to the database"}), 500
-    
-    cursor = connection.cursor()
-    try:
-        query = """
-        SELECT users.name, users.cat_id, users.description, users.location, cat.cat_name, users.photo
-        FROM users
-        LEFT JOIN cat ON users.cat_id = cat.cat_id
-        WHERE users.phone = %s
-        """
-        cursor.execute(query, (phone,))
-        result = cursor.fetchone()
-        print(result)
-
-        if result:
-            # Ensure the 'photo' field is split correctly and exists
-            photos = result['photo'].split(',') if result['photo'] else []
-            return jsonify({
-                "name": result['name'],
-                "category": result['cat_id'],
-                "description": result['description'],
-                "location": result['location'],
-                "cat_name": result['cat_name'],
-                "photos": photos
-=======
     try:
         phone = request.args.get('phone')
         if not phone:
@@ -226,7 +190,7 @@ def get_user_by_phone():
             WHERE users.phone = %s"""
         cursor.execute(query, (phone,))
         result = cursor.fetchone()
-        print(result)
+        
         if result:
             photos = result[5].split(',') if result[4] else []
             return jsonify({
@@ -236,7 +200,6 @@ def get_user_by_phone():
                 "location": result[3],
                 "cat_id":result[4],
                 "photo": photos
->>>>>>> origin/main
             })
         else:
             return jsonify({"success": False, "message": "User not found"}), 404
@@ -247,30 +210,14 @@ def get_user_by_phone():
         cursor.close()
         connection.close()
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
 FTP_HOST = '89.117.27.223'
 FTP_USER = 'u790304855'
 FTP_PASS = 'Abra!!@@12'
 FTP_DIRECTORY = '/domains/aarambd.com/public_html/upload'
-<<<<<<< HEAD
-
-
-@app.route('/update_user_profile', methods=['POST'])
-def update_user_profile():
-    phone = request.form.get('phone')
-    if not phone:
-        return jsonify({"success": False, "message": "Phone number is required"}), 400
-
-    name = request.form.get('name')
-=======
 @app.route('/update_user_profile', methods=['POST'])
 def update_user_profile():
     name = request.form.get('name')
     phone = request.form.get('phone')
->>>>>>> origin/main
     category = request.form.get('category')
     description = request.form.get('description')
     location = request.form.get('location')
@@ -284,27 +231,6 @@ def update_user_profile():
     cursor = connection.cursor()
     try:
         # Fetch current user data
-<<<<<<< HEAD
-        cursor.execute("SELECT user_id, name, cat_id, description, location, photo FROM users WHERE phone = %s", (phone,))
-        user = cursor.fetchone()
-        print(f"Fetched user: {user}")  # Debugging line to check fetched data
-        if not user:
-            return jsonify({"success": False, "message": "User not found"}), 404
-
-        # Ensure `user` is a dictionary
-        if isinstance(user, tuple):
-            return jsonify({"success": False, "message": "Data format error: Expected dictionary, got tuple"}), 500
-
-        user_id = user['user_id']
-        # Update fields if provided, otherwise retain current values
-        updated_name = name if name else user['name']
-        updated_category = category if category else user['cat_id']
-        updated_description = description if description else user['description']
-        updated_location = location if location else user['location']
-
-        # Handle image URLs
-        existing_image_urls = user['photo'].split(',') if user['photo'] else []
-=======
         cursor.execute("SELECT user_id, name, category, description, location, photo FROM users WHERE phone = %s", (phone,))
         user = cursor.fetchone()
         if not user:
@@ -319,7 +245,6 @@ def update_user_profile():
 
         # Handle image URLs
         existing_image_urls = user[5].split(',') if user[5] else []
->>>>>>> origin/main
         new_image_urls = []
 
         # Establish FTP connection
@@ -343,18 +268,12 @@ def update_user_profile():
         # Update user data in the database
         query = """
         UPDATE users
-<<<<<<< HEAD
-        SET name = %s, cat_id = %s, description = %s, location = %s, photo = %s
-=======
         SET name = %s, category = %s, description = %s, location = %s, photo = %s
->>>>>>> origin/main
         WHERE phone = %s
         """
         cursor.execute(query, (updated_name, updated_category, updated_description, updated_location, updated_image_urls_str, phone))
         connection.commit()
 
-<<<<<<< HEAD
-=======
         # Check and update/insert data into the service or shops table
         if type == 'Service':
             check_query = "SELECT COUNT(*) FROM service WHERE user_id = %s"
@@ -391,7 +310,6 @@ def update_user_profile():
         
         connection.commit()
 
->>>>>>> origin/main
         return jsonify({"success": True, "image_urls": updated_image_urls_str})
     except Exception as e:
         connection.rollback()
@@ -401,10 +319,6 @@ def update_user_profile():
         cursor.close()
         connection.close()
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
 # Set up logging
 
 import logging
@@ -520,7 +434,6 @@ def post_data():
 
 
 
-<<<<<<< HEAD
 @app.route('/get_categories_name', methods=['GET'])
 def get_categories_name():
     connection = db_connector.connect()
@@ -547,22 +460,6 @@ def get_categories_name():
     finally:
         cursor.close()
         connection.close()
-=======
-@app.route('/get_categories_name',methods=['GET'])    
-def get_categories():
-    try:
-        connection = db_connector.connect()
-        cursor = connection.cursor()
-        cursor.execute("SELECT cat_name FROM cat ORDER BY cat_name")
-        categories = cursor.fetchall()
-        return jsonify({'categories':[category[0] for category in categories]})  
-    except Error as e:
-        return ({'error':str(e)}),500
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
->>>>>>> origin/main
 
 
 @app.route('/get_users_data', methods=['GET'])
@@ -574,7 +471,7 @@ def get_user_data():
         try:
             cursor.execute("SELECT * FROM service")
             users_data = cursor.fetchall()
-            print(users_data)
+            
         except Exception as e:
             return jsonify({"error": str(e)}), 500
         finally:
@@ -733,7 +630,7 @@ def get_category_and_counts_all_info():
 
             separated_category_counts.append({"cat_id": cat_id, "cat_name": cat_name,"count":count})
         
-        print(separated_category_counts)
+        
             
 
 
@@ -767,14 +664,10 @@ def get_combined_data():
                 cursor.execute(sql_query_service)
                 service_count = cursor.fetchall()
                 
-<<<<<<< HEAD
                 for service in service_count:
                     service['cat_id'] =str(service['cat_id'])
                 
                
-=======
-                service_categories_data = cursor.fetchall()
->>>>>>> origin/main
                 # Fetch all service information
                 cursor.execute('''SELECT s.service_id, c.cat_name, u.user_id,u.name,u.phone,u.location,u.photo
                 FROM service s
@@ -790,16 +683,11 @@ def get_combined_data():
                                GROUP BY c.cat_name, c.cat_logo'''
                 cursor.execute(sql_query_shops)
                 shops_count = cursor.fetchall()
-<<<<<<< HEAD
 
                 for shops in shops_count:
                     shops['cat_id'] =str(shops['cat_id'])
                 
                 
-=======
-                
-                shops_categories_data = cursor.fetchall()
->>>>>>> origin/main
                 # Fetch all shops information
                 cursor.execute('''SELECT s.shop_id, c.cat_name, c.cat_logo, u.user_id, u.name, u.phone, u.location, u.photo
                                   FROM shops s
@@ -809,10 +697,7 @@ def get_combined_data():
 
                 # Convert bytes to Base64 string if necessary
             for user in all_service_data:
-<<<<<<< HEAD
                     
-=======
->>>>>>> origin/main
                     if 'photo' in user and user['photo']:
                         user['photo'] = user['photo']
             
@@ -860,28 +745,20 @@ def get_combined_data():
 @app.route('/get_service_data_by_category', methods=['GET'])
 def get_service_data_by_category():
     cat_id = request.args.get('cat_id', None)
-<<<<<<< HEAD
     sort_by = request.args.get('sort_by',None)
-=======
->>>>>>> origin/main
     connection = None
     try:
         connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
             if cat_id:
                 # Fetch data for a specific category
-<<<<<<< HEAD
                 base_query = '''
-=======
-                sql_query = '''
->>>>>>> origin/main
                 SELECT s.service_id, c.cat_name, c.cat_logo,u.*
                 FROM service s
                 JOIN cat c ON s.cat_id = c.cat_id
                 JOIN users u ON s.user_id = u.user_id
                 WHERE s.cat_id = %s
                 '''
-<<<<<<< HEAD
                 params = [cat_id]
                 
             else:
@@ -911,20 +788,6 @@ def get_service_data_by_category():
             cursor.execute(base_query,params)
             all_users_data = cursor.fetchall()
             
-=======
-                cursor.execute(sql_query, (cat_id,))
-                all_users_data = cursor.fetchall()
-            else:
-                # Fetch all service information
-                
-                cursor.execute('''
-                SELECT s.service_id, c.cat_name, c.cat_logo, u.user_id,u.name,u.phone,u.location,u.photo
-                FROM service s
-                JOIN cat c ON s.cat_id = c.cat_id
-                JOIN users u ON s.user_id = u.user_id
-                ''')
-                all_users_data = cursor.fetchall()
->>>>>>> origin/main
 
             return jsonify({'service_information': all_users_data})
 
@@ -943,31 +806,21 @@ def get_service_data_by_category():
 @app.route('/get_shop_data_by_category',methods=['GET'])
 def get_shop_data_by_category():
     cat_id = request.args.get('cat_id', None)
-<<<<<<< HEAD
     sort_by = request.args.get('sort_by',None)
-=======
->>>>>>> origin/main
     connection = None
     try:
         connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-<<<<<<< HEAD
 
             if cat_id:
                 # Fetch data for a specific category
                 base_query = '''
-=======
-            if cat_id:
-                # Fetch data for a specific category
-                sql_query = '''
->>>>>>> origin/main
                 SELECT s.shop_id, c.cat_name, c.cat_logo,u.*
                 FROM shops s
                 JOIN cat c ON s.cat_id = c.cat_id
                 JOIN users u ON s.user_id = u.user_id
                 WHERE s.cat_id = %s
                 '''
-<<<<<<< HEAD
                 params = [cat_id]
                 # cursor.execute(sql_query, (cat_id,))
                 # all_users_data = cursor.fetchall()
@@ -975,19 +828,10 @@ def get_shop_data_by_category():
                 # Fetch all service information
                 
                 base_query ='''
-=======
-                cursor.execute(sql_query, (cat_id,))
-                all_users_data = cursor.fetchall()
-            else:
-                # Fetch all service information
-                
-                cursor.execute('''
->>>>>>> origin/main
                 SELECT s.shop_id, c.cat_name, c.cat_logo, u.user_id,u.name,u.phone,u.location,u.photo
                 FROM shops s
                 JOIN cat c ON s.cat_id = c.cat_id
                 JOIN users u ON s.user_id = u.user_id
-<<<<<<< HEAD
                 '''
                 params = []
             if sort_by == 'most_viewed':
@@ -1006,10 +850,6 @@ def get_shop_data_by_category():
             cursor.execute(base_query,params)
             all_users_data = cursor.fetchall()
 
-=======
-                ''')
-                all_users_data = cursor.fetchall()
->>>>>>> origin/main
 
             return jsonify({'shops_information': all_users_data})
 
@@ -1026,53 +866,26 @@ def get_shop_data_by_category():
 
 @app.route('/get_data_by_category', methods=['GET'])
 def get_data_by_category():
-<<<<<<< HEAD
     cat_id = request.args.get('cat_id', None)
     data_type = request.args.get('data_type', None)  # 'service' or 'shops'
     sort_by = request.args.get('sort_by', None)
     user_location = request.args.get('user_location', None)  # Assuming this is used for 'nearby' sorting
-=======
-    category = request.args.get('cat_id', None)
-    data_type = request.args.get('data_type', None)  # 'service' or 'shop'
->>>>>>> origin/main
     connection = None
     
     if not data_type or data_type not in ['service', 'shops']:
         return jsonify({"error": "Invalid or missing data_type parameter"}), 400
 
     try:
-<<<<<<< HEAD
         connection = db_connector.connect()
         with connection.cursor(pymysql.cursors.DictCursor) as cursor:
             if cat_id:
                 base_query = f'''
                 SELECT s.{'service_id' if data_type == 'service' else 'shop_id'}, c.cat_name, c.cat_logo, u.*
                 FROM {data_type} s
-=======
-        connection = db_connector.connect()  # Ensure this function uses a robust method to handle connections
-        with connection.cursor(pymysql.cursors.DictCursor) as cursor:
-            if category and data_type in ['service']:
-                # Fetch data for a specific category
-                sql_query = ('''
-                SELECT s.service_id, c.cat_id,c.cat_name, c.cat_logo, u.user_id,u.name,u.phone,u.location,u.photo
-                FROM service s
-                JOIN cat c ON s.cat_id = c.cat_id
-                JOIN users u ON s.user_id = u.user_id
-                WHERE s.cat_id = %s
-                ''')
-                cursor.execute(sql_query, (category,))
-            
-            elif category and data_type in ['shops']:
-                # Fetch data for a specific category
-                sql_query = '''
-                SELECT s.shop_id, c.cat_id,c.cat_name, c.cat_logo, u.user_id,u.name,u.phone,u.location,u.photo
-                FROM shops s
->>>>>>> origin/main
                 JOIN cat c ON s.cat_id = c.cat_id
                 JOIN users u ON s.user_id = u.user_id
                 WHERE s.cat_id = %s
                 '''
-<<<<<<< HEAD
                 params = [cat_id]
             else:
                 base_query = f'''
@@ -1100,17 +913,6 @@ def get_data_by_category():
             for cat in all_data:
                 cat['cat_id'] = str(cat['cat_id'])
 
-=======
-                cursor.execute(sql_query, (category,))
-            else:
-                # Fetch all information
-                sql_query = f"SELECT * FROM {data_type}"
-                cursor.execute(sql_query)
-            
-            
-            all_data = cursor.fetchall()
-            
->>>>>>> origin/main
 
             return jsonify({f'{data_type}_information': all_data})
 
@@ -1124,10 +926,6 @@ def get_data_by_category():
         if connection:
             connection.close()
 
-<<<<<<< HEAD
-=======
-    
->>>>>>> origin/main
 
 @app.route('/get_service_or_shop_data', methods=["GET"])
 def get_service_or_shop_data():
@@ -1232,7 +1030,7 @@ def get_viewed_data():
                 sorted_view_data.append(view['post_viewed'])
             
             sorted_view_data.sort()
-            print(sorted_view_data)
+            
         except Exception as e:
             return jsonify({"error": str(e)}), 500
         finally:
@@ -1257,7 +1055,7 @@ def get_liked_data():
                 sorted_view_data.append(view['post_viewed'])
             
             sorted_view_data.sort(reverse='True')
-            print(sorted_view_data)
+            
         except Exception as e:
             return jsonify({"error": str(e)}), 500
         finally:
@@ -1299,14 +1097,6 @@ def get_updated_data():
         return jsonify({"viewed_data":view_data})
     
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> origin/main
 @app.route('/get_total_post_on_users', methods=['GET','POST'])
 def get_total_post_on_users():
     if request.method == 'GET' or request.method == 'POST':
@@ -1335,7 +1125,6 @@ def get_total_post_on_users():
                 connection.close()
         return jsonify({'post_counts':seperated_post_counts})
 
-<<<<<<< HEAD
 
 
 @app.route('/get_most_used_category', methods=['GET'])
@@ -1354,7 +1143,7 @@ def get_most_used_category():
                 ORDER BY total_views DESC
             """)
             most_used_categories = cursor.fetchall()
-            print(most_used_categories)
+            
             
             if most_used_categories:
                 response = []
@@ -1420,37 +1209,6 @@ def get_today_post():
         finally:
             cursor.close()
             connection.close()
-=======
-        # Separate category name and count
-        
-            
-
-
-      
-
-
-        # Fetch data from the reg table based on the foreign key relationship
-        # users_with_phone_data = []
-        # for user in users_data:
-        #     reg_id = user['service_id']
-        #     connection = db_connector.connect()
-        #     cursor = connection.cursor()
-        #     try:
-        #         cursor.execute("SELECT phone FROM reg WHERE reg_id = %s", (reg_id,))
-        #         reg_data = cursor.fetchone()
-        #         if reg_data:
-        #            phone = reg_data[0]  # Extract phone number from the tuple
-        #            user['phone'] = phone
-        #         users_with_phone_data.append(user)
-        #     except Exception as e:
-        #         return jsonify({"error": str(e)}), 500
-        #     finally:
-        #         cursor.close()
-        #         connection.close()
-
-        # return jsonify({"users_data": users_with_phone_data})
-
->>>>>>> origin/main
 
 
 if __name__ == '__main__':
